@@ -1,8 +1,20 @@
-import { Template } from 'meteor/templating';
-import { ReactiveVar } from 'meteor/reactive-var';
+import { Meteor } from 'meteor/meteor';
+import React from 'react';
+import { render } from 'react-dom';
 
-import './main.html';
+Meteor.startup(() => {
+  render(<HelloWorld />, document.getElementById('app'));
+});
 
+class HelloWorld extends React.Component {
+  render() {
+    return (
+      <h1>Hello World</h1>
+    );
+  }
+}
+
+/*
 Template.scraper.onCreated(function scraperOnCreated() {
   // scraper starts automatically with Meteor startup
   this.scraper = new ReactiveVar("Stop");
@@ -42,3 +54,4 @@ Template.scraper.events({
     }
   },
 });
+*/
