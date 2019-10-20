@@ -1,4 +1,4 @@
-import { PlayerStats } from '../lib/collections';
+import { PlayerStats } from '../imports/collections';
 
 function parseTeamsData(data) {
 

@@ -1,18 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { render } from 'react-dom';
+import PlayersContainer from '../imports/components/PlayersContainer';
 
 Meteor.startup(() => {
-  render(<HelloWorld />, document.getElementById('app'));
+  render(<PlayersContainer/>, document.getElementById('app'));
 });
-
-class HelloWorld extends React.Component {
-  render() {
-    return (
-      <h1>Hello World</h1>
-    );
-  }
-}
 
 /*
 Template.scraper.onCreated(function scraperOnCreated() {
