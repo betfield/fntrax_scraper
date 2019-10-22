@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { loginPage, fillTeamsData } from './fantrax_live_stats';
 import { parseTeamsData } from './parser';
-import '../imports/publish/players';
+import '../imports/publish/playerstats';
 
 let page, timer;
 const interval = 20*1000;
