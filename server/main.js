@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import { loginPage, fillTeamsData } from './fantrax_live_stats';
+import puppeteer from 'puppeteer';
+import { loginPage, fillTeamsData, populateGameWeekData } from './fantrax_live_stats';
 import { parseTeamsData } from './parser';
 import '../imports/publish/playerstats';
 
 let page, timer;
-const interval = 20*1000;
+const interval = 200*1000;
 
 Meteor.startup(() => {
 
@@ -13,10 +14,25 @@ Meteor.startup(() => {
 });
 
 async function run() {
+
+  const browser = await puppeteer.launch({
+    headless: true,
+    defaultViewport: {
+        width: 1920,
+        height: 1080
+    },
+    args: [`--window-size=1920,1080`] // set browser size
+  });
+
+  page = await browser.newPage();
+
   // Login to Fantrax
   try {
+    // Populate current Gameweek data
+    await populateGameWeekData(page);
+
     // Start login function with tries counter set to 1
-    page = await loginPage(1);
+    page = await loginPage(page, 1);
     
     // Start data collection and return the timer handler 
     timer = startDataCollection();

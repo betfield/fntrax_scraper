@@ -1,10 +1,11 @@
-import puppeteer from 'puppeteer';
 const CREDS = require('./creds');
 
 // DOM element selectors
 const URL_MAIN = 'https://www.fantrax.com/login';
 const URL_TEAM = 'https://www.fantrax.com/fantasy/league/fme67lofjyyvq48x/team/roster';
 const URL_TEAM_RESP = 'https://www.fantrax.com/fxpa/req?leagueId=fme67lofjyyvq48x';
+const URL_SCHEDULE = 'https://www.fantrax.com/newui/EPL/schedules.go?season=919';
+const SEL_CURRENT_GW = '/html/body/section/div[4]/div[4]/div[4]/div[1]/div[1]/div/div[2]/div[2]/div[2]';
 const LOGIN_TITLE = 'Fantrax - The Home of Fantasy Sports';
 const SEL_COOKIE= '/html/body/app-root/div/layout-overlay/overlay-toasts/toast/section/div[1]/button[3]';
 const SEL_USERNAME = '//*[@id="mat-input-0"]';
@@ -16,19 +17,8 @@ const SEL_GW_PREVIOUS = '/html/body/app-root/div/div/div/app-league-team-roster/
 
 let nr_of_teams = 10;
 
-async function loginPage(counter) {
+async function loginPage(page, counter) {
 
-    const browser = await puppeteer.launch({
-        headless: true,
-        defaultViewport: {
-            width: 1920,
-            height: 1080
-        },
-        args: [`--window-size=1920,1080`] // set browser size
-    });
-
-    const page = await browser.newPage();
-    
     const maxTries = 3;
 
     try {
@@ -133,4 +123,26 @@ async function fillTeamsData(page) {
     return teamsData;
 }
 
-export { loginPage, fillTeamsData };
+async function populateGameWeekData(page) {
+
+    console.log("Starting to populate gameweek data");
+    // Locate the Schedule page
+    await page.goto(URL_SCHEDULE);
+
+    // Select current gameweek element
+    const element = await page.waitForXPath(SEL_CURRENT_GW);
+
+    // Select current gameweek text data
+    let text = await page.evaluate(element => element.textContent, element);
+
+    // Construct array from gameweek text data
+    text = text.replace("\t",'');
+    let data = text.trim().split("\n");
+
+    console.log(data);
+
+
+    console.log("Finished populating gameweek data");
+}
+
+export { loginPage, fillTeamsData, populateGameWeekData };
