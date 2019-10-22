@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { loginPage, fillTeamsData } from './fantrax_live_stats';
 import { parseTeamsData } from './parser';
+import '../imports/publish/players';
 
 let page, timer;
 const interval = 20*1000;
@@ -8,7 +9,7 @@ const interval = 20*1000;
 Meteor.startup(() => {
 
   run();
-
+  
 });
 
 async function run() {

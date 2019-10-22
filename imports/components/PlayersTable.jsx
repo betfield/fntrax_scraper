@@ -5,13 +5,11 @@ export default class PlayersTable extends React.Component {
   render() {
     const rows = [];
     
-    console.log(this.props.players);
-
     this.props.players.forEach((player) => {
       rows.push(
         <PlayerRow
           player={player}
-          key={player._id} />
+          key={player.id} />
       );
     });
 
@@ -21,6 +19,7 @@ export default class PlayersTable extends React.Component {
           <tr>
             <th>Name</th>
             <th>Pos</th>
+            <th>Pts</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>

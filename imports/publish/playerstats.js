@@ -1,11 +1,9 @@
-import { PlayerStats } from "../../imports/collections";
+import { PlayerStats } from "../collections";
 
 // Publish all players from the local DB
 Meteor.publish("playerstats", function () {
 	let self = this;
     
-    console.log("tra, olen siin nüüd");
-
     let subHandle = PlayerStats.find({}).observeChanges({
         added: function(id, fields) {
             self.added("playerstats", id, fields);
@@ -21,8 +19,6 @@ Meteor.publish("playerstats", function () {
     self.onStop(function () {
         subHandle.stop();
     });
-
-    console.log("ja nüüd ssin");
 
 	self.ready();
 });

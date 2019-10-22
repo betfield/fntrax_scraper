@@ -3,10 +3,13 @@ import { PlayerStats } from '../imports/collections';
 function parseTeamsData(data) {
 
     for (let i = 0; i < data.length; i++) {
+        let players = parseOutfielderData(data[i][1].rows);
+
+        players.push(parseGoalkeeperData(data[i][0].rows));
+        
         let playerData = {
-            team:   i,
-            GK:     parseGoalkeeperData(data[i][0].rows),
-            OF:     parseOutfielderData(data[i][1].rows)
+            team:       i,
+            players:    players  
         }
 
         // Upsert data to database
@@ -118,9 +121,8 @@ function updatePlayerStats(team, data) {
         "team": team
     },{
         $set: {
-        "team": data.team,
-        "GK":   data.GK,
-        "OF":   data.OF
+        "team":     data.team,
+        "players":  data.players,
         }
     });
 }
