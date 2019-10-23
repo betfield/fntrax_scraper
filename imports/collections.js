@@ -2,5 +2,6 @@ import { Mongo } from 'meteor/mongo';
 
 // Common code on client and server declares a DDP-managed Mongo collection.
 PlayerStats = new Mongo.Collection("playerstats");
+Gameweek = new Mongo.Collection("gameweek");
 
-export { PlayerStats };
+export { PlayerStats, Gameweek };

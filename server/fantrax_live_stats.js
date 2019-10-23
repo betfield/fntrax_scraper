@@ -4,8 +4,6 @@ const CREDS = require('./creds');
 const URL_MAIN = 'https://www.fantrax.com/login';
 const URL_TEAM = 'https://www.fantrax.com/fantasy/league/fme67lofjyyvq48x/team/roster';
 const URL_TEAM_RESP = 'https://www.fantrax.com/fxpa/req?leagueId=fme67lofjyyvq48x';
-const URL_SCHEDULE = 'https://www.fantrax.com/newui/EPL/schedules.go?season=919';
-const SEL_CURRENT_GW = '/html/body/section/div[4]/div[4]/div[4]/div[1]/div[1]/div/div[2]/div[2]/div[2]';
 const LOGIN_TITLE = 'Fantrax - The Home of Fantasy Sports';
 const SEL_COOKIE= '/html/body/app-root/div/layout-overlay/overlay-toasts/toast/section/div[1]/button[3]';
 const SEL_USERNAME = '//*[@id="mat-input-0"]';
@@ -123,26 +121,4 @@ async function fillTeamsData(page) {
     return teamsData;
 }
 
-async function populateGameWeekData(page) {
-
-    console.log("Starting to populate gameweek data");
-    // Locate the Schedule page
-    await page.goto(URL_SCHEDULE);
-
-    // Select current gameweek element
-    const element = await page.waitForXPath(SEL_CURRENT_GW);
-
-    // Select current gameweek text data
-    let text = await page.evaluate(element => element.textContent, element);
-
-    // Construct array from gameweek text data
-    text = text.replace("\t",'');
-    let data = text.trim().split("\n");
-
-    console.log(data);
-
-
-    console.log("Finished populating gameweek data");
-}
-
-export { loginPage, fillTeamsData, populateGameWeekData };
+export { loginPage, fillTeamsData };

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import puppeteer from 'puppeteer';
-import { loginPage, fillTeamsData, populateGameWeekData } from './fantrax_live_stats';
+import { loginPage, fillTeamsData } from './fantrax_live_stats';
+import { populateGameWeekData } from './gameweek';
 import { parseTeamsData } from './parser';
 import '../imports/publish/playerstats';
 
