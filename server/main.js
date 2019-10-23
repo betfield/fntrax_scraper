@@ -4,9 +4,10 @@ import { loginPage, fillTeamsData } from './fantrax_live_stats';
 import { populateGameWeekData } from './gameweek';
 import { parseTeamsData } from './parser';
 import '../imports/publish/playerstats';
+import '../imports/publish/fixtures';
 
 let page, timer;
-const interval = 200*1000;
+const interval = 20*1000;
 
 Meteor.startup(() => {
 

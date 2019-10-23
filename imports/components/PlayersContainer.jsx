@@ -2,22 +2,24 @@ import React from 'react';
 import TrackerReact from 'meteor/ultimatejs:tracker-react';
 import Match from './Match';
 import PlayersTable from './PlayersTable';
-import { PlayerStats } from '../collections';
+import { PlayerStats, Fixtures } from '../collections';
 
 export default class PlayersContainer extends TrackerReact(React.Component) {
 
     render () {
 
-        const subscription = Meteor.subscribe("playerstats");
+        const subPlayerStats = Meteor.subscribe("playerstats");
+        const subCurrentFixture = Meteor.subscribe("currentfixture");
 
-        if (subscription.ready()) {
+        if (subCurrentFixture.ready() && subPlayerStats.ready()) {
             let playerStats = PlayerStats.find({}).fetch();
+            let currentFixture = Fixtures.findOne({});
             
             return (
                 <div>
-                <Match />
-                <PlayersTable players={getClubPlayers("MUN", playerStats)} />
-                <PlayersTable players={getClubPlayers("LIV", playerStats)} />
+                <Match fixture={currentFixture}/><br/>
+                <PlayersTable players={getClubPlayers(currentFixture.homeShort, playerStats)} />
+                <PlayersTable players={getClubPlayers(currentFixture.awayShort, playerStats)} />
                 </div>
             );
         } else {
