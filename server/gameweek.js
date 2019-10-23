@@ -1,4 +1,4 @@
-import { Gameweek } from '../imports/collections';
+import { Fixtures } from '../imports/collections';
 
 const URL_SCHEDULE = 'https://www.fantrax.com/newui/EPL/schedules.go?season=919';
 const SEL_CURRENT_GW = '/html/body/section/div[4]/div[4]/div[4]/div[1]/div[1]/div/div[2]/div[2]/div[2]';
@@ -151,9 +151,8 @@ function createFixtureObjects(arr) {
         
     for (let i = 1; i < arr.length; i++) {
         switch (iter) {
-            // Set the date and home team value
+            // Set the home team value
             case 1:
-                fixture.date = date;
                 fixture.home = arr[i];
                 break;
             
@@ -164,10 +163,10 @@ function createFixtureObjects(arr) {
                 fixture.away = arr[i];
                 break;
 
-            // Set the time value and push the resulting object into the return array
+            // Set the date/time value and push the resulting object into the return array
             // Initiate the iterator and fixture object
             case 4:
-                fixture.time = arr[i];
+                fixture.ts = convertToTimestamp(date, arr[i]);
                 result.push(addClubData(fixture));
                 fixture = {};
                 iter = 0;
@@ -180,6 +179,13 @@ function createFixtureObjects(arr) {
     return result;
 }
 
+// Need to consider summer time?
+function convertToTimestamp(date, time) {
+    let ts = new Date(date + " " + time);
+    ts.setUTCHours(ts.getUTCHours() + 7)
+    return ts;
+}
+
 function addClubData(fixture) {
     fixture.homeShort = getClubShortName(fixture.home);
     fixture.awayShort = getClubShortName(fixture.away);
@@ -188,22 +194,20 @@ function addClubData(fixture) {
 }
 
 function getClubShortName(club) {
-
-    console.log(Object.keys(CLUBS));
-
-    return club;
+    return Object.keys(CLUBS).find(key => CLUBS[key] === club);
 }
 
 function updateActiveGameweek(gameweek) {
     gameweek.forEach(gw => {
-        Gameweek.upsert({
-            "date": gw[0].date
-        },{
-            $set: {
-            "date":     gw[0].date,
-            "fixtures": gw
-            }
-        });
+        gw.forEach(fixture => {
+            Fixtures.upsert({
+                "date": fixture.date,
+                "time": fixture.time,
+                "home": fixture.home
+            },{
+                $set: fixture
+            });
+        })
     })
 }
 
