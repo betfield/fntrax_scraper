@@ -7,13 +7,12 @@ function parseTeamsData(data) {
 
         players.push(parseGoalkeeperData(data[i][0].rows));
         
-        let playerData = {
-            team:       i,
-            players:    players  
-        }
+        players.forEach((player, idx) => {
+            players[idx].team = i;
+        })
 
         // Upsert data to database
-        updatePlayerStats(i, playerData);
+        updatePlayerStats(players);
     }
 }
 
@@ -116,15 +115,18 @@ function parseOutfielderData(data) {
     return players;
 }
 
-function updatePlayerStats(team, data) {
-    PlayerStats.upsert({
-        "team": team
-    },{
-        $set: {
-        "team":     data.team,
-        "players":  data.players,
-        }
+function updatePlayerStats(data) {
+
+    data.forEach(player => {
+
+        PlayerStats.upsert({
+            "id": player.id
+        },{
+            $set: player
+        });
     });
+
+    
 }
 
 export { parseTeamsData }

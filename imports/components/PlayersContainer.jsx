@@ -33,12 +33,10 @@ export default class PlayersContainer extends TrackerReact(React.Component) {
 function getClubPlayers(club, playerStats) {
     let result = [];
 
-    playerStats.forEach(stats => {
-        stats.players.forEach(player => {
-            if (player.club === club) {
-                result.push(player);
-            } 
-        })
+    playerStats.forEach(player => {
+        if (player.club === club) {
+            result.push(player);
+        } 
     });
 
     return result;

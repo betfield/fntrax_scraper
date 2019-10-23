@@ -6,7 +6,7 @@ export default class PlayerRow extends React.Component {
   
       return (
         <tr>
-          <td>{player.name}</td>
+          <td>{player.name} ({player.team})</td>
           <td>{player.pos}</td>
           <td>{player.stats.FPts}</td>
         </tr>
