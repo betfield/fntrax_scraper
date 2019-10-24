@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import puppeteer from 'puppeteer';
 import { loginPage, fillTeamsData } from './fantrax_live_stats';
 import { populateGameWeekData } from './gameweek';
+import { populateTeamsData } from './teams';
 import { parseTeamsData } from './parser';
 import '../imports/publish/playerstats';
 import '../imports/publish/fixtures';
@@ -35,6 +36,9 @@ async function run() {
 
     // Start login function with tries counter set to 1
     page = await loginPage(page, 1);
+
+    // Populate League Teams' data
+    await populateTeamsData(page);
     
     // Start data collection and return the timer handler 
     timer = startDataCollection();

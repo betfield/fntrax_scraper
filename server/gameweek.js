@@ -57,8 +57,6 @@ async function populateGameWeekData(page) {
     // Save current gameweek into database
     updateActiveGameweek(gameweek);
 
-    //console.log(gameweek);
-
     console.log("Finished populating gameweek data");
 }
 
