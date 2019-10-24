@@ -7,7 +7,7 @@ import { parseTeamsData } from './parser';
 import '../imports/publish/playerstats';
 import '../imports/publish/fixtures';
 
-let page, timer;
+let page, teams, timer;
 const interval = 20*1000;
 
 Meteor.startup(() => {
@@ -19,7 +19,7 @@ Meteor.startup(() => {
 async function run() {
 
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
     defaultViewport: {
         width: 1920,
         height: 1080
@@ -38,7 +38,7 @@ async function run() {
     page = await loginPage(page, 1);
 
     // Populate League Teams' data
-    await populateTeamsData(page);
+    teams = await populateTeamsData(page);
     
     // Start data collection and return the timer handler 
     timer = startDataCollection();
@@ -48,9 +48,9 @@ async function run() {
   }
 }
 
-async function fill(page) {
+async function fill(page, teams) {
   // Load current player data for all teams and add to database
-  parseTeamsData(await fillTeamsData(page));
+  parseTeamsData(await fillTeamsData(page, teams));
 }
 
 function startDataCollection() {
@@ -60,7 +60,7 @@ function startDataCollection() {
   } else {
     console.log("Setting up new timer")
     return Meteor.setInterval(() => {
-      fill(page);
+      fill(page, teams);
     }, interval);
   }
 }

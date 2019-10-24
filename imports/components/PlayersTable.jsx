@@ -18,6 +18,7 @@ export default class PlayersTable extends React.Component {
         <thead>
           <tr>
             <th>Name</th>
+            <th>Team</th>
             <th>Pos</th>
             <th>Pts</th>
           </tr>

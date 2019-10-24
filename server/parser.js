@@ -3,12 +3,11 @@ import { PlayerStats } from '../imports/collections';
 function parseTeamsData(data) {
 
     for (let i = 0; i < data.length; i++) {
-        let players = parseOutfielderData(data[i][1].rows);
-
-        players.push(parseGoalkeeperData(data[i][0].rows));
-        
+        let players = parseOutfielderData(data[i].stats[1].rows);
+        players.push(parseGoalkeeperData(data[i].stats[0].rows));
+                
         players.forEach((player, idx) => {
-            players[idx].team = i;
+            players[idx].team = data[i].team;
         })
 
         // Upsert data to database
@@ -118,7 +117,7 @@ function parseOutfielderData(data) {
 function updatePlayerStats(data) {
 
     data.forEach(player => {
-
+        if(player.team.id === 0) console.log(player);
         PlayerStats.upsert({
             "id": player.id
         },{
@@ -126,7 +125,6 @@ function updatePlayerStats(data) {
         });
     });
 
-    
 }
 
 export { parseTeamsData }

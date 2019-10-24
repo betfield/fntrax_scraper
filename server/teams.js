@@ -17,31 +17,21 @@ async function populateTeamsData(page) {
     
     let result = [];
 
-    data.forEach((row, idx, arr) => {
-        result.push(row.split('\n'))
+    data.forEach((row, idx) => {
+        const team = row.split('\n');
+        const owner = String(team[4]).split('\t');
+
+        result.push({
+            "name": team[3],
+            "abbrev": owner[1],
+            "user": owner[2],
+            "id": idx
+        })
     })
-    
-    console.log(result);
 
-    /*
-    // Remove empty elements from the array
-    const gwData = removeEmtpyElements(data);
-
-    // Identify matchday dates from array
-    const datePos = getDatePositionsInArray(gwData);
-    
-    // Split gameweek array into sub-arrays based on matchday
-    const matchdays = splitArrayToMatchdays(datePos, gwData);
-
-    // Parse matchday elements into fixture objects
-    let gameweek = parseMatchdayFixtures(matchdays);
-
-    // Save current gameweek into database
-    updateActiveGameweek(gameweek);
-
-    //console.log(gameweek);
-*/
     console.log("Finished populating teams data");
+
+    return result;
 }
 
 export { populateTeamsData };

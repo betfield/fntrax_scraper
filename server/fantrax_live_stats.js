@@ -79,7 +79,7 @@ async function loginPage(page, counter) {
     return page;
 }
 
-async function fillTeamData(page) {
+async function fillTeamData(page, team) {
     let stats;
 
     await page.waitForResponse(URL_TEAM_RESP).then(
@@ -87,10 +87,10 @@ async function fillTeamData(page) {
             (res) => stats = res.responses[0].data.tables
         ));
         
-    return stats;
+    return { "stats": stats, "team": team };
 }
 
-async function fillTeamsData(page) {
+async function fillTeamsData(page, teams) {
     console.log("Starting data collection");
     // Locate the Team Roster page
     await page.goto(URL_TEAM);
@@ -104,8 +104,8 @@ async function fillTeamsData(page) {
     
     let teamsData = [];
     
-    teamsData[0] = await fillTeamData(page);
-    console.log("Data for team nr 0 loaded");
+    teamsData[0] = await fillTeamData(page, teams[0]);
+    console.log("Data for team nr 0 (" + teams[0].name + ") loaded");
 
     // Cycle through all team pages and collect the data
     for (let i = 1; i < nr_of_teams; i++) {
@@ -113,8 +113,8 @@ async function fillTeamsData(page) {
         await page.waitForXPath('//*[@id="mat-select-0"]').then((result) => result.click());
         await page.waitForXPath('//*[@id="mat-option-' + i + '"]').then((result) => result.click());
 
-        teamsData[i] = await fillTeamData(page);
-        console.log("Data for team nr " + i + " loaded");
+        teamsData[i] = await fillTeamData(page, teams[i]);
+        console.log("Data for team nr " + i + " (" + teams[i].name + ") loaded");
     }
 
     console.log("Finished data collection");
