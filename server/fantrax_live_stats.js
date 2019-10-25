@@ -11,7 +11,7 @@ const SEL_PASSWORD = '//*[@id="mat-input-1"]';
 const SEL_LOGIN_ERROR = "//*[@class='notice notice--error ng-star-inserted']";
 const SEL_GAMEWEEK = '//*[@id="mat-select-1"]';
 const SEL_GW_CURRENT = '//*[@id="mat-option-11"]';
-const SEL_GW_PREVIOUS = '/html/body/app-root/div/div/div/app-league-team-roster/div/section/div[2]/div[4]/div[1]/mat-form-field/div/div[1]/div[4]/button[1]/span/mat-icon';
+const SEL_GW_PREVIOUS = '/html/body/app-root/div/div[1]/div/app-league-team-roster/div/section/filter-panel/div/div[4]/div[1]/mat-form-field/div/div[1]/div[4]/button[1]/span/mat-icon';
 
 let nr_of_teams = 10;
 
