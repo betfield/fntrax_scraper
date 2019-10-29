@@ -19,6 +19,7 @@ export default class PlayersContainer extends TrackerReact(React.Component) {
                 <div>
                 <Match fixture={currentFixture}/><br/>
                 <PlayersTable players={getClubPlayers(currentFixture.homeShort, playerStats)} />
+                <br/>
                 <PlayersTable players={getClubPlayers(currentFixture.awayShort, playerStats)} />
                 </div>
             );

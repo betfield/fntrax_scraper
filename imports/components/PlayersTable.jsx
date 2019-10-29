@@ -20,6 +20,20 @@ export default class PlayersTable extends React.Component {
             <th>Name</th>
             <th>Team</th>
             <th>Pos</th>
+            <td>Goals</td>
+            <td>KP</td>
+            <td>AT</td>
+            <td>SOT</td>
+            <td>TkW</td>
+            <td>DIS</td>
+            <td>YC</td>
+            <td>ACNC</td>
+            <td>Int</td>
+            <td>CLR</td>
+            <td>CoS</td>
+            <td>AER</td>
+            <td>GAO</td>
+            <td>CS</td>
             <th>Pts</th>
           </tr>
         </thead>
