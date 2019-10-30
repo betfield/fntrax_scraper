@@ -1,7 +1,7 @@
 const URL_TEAMS = 'https://www.fantrax.com/fantasy/league/fme67lofjyyvq48x/team/owners';
 const SEL_TABLE = '/html/body/app-root/div/div[1]/div/app-league-team-owners/div/section/div[2]';
 
-async function populateTeamsData(page) {
+export default async function populateTeamsData(page) {
     console.log("Starting to populate teams data");
     // Locate the Teams page
     await page.goto(URL_TEAMS);
@@ -33,5 +33,3 @@ async function populateTeamsData(page) {
 
     return result;
 }
-
-export { populateTeamsData };

@@ -1,7 +1,3 @@
-import { Fixtures } from '../imports/collections';
-
-const URL_SCHEDULE = 'https://www.fantrax.com/newui/EPL/schedules.go?season=919';
-const SEL_CURRENT_GW = '/html/body/section/div[4]/div[4]/div[4]/div[1]/div[1]/div/div[2]/div[2]/div[2]';
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 const HEADERS = ["Teams", "Time (EDT)", "Game Info", "TV"];
 const CLUBS = {
@@ -27,17 +23,7 @@ const CLUBS = {
     'NOR': 'Norwich City'
     };
 
-async function populateGameWeekData(page) {
-
-    console.log("Starting to populate gameweek data");
-    // Locate the Schedule page
-    await page.goto(URL_SCHEDULE);
-
-    // Select current gameweek element
-    const element = await page.waitForXPath(SEL_CURRENT_GW);
-
-    // Select current gameweek text data
-    const text = await page.evaluate(element => element.textContent, element);
+export default function parseGameweekData(text) {
 
     // Construct array from gameweek text data
     const data = text.split("\n");
@@ -47,17 +33,12 @@ async function populateGameWeekData(page) {
 
     // Identify matchday dates from array
     const datePos = getDatePositionsInArray(gwData);
-    
+
     // Split gameweek array into sub-arrays based on matchday
     const matchdays = splitArrayToMatchdays(datePos, gwData);
 
-    // Parse matchday elements into fixture objects
-    let gameweek = parseMatchdayFixtures(matchdays);
-
-    // Save current gameweek into database
-    updateActiveGameweek(gameweek);
-
-    console.log("Finished populating gameweek data");
+    // Return parsed matchday elements into fixture objects
+    return parseMatchdayFixtures(matchdays);
 }
 
 function removeEmtpyElements(data) {
@@ -194,19 +175,3 @@ function addClubData(fixture) {
 function getClubShortName(club) {
     return Object.keys(CLUBS).find(key => CLUBS[key] === club);
 }
-
-function updateActiveGameweek(gameweek) {
-    gameweek.forEach(gw => {
-        gw.forEach(fixture => {
-            Fixtures.upsert({
-                "date": fixture.date,
-                "time": fixture.time,
-                "home": fixture.home
-            },{
-                $set: fixture
-            });
-        })
-    })
-}
-
-export { populateGameWeekData };

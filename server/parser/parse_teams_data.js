@@ -1,6 +1,6 @@
-import { PlayerStats } from '../imports/collections';
+import { updatePlayerStats } from '../db/player_stats';
 
-function parseTeamsData(data) {
+export default function parseTeamsData(data) {
 
     for (let i = 0; i < data.length; i++) {
         let players = parseOutfielderData(data[i].stats[1].rows);
@@ -113,18 +113,3 @@ function parseOutfielderData(data) {
 
     return players;
 }
-
-function updatePlayerStats(data) {
-
-    data.forEach(player => {
-        if(player.team.id === 0) console.log(player);
-        PlayerStats.upsert({
-            "id": player.id
-        },{
-            $set: player
-        });
-    });
-
-}
-
-export { parseTeamsData }

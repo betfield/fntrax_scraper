@@ -1,14 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 import puppeteer from 'puppeteer';
-import { loginPage, fillTeamsData } from './fantrax_live_stats';
-import { populateGameWeekData } from './gameweek';
-import { populateTeamsData } from './teams';
-import { parseTeamsData } from './parser';
+import loginPage from './actions/login';
+import fillTeamsData from './actions/fill_teams';
+import populateGameWeekData from './actions/populate_gameweek';
+import populateTeamsData from './actions/populate_teams';
+import parseTeamsData from './parser/parse_teams_data';
 import '../imports/publish/playerstats';
 import '../imports/publish/fixtures';
 
+const CONFIG = require('./config/config');
+
 let page, teams, timer;
-const interval = 20*1000;
 
 Meteor.startup(() => {
 
@@ -64,7 +66,7 @@ function startDataCollection() {
     console.log("Setting up new timer")
     return Meteor.setInterval(() => {
       fill(page, teams);
-    }, interval);
+    }, CONFIG.dataCollectionInterval);
   }
 }
 
