@@ -1,2 +1,2 @@
 node_modules/
-server/creds.js
+server/config/creds.js
