@@ -2,15 +2,19 @@ import { Meteor } from 'meteor/meteor';
 import puppeteer from 'puppeteer';
 import loginPage from './actions/login';
 import fillTeamsData from './actions/fill_teams';
-import populateGameWeekData from './actions/populate_gameweek';
-import populateTeamsData from './actions/populate_teams';
 import parseTeamsData from './parser/parse_teams_data';
 import '../imports/publish/playerstats';
 import '../imports/publish/fixtures';
+import { getAllTeams } from './db/teams';
 
 const CONFIG = require('./config/config');
 
-let page, teams, timer;
+let page, timer;
+
+// Get all teams from database
+const teams = getAllTeams();
+console.log("Teams loaded from database:");
+console.log(teams);
 
 Meteor.startup(() => {
 
@@ -33,15 +37,10 @@ async function run() {
 
   // Login to Fantrax
   try {
-    // Populate current Gameweek data
-    await populateGameWeekData(page);
 
     // Start login function with tries counter set to 1
     page = await loginPage(page, 1);
 
-    // Populate League Teams' data
-    teams = await populateTeamsData(page);
-    
     // Start the first run without the timer
     fill(page, teams);
 
