@@ -1,9 +1,38 @@
 import React from 'react';
 
 export default class PlayerRow extends React.Component {
-    render() {
-      const player = this.props.player;
   
+  constructor(props) {
+    super(props);
+    this.state = {
+      backgr: "green"
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+    if (this.props.player !== prevProps.player) {
+      
+      this.setState({
+        backgr: "red"
+      });
+
+      let updateTimer = setTimeout(() => {
+        console.log("updated");
+
+        this.setState({
+          backgr: "green"
+        });
+        
+        updateTimer = null;
+      }, 3000);
+
+    }
+  }
+
+  render() {
+      const player = this.props.player;
+      
       return (
         <tr>
           <td>{player.name}</td>
@@ -23,7 +52,7 @@ export default class PlayerRow extends React.Component {
           <td>{player.stats.AER}</td>
           <td>{player.stats.GAO}</td>
           <td>{player.stats.CS}</td>
-          <td>{player.stats.FPts}</td>
+          <td bgcolor={this.state.backgr}>{player.stats.FPts}</td>
         </tr>
       );
     }

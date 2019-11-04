@@ -18,7 +18,7 @@ console.log(teams);
 
 Meteor.startup(() => {
 
-  run();
+  //run();
   
 });
 
