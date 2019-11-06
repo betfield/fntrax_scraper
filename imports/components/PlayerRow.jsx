@@ -1,58 +1,32 @@
 import React from 'react';
+import PlayerStatsCell from './PlayerStatsCell';
 
 export default class PlayerRow extends React.Component {
   
-  constructor(props) {
-    super(props);
-    this.state = {
-      backgr: "green"
-    };
-  }
-
-  componentDidUpdate(prevProps) {
-    // Typical usage (don't forget to compare props):
-    if (this.props.player !== prevProps.player) {
-      
-      this.setState({
-        backgr: "red"
-      });
-
-      let updateTimer = setTimeout(() => {
-        console.log("updated");
-
-        this.setState({
-          backgr: "green"
-        });
-        
-        updateTimer = null;
-      }, 3000);
-
-    }
-  }
-
   render() {
+      
+      const cells = [];
       const player = this.props.player;
+      const stats = player.stats;
+      const HEADERS = this.props.headers;
+
+      // Iterate over all table header values and add respective value from player stats object
+      HEADERS.forEach((header) => {
+        // If player stats object contains a value with the respective header key then set it as the cell value
+
+        cells.push(
+          <PlayerStatsCell
+            data={stats[header]}
+            key={header} />
+        );
+      });
       
       return (
         <tr>
           <td>{player.name}</td>
-          <td>{player.team.name}</td>
+          <td>{player.club}</td>
           <td>{player.pos}</td>
-          <td>{player.stats.G}</td>
-          <td>{player.stats.KP}</td>
-          <td>{player.stats.AT}</td>
-          <td>{player.stats.SOT}</td>
-          <td>{player.stats.TkW}</td>
-          <td>{player.stats.DIS}</td>
-          <td>{player.stats.YC}</td>
-          <td>{player.stats.ACNC}</td>
-          <td>{player.stats.Int}</td>
-          <td>{player.stats.CLR}</td>
-          <td>{player.stats.CoS}</td>
-          <td>{player.stats.AER}</td>
-          <td>{player.stats.GAO}</td>
-          <td>{player.stats.CS}</td>
-          <td bgcolor={this.state.backgr}>{player.stats.FPts}</td>
+          {cells}
         </tr>
       );
     }

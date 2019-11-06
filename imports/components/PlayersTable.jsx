@@ -1,5 +1,8 @@
 import React from 'react';
+import PlayerStatsHeader from './PlayerStatsHeader';
 import PlayerRow from './PlayerRow';
+
+const HEADERS = require('../config/headers');
 
 export default class PlayersTable extends React.Component {
   render() {
@@ -9,6 +12,7 @@ export default class PlayersTable extends React.Component {
       rows.push(
         <PlayerRow
           player={player}
+          headers={HEADERS.playerStatsHeaders}
           key={player.id} />
       );
     });
@@ -16,26 +20,7 @@ export default class PlayersTable extends React.Component {
     return (
       <table>
         <thead>
-          <tr>
-            <th>Name</th>
-            <th>Team</th>
-            <th>Pos</th>
-            <td>Goals</td>
-            <td>KP</td>
-            <td>AT</td>
-            <td>SOT</td>
-            <td>TkW</td>
-            <td>DIS</td>
-            <td>YC</td>
-            <td>ACNC</td>
-            <td>Int</td>
-            <td>CLR</td>
-            <td>CoS</td>
-            <td>AER</td>
-            <td>GAO</td>
-            <td>CS</td>
-            <th>Pts</th>
-          </tr>
+          <PlayerStatsHeader headers={HEADERS.playerStatsHeaders}/>
         </thead>
         <tbody>{rows}</tbody>
       </table>
