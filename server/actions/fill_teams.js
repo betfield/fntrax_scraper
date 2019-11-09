@@ -15,8 +15,10 @@ export default async function fillTeamsData(page, teams) {
     await page.waitForXPath(SEL_GAMEWEEK).then((result) => result.click());
     await page.waitForXPath(SEL_GW_CURRENT).then((result) => result.click());
 
-    // Select previous gameweek (for testing)
-    await page.waitForXPath(SEL_GW_PREVIOUS).then((result) => result.click());
+    // Select previous gameweek in case TEST MODE
+    if (CONFIG.testMode) {
+        await page.waitForXPath(SEL_GW_PREVIOUS).then((result) => result.click());
+    }
     
     let teamsData = [];
     

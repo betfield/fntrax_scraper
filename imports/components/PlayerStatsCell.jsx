@@ -25,7 +25,7 @@ export default class PlayerRow extends React.Component {
         });
         
         updateTimer = null;
-      }, 3000);
+      }, 5000);
 
     }
   }

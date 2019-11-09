@@ -4,23 +4,41 @@ import Match from './Match';
 import PlayersTable from './PlayersTable';
 import { PlayerStats, Fixtures } from '../collections';
 
+const CONFIG = require('../config/config');
+
 export default class PlayersContainer extends TrackerReact(React.Component) {
 
     render () {
 
         const subPlayerStats = Meteor.subscribe("playerstats");
-        const subCurrentFixture = Meteor.subscribe("currentfixture");
+        let subCurrentFixture;
+        
+        if (CONFIG.testMode) {
+            subCurrentFixture = Meteor.subscribe("testcurrentfixture");
+        } else {
+            subCurrentFixture = Meteor.subscribe("currentfixture");
+        }
 
         if (subCurrentFixture.ready() && subPlayerStats.ready()) {
-            let playerStats = PlayerStats.find({}).fetch();
-            let currentFixture = Fixtures.findOne({});
+            const playerStats = PlayerStats.find({}).fetch();
+            const currentFixture = Fixtures.findOne({});
             
+            const homeOF = getClubPlayers(currentFixture.homeShort, playerStats, false);
+            const awayOF = getClubPlayers(currentFixture.awayShort, playerStats, false);
+            const homeGK = getClubPlayers(currentFixture.homeShort, playerStats, true);
+            const awayGK = getClubPlayers(currentFixture.homeShort, playerStats, true);
+
             return (
                 <div>
-                <Match fixture={currentFixture}/><br/>
-                <PlayersTable players={getClubPlayers(currentFixture.homeShort, playerStats)} />
+                <Match fixture={currentFixture}/>
                 <br/>
-                <PlayersTable players={getClubPlayers(currentFixture.awayShort, playerStats)} />
+                <PlayersTable players={homeOF} type={"OF"}/>
+                <br/>
+                <PlayersTable players={homeGK} type={"GK"}/>
+                <br/>
+                <PlayersTable players={awayOF} type={"OF"}/>
+                <br/>
+                <PlayersTable players={awayGK} type={"GK"}/>
                 </div>
             );
         } else {
@@ -31,14 +49,25 @@ export default class PlayersContainer extends TrackerReact(React.Component) {
     }
 }
 
-function getClubPlayers(club, playerStats) {
+function getClubPlayers(club, playerStats, isGK) {
     let result = [];
+    let condition = false;
 
-    playerStats.forEach(player => {
-        if (player.club === club) {
-            result.push(player);
-        } 
-    });
+    if (isGK) {
+        playerStats.forEach(player => {
+            if (player.club === club && player.pos === "G") {
+                result.push(player);
+            } 
+        });
+    } else {
+        playerStats.forEach(player => {
+            if (player.club === club && player.pos !== "G") {
+                result.push(player);
+            } 
+        });
+    }
+
+    
 
     return result;
 }

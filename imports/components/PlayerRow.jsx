@@ -1,5 +1,8 @@
 import React from 'react';
 import PlayerStatsCell from './PlayerStatsCell';
+import PlayerDetails from './PlayerDetails';
+
+const HEADERS = require('../config/headers');
 
 export default class PlayerRow extends React.Component {
   
@@ -7,13 +10,27 @@ export default class PlayerRow extends React.Component {
       
       const cells = [];
       const player = this.props.player;
+      const playerDetails = {
+        name: player.name,
+        club: player.club,
+        pos: player.pos,
+        team: player.team
+      };
       const stats = player.stats;
-      const HEADERS = this.props.headers;
+      const headerType = this.props.type;
+
+      let headers = [];
+
+      // Set table headers based on the player type submitted to the component
+      if (headerType === "OF") {
+        headers = HEADERS.playerStatsHeaders;
+      } else if (headerType === "GK") {
+        headers = HEADERS.playerStatsHeadersGK;
+      }
 
       // Iterate over all table header values and add respective value from player stats object
-      HEADERS.forEach((header) => {
+      headers.forEach((header) => {
         // If player stats object contains a value with the respective header key then set it as the cell value
-
         cells.push(
           <PlayerStatsCell
             data={stats[header]}
@@ -23,9 +40,7 @@ export default class PlayerRow extends React.Component {
       
       return (
         <tr>
-          <td>{player.name}</td>
-          <td>{player.club}</td>
-          <td>{player.pos}</td>
+          <PlayerDetails player={playerDetails}/>
           {cells}
         </tr>
       );
