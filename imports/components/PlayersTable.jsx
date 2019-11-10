@@ -16,8 +16,8 @@ export default class PlayersTable extends React.Component {
     });
 
     return (
-      <table>
-        <thead>
+      <table className="tablesorter">
+        <thead className="text-info">
           <PlayerStatsHeader type={this.props.type}/>
         </thead>
         <tbody>{rows}</tbody>

@@ -26,19 +26,19 @@ export default class PlayersContainer extends TrackerReact(React.Component) {
             const homeOF = getClubPlayers(currentFixture.homeShort, playerStats, false);
             const awayOF = getClubPlayers(currentFixture.awayShort, playerStats, false);
             const homeGK = getClubPlayers(currentFixture.homeShort, playerStats, true);
-            const awayGK = getClubPlayers(currentFixture.homeShort, playerStats, true);
+            const awayGK = getClubPlayers(currentFixture.awayShort, playerStats, true);
 
             return (
                 <div>
-                <Match fixture={currentFixture}/>
-                <br/>
-                <PlayersTable players={homeOF} type={"OF"}/>
-                <br/>
-                <PlayersTable players={homeGK} type={"GK"}/>
-                <br/>
-                <PlayersTable players={awayOF} type={"OF"}/>
-                <br/>
-                <PlayersTable players={awayGK} type={"GK"}/>
+                    <Match fixture={currentFixture}/>
+                    <br/>
+                    <PlayersTable players={homeOF} type={"OF"}/>
+                    <br/>
+                    <PlayersTable players={homeGK} type={"GK"}/>
+                    <br/>
+                    <PlayersTable players={awayOF} type={"OF"}/>
+                    <br/>
+                    <PlayersTable players={awayGK} type={"GK"}/>
                 </div>
             );
         } else {
@@ -51,7 +51,6 @@ export default class PlayersContainer extends TrackerReact(React.Component) {
 
 function getClubPlayers(club, playerStats, isGK) {
     let result = [];
-    let condition = false;
 
     if (isGK) {
         playerStats.forEach(player => {

@@ -5,7 +5,7 @@ export default class PlayerRow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      backgr: "white"
+      textClass: ""
     };
   }
 
@@ -14,14 +14,13 @@ export default class PlayerRow extends React.Component {
     if (this.props.data !== prevProps.data) {
       
       this.setState({
-        backgr: "yellow"
+        textClass: "text-warning"
       });
 
       let updateTimer = setTimeout(() => {
-        console.log("updated");
 
         this.setState({
-          backgr: "white"
+          textClass: ""
         });
         
         updateTimer = null;
@@ -34,7 +33,7 @@ export default class PlayerRow extends React.Component {
       const data = this.props.data;
       
       return (
-        <td bgcolor={this.state.backgr}>{data}</td>
+        <td className={this.state.textClass}>{data}</td>
       );
     }
   }
