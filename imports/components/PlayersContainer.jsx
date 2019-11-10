@@ -31,15 +31,18 @@ export default class PlayersContainer extends TrackerReact(React.Component) {
 
             return (
                 <div className="content">
-                    <Container>
+                    <Container fluid={true}>
                         <Row>
-                            <Col>
-                                <Col>
-                                    <PlayersTable OF={homeOF} GK={homeGK} title={currentFixture.home}/>
-                                </Col>
-                                <Col>
-                                    <PlayersTable OF={awayOF} GK={awayGK} title={currentFixture.away}/>
-                                </Col>
+                            <Col sm="12">
+                                <Match fixture={currentFixture}/>
+                                <Row>
+                                    <Col sm="6">
+                                        <PlayersTable OF={homeOF} GK={homeGK} title={currentFixture.home}/>
+                                    </Col>
+                                    <Col  sm="6">
+                                        <PlayersTable OF={awayOF} GK={awayGK} title={currentFixture.away}/>
+                                    </Col>
+                                </Row>
                             </Col>
                         </Row>
                     </Container>
