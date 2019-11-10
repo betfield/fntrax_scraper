@@ -1,2 +1,2 @@
-exports.testFixture = "PFFAQ6yoTP7MyMoXv";
+exports.testFixture = "FbcYWvMYHJK3QLf86";
 exports.testMode = true;

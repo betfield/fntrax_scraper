@@ -3,6 +3,7 @@ import TrackerReact from 'meteor/ultimatejs:tracker-react';
 import Match from './Match';
 import PlayersTable from './PlayersTable';
 import { PlayerStats, Fixtures } from '../collections';
+import { Container, Row, Col } from "reactstrap";
 
 const CONFIG = require('../config/config');
 
@@ -29,16 +30,19 @@ export default class PlayersContainer extends TrackerReact(React.Component) {
             const awayGK = getClubPlayers(currentFixture.awayShort, playerStats, true);
 
             return (
-                <div>
-                    <Match fixture={currentFixture}/>
-                    <br/>
-                    <PlayersTable players={homeOF} type={"OF"}/>
-                    <br/>
-                    <PlayersTable players={homeGK} type={"GK"}/>
-                    <br/>
-                    <PlayersTable players={awayOF} type={"OF"}/>
-                    <br/>
-                    <PlayersTable players={awayGK} type={"GK"}/>
+                <div className="content">
+                    <Container>
+                        <Row>
+                            <Col>
+                                <Col>
+                                    <PlayersTable OF={homeOF} GK={homeGK} title={currentFixture.home}/>
+                                </Col>
+                                <Col>
+                                    <PlayersTable OF={awayOF} GK={awayGK} title={currentFixture.away}/>
+                                </Col>
+                            </Col>
+                        </Row>
+                    </Container>
                 </div>
             );
         } else {

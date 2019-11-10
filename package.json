@@ -13,6 +13,7 @@
     "puppeteer": "^1.20.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
+    "react-strap": "0.0.1",
     "reactstrap": "^8.1.1"
   },
   "meteor": {
