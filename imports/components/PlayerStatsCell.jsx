@@ -33,7 +33,7 @@ export default class PlayerRow extends React.Component {
       const data = this.props.data;
       
       return (
-        <td className={this.state.textClass + " text-center"}><h4>{data}</h4></td>
+        <td className="text-center"><h4 className={this.state.textClass} >{data}</h4></td>
       );
     }
   }
