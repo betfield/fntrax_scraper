@@ -34,17 +34,14 @@ export default class PlayersTable extends React.Component {
 
     return (
       <Card>
-        <CardHeader>
-          <CardTitle tag="h4">{this.props.title}</CardTitle>
-        </CardHeader>
         <CardBody>
-          <Table className="tablesorter">
+          <Table className="w-auto">
             <thead className="text-info">
               <PlayerStatsHeader type={"OF"}/>
             </thead>
             <tbody>{outfielders}</tbody>
           </Table>
-          <Table className="tablesorter">
+          <Table className="w-auto">
             <thead className="text-info">
               <PlayerStatsHeader type={"GK"}/>
             </thead>

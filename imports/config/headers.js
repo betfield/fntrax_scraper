@@ -1,5 +1,5 @@
 exports.playerDetailsHeaders = [
-    "Name", "Club" ,"Pos", "Team"
+    "Pos", "Name"
 ];
 exports.playerStatsHeaders = [
     "G" , "AT", "KP", "SOT", 

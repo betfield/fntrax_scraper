@@ -12,7 +12,7 @@ export default class PlayerRow extends React.Component {
         // Iterate over all player details header values and add header element to array
         HEADERS.playerDetailsHeaders.forEach((header) => {
             headers.push(
-                <th key={header}>{header}</th>
+                
             );
         });
 
@@ -21,19 +21,21 @@ export default class PlayerRow extends React.Component {
         if (headerType === "OF") {
             HEADERS.playerStatsHeaders.forEach((header) => {
                 headers.push(
-                    <th key={header}>{header}</th>
+                    <th className="text-muted" key={header}>{header}</th>
                 );
             });
         } else if (headerType ==="GK") {
             HEADERS.playerStatsHeadersGK.forEach((header) => {
                 headers.push(
-                    <th key={header}>{header}</th>
+                    <th className="text-muted" key={header}>{header}</th>
                 );
             });
         }
         
         return (
             <tr>
+                <th className="text-muted">Pos</th>
+                <th className="text-muted" style={{width: '30%'}}>Name</th>
                 {headers}
             </tr>
         );

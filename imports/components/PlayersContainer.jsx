@@ -37,10 +37,10 @@ export default class PlayersContainer extends TrackerReact(React.Component) {
                                 <Match fixture={currentFixture}/>
                                 <Row>
                                     <Col sm="6">
-                                        <PlayersTable OF={homeOF} GK={homeGK} title={currentFixture.home}/>
+                                        <PlayersTable OF={homeOF} GK={homeGK} />
                                     </Col>
                                     <Col  sm="6">
-                                        <PlayersTable OF={awayOF} GK={awayGK} title={currentFixture.away}/>
+                                        <PlayersTable OF={awayOF} GK={awayGK} />
                                     </Col>
                                 </Row>
                             </Col>

@@ -8,10 +8,15 @@ export default class PlayerDetails extends React.Component {
 
         return (
             <React.Fragment>
-                <td className={this.props.textClass}>{player.name}</td>
-                <td>{player.club}</td>
-                <td>{player.pos}</td>
-                <td>{player.team.name}</td>
+                <td className="text-center"><h4>{player.pos}</h4></td>
+                <td>
+                    <div>
+                        <h4>{player.name}</h4>
+                    </div>
+                    <div>
+                        <h6 className="text-muted"><small>{player.team.name}</small></h6>
+                    </div>
+                </td>
             </React.Fragment>
         )
     }
