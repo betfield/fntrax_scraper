@@ -4,7 +4,7 @@ import PlayerDetails from './PlayerDetails';
 
 const HEADERS = require('../config/headers');
 
-export default class PlayerRow extends React.Component {
+export default class PlayerStatsRow extends React.Component {
   
   render() {
       

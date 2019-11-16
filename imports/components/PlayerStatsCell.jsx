@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class PlayerRow extends React.Component {
+export default class PlayerStatsCell extends React.Component {
   
   constructor(props) {
     super(props);

@@ -11,7 +11,7 @@ export default class PlayerDetails extends React.Component {
                 <td className="text-center"><h4>{player.pos}</h4></td>
                 <td>
                     <div>
-                        <h4>{player.name}</h4>
+                        {player.name}
                     </div>
                     <div>
                         <h6 className="text-muted"><small>{player.team.name}</small></h6>

@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { render } from 'react-dom';
-import PlayersContainer from '../imports/components/PlayersContainer';
+import PlayerStatsContainer from '../imports/components/PlayerStatsContainer';
 
 Meteor.startup(() => {
-  render(<PlayersContainer/>, document.getElementById('app'));
+  render(<PlayerStatsContainer/>, document.getElementById('app'));
 });
 
 /*
