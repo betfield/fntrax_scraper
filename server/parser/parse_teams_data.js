@@ -38,18 +38,18 @@ function parseGoalkeeperData(data) {
 
             // Add player stats
             player.stats = {
-                FPts:   parseInt(data[i].cells[1].content),
-                FPpG:   parseInt(data[i].cells[2].content),
-                GP:     parseInt(data[i].cells[3].content),
-                CS:     parseInt(data[i].cells[4].content),
-                GA:     parseInt(data[i].cells[5].content),
-                Sv:     parseInt(data[i].cells[6].content),
-                YC:     parseInt(data[i].cells[7].content),
-                PKS:    parseInt(data[i].cells[8].content),
-                KP:     parseInt(data[i].cells[9].content),
-                Int:    parseInt(data[i].cells[10].content),
-                CLR:    parseInt(data[i].cells[11].content),
-                AER:    parseInt(data[i].cells[12].content),
+                FPts:   parseFloat(data[i].cells[1].content) || 0,
+                FPpG:   parseFloat(data[i].cells[2].content) || 0,
+                GP:     parseFloat(data[i].cells[3].content) || 0,
+                CS:     parseFloat(data[i].cells[4].content) || 0,
+                GA:     parseFloat(data[i].cells[5].content) || 0,
+                Sv:     parseFloat(data[i].cells[6].content) || 0,
+                YC:     parseFloat(data[i].cells[7].content) || 0,
+                PKS:    parseFloat(data[i].cells[8].content) || 0,
+                KP:     parseFloat(data[i].cells[9].content) || 0,
+                Int:    parseFloat(data[i].cells[10].content) || 0,
+                CLR:    parseFloat(data[i].cells[11].content) || 0,
+                AER:    parseFloat(data[i].cells[12].content) || 0,
                 RC:     0,  // Red cards currently not included in dataset
             };
         }
@@ -82,29 +82,30 @@ function parseOutfielderData(data) {
             player.club = data[i].scorer.teamShortName;
 
             // Add player stats
+            // If result is NaN then use 0 instead
             player.stats = {
-                FPts:   parseInt(data[i].cells[1].content),
-                FPpG:   parseInt(data[i].cells[2].content),
-                GP:     parseInt(data[i].cells[3].content),
-                G:      parseInt(data[i].cells[4].content),
-                KP:     parseInt(data[i].cells[5].content),
-                AT:     parseInt(data[i].cells[6].content),
-                SOT:    parseInt(data[i].cells[7].content),
-                TkW:    parseInt(data[i].cells[8].content),
-                DIS:    parseInt(data[i].cells[9].content),
-                YC:     parseInt(data[i].cells[10].content),
-                SYC:    parseInt(data[i].cells[11].content),
-                RC:     parseInt(data[i].cells[12].content),
-                ACNC:   parseInt(data[i].cells[13].content),
-                Int:    parseInt(data[i].cells[14].content),
-                CLR:    parseInt(data[i].cells[15].content),
-                CoS:    parseInt(data[i].cells[16].content),
-                AER:    parseInt(data[i].cells[17].content),
-                HT:     parseInt(data[i].cells[18].content),
-                PKM:    parseInt(data[i].cells[19].content),
-                OG:     parseInt(data[i].cells[20].content),
-                GAO:    parseInt(data[i].cells[21].content),
-                CS:     parseInt(data[i].cells[22].content)
+                FPts:   parseFloat(data[i].cells[1].content) || 0,
+                FPpG:   parseFloat(data[i].cells[2].content) || 0,
+                GP:     parseFloat(data[i].cells[3].content) || 0,
+                G:      parseFloat(data[i].cells[4].content) || 0,
+                KP:     parseFloat(data[i].cells[5].content) || 0,
+                AT:     parseFloat(data[i].cells[6].content) || 0,
+                SOT:    parseFloat(data[i].cells[7].content) || 0,
+                TkW:    parseFloat(data[i].cells[8].content) || 0,
+                DIS:    parseFloat(data[i].cells[9].content) || 0,
+                YC:     parseFloat(data[i].cells[10].content) || 0,
+                SYC:    parseFloat(data[i].cells[11].content) || 0,
+                RC:     parseFloat(data[i].cells[12].content) || 0,
+                ACNC:   parseFloat(data[i].cells[13].content) || 0,
+                Int:    parseFloat(data[i].cells[14].content) || 0,
+                CLR:    parseFloat(data[i].cells[15].content) || 0,
+                CoS:    parseFloat(data[i].cells[16].content) || 0,
+                AER:    parseFloat(data[i].cells[17].content) || 0,
+                HT:     parseFloat(data[i].cells[18].content) || 0,
+                PKM:    parseFloat(data[i].cells[19].content) || 0,
+                OG:     parseFloat(data[i].cells[20].content) || 0,
+                GAO:    parseFloat(data[i].cells[21].content) || 0,
+                CS:     parseFloat(data[i].cells[22].content) || 0,
             };
 
             players.push(player);

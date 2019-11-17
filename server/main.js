@@ -3,8 +3,6 @@ import puppeteer from 'puppeteer';
 import loginPage from './actions/login';
 import fillTeamsData from './actions/fill_teams';
 import parseTeamsData from './parser/parse_teams_data';
-import '../imports/publish/playerstats';
-import '../imports/publish/fixtures';
 import { getAllTeams } from './db/teams';
 
 const CONFIG = require('./config/config');
@@ -18,7 +16,7 @@ console.log(teams);
 
 Meteor.startup(() => {
 
-  //run();
+  run();
   
 });
 
