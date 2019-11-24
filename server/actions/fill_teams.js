@@ -32,6 +32,12 @@ export default async function fillTeamsData(page, teams) {
         await page.waitForXPath('//*[@id="mat-option-' + i + '"]').then((result) => result.click());
 
         teamsData[i] = await getTeamData(page, teams[i]);
+
+        if (i == 5) {
+            console.log("Data for team nr " + i + ":");
+            console.log(teamsData[i]);
+        }
+
         console.log("Data for team nr " + i + " (" + teams[i].name + ") loaded");
     }
 
