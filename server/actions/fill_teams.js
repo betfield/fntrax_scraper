@@ -1,3 +1,5 @@
+import parseTeamsData from '../parser/parse_teams_data';
+
 const CONFIG = require('../config/config');
 
 const URL_TEAM = 'https://www.fantrax.com/fantasy/league/fme67lofjyyvq48x/team/roster;';
@@ -20,50 +22,29 @@ let URL_PARAMS = {
     origDaily: false
 }
 
-export default async function fillTeamsData(page, teams) {
-    console.log("Starting data collection");
-    let teamsData = [];
-    
-    // Locate the Team Roster page
-    await page.goto(constructTeamURL(URL_TEAM, URL_PARAMS)).then(async () => {
-        teamsData[0] = await getTeamData(page, teams[0]);
-    });
-
-    
-    
-    
-    console.log("Data for team nr 0 (" + teams[0].name + ") loaded");
-/*
-    // Cycle through all team pages and collect the data
-    for (let i = 1; i < CONFIG.nrTeams; i++) {
-        
-        await page.waitForXPath('//*[@id="mat-select-0"]').then((result) => result.click());
-        await page.waitForXPath('//*[@id="mat-option-' + i + '"]').then((result) => result.click());
-
-        teamsData[i] = await getTeamData(page, teams[i]);
-        console.log("Data for team nr " + i + " (" + teams[i].name + ") loaded");
-    }
-*/
-    console.log("Finished data collection");
-    return teamsData;
+export default async function fillTeamsData(page, team) {
+    return await page.goto(constructTeamURL(team)).then(async () => {
+        const teamData = await getTeamData(page, team);
+        parseTeamsData(teamData);
+        console.log("Data for team nr " + team.id + " (" + team.name + ") loaded");
+    });    
 }
 
 async function getTeamData(page, team) {
-    let stats;
-
-    await page.waitForResponse(response => response.url() === URL_TEAM_RESP && response.status() === 200 && response._request._postData.includes("getTeamRosterInfo")).then(
-        (response) => response.json().then(
-            (res) => {
-                console.log(res.responses);
-                stats = res.responses[0].data.tables
-            }
-        ));
-        
-    return { "stats": stats, "team": team };
+    return page.waitForResponse(response => response.url() === URL_TEAM_RESP 
+                            && response.status() === 200 
+                            && response._request._postData.includes("getTeamRosterInfo"))
+        .then(response => response.json()
+            .then(res => { 
+                return { "stats": res.responses[0].data.tables, "team": team }
+            })
+        );
 }
 
-function constructTeamURL(url, params) {
-    let result = url;
+function constructTeamURL(team) {
+    let result = URL_TEAM;
+    let params = URL_PARAMS;
+
     const keys = Object.keys(params);
     
     keys.forEach(element => {

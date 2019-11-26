@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import puppeteer from 'puppeteer';
 import loginPage from './actions/login';
 import fillTeamsData from './actions/fill_teams';
-import parseTeamsData from './parser/parse_teams_data';
 import { getAllTeams } from './db/teams';
 
 const CONFIG = require('./config/config');
@@ -51,8 +50,14 @@ async function run() {
 }
 
 async function fill(page, teams) {
-  // Load current player data for all teams and add to database
-  parseTeamsData(await fillTeamsData(page, teams));
+  console.log("Starting data collection");    
+  
+  // Cycle through all team pages and collect the data
+  for (let i = 1; i < teams.length; i++) {
+    await fillTeamsData(page, teams[i]);
+  }
+
+  console.log("Finished data collection");
 }
 
 function startDataCollection() {

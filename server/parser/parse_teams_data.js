@@ -1,21 +1,20 @@
 import { updatePlayerStats } from '../db/player_stats';
 
 export default function parseTeamsData(data) {
+    const stats = data.stats;
+    const team = data.team;
+    
+    let players = parseOutfielderData(stats[1].rows);
+    players.push(parseGoalkeeperData(stats[0].rows));
+            
+    players.forEach((player, idx) => {
+        players[idx].team = team;
+    })
 
-    for (let i = 0; i < data.length; i++) {
-        console.log("Data: ");
-        console.log(data[i]);
-
-        let players = parseOutfielderData(data[i].stats[1].rows);
-        players.push(parseGoalkeeperData(data[i].stats[0].rows));
-                
-        players.forEach((player, idx) => {
-            players[idx].team = data[i].team;
-        })
-
-        // Upsert data to database
-        updatePlayerStats(players);
-    }
+    // Upsert data to database
+    console.log("Updating players for team " + team.id + " (" + team.name + ")");
+    //console.log(players);
+    updatePlayerStats(players);
 }
 
 function parseGoalkeeperData(data) {
@@ -63,6 +62,8 @@ function parseGoalkeeperData(data) {
 
 function parseOutfielderData(data) {
     let players = [];
+
+    //console.log(data);
 
     for (let i = 0; i < data.length; i++) {
         //Check if player status is active (not reserve)
