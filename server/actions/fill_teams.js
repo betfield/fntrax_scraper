@@ -1,13 +1,11 @@
 import parseTeamsData from '../parser/parse_teams_data';
 
-const CONFIG = require('../config/config');
-
 const URL_TEAM = 'https://www.fantrax.com/fantasy/league/fme67lofjyyvq48x/team/roster;';
 const URL_TEAM_RESP = 'https://www.fantrax.com/fxpa/req?leagueId=fme67lofjyyvq48x';
 
 let URL_PARAMS = {
     pageNumber: 1,
-    period: 13,
+    period: 14,
     seasonOrProjection: 'SEASON_919_BY_PERIOD',
     timeframeTypeCode: 'BY_PERIOD',
     scoringCategoryType: 5,
@@ -44,6 +42,8 @@ async function getTeamData(page, team) {
 function constructTeamURL(team) {
     let result = URL_TEAM;
     let params = URL_PARAMS;
+
+    params.teamId = team.fId;
 
     const keys = Object.keys(params);
     
