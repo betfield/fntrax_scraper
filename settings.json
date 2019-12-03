@@ -1,6 +1,7 @@
 {
 	"public" : {
-		"timeDiff": 60000
+		"timeDiff": 60000,
+		"gameWeek": 15
 	},
 	"private": {
     }

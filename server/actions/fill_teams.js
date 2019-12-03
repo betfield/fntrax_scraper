@@ -5,7 +5,7 @@ const URL_TEAM_RESP = 'https://www.fantrax.com/fxpa/req?leagueId=fme67lofjyyvq48
 
 let URL_PARAMS = {
     pageNumber: 1,
-    period: 14,
+    period: Meteor.settings.public.gameWeek,
     seasonOrProjection: 'SEASON_919_BY_PERIOD',
     timeframeTypeCode: 'BY_PERIOD',
     scoringCategoryType: 5,
