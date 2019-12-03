@@ -53,7 +53,7 @@ async function fill(page, teams) {
   console.log("Starting data collection");    
   
   // Cycle through all team pages and collect the data
-  for (let i = 1; i < teams.length; i++) {
+  for (let i = 0; i < teams.length; i++) {
     await fillTeamsData(page, teams[i]);
   }
 
