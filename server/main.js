@@ -31,6 +31,7 @@ async function run() {
   });
 
   page = await browser.newPage();
+  let pages = [];
 
   // Login to Fantrax
   try {
@@ -38,36 +39,42 @@ async function run() {
     // Start login function with tries counter set to 1
     page = await loginPage(page, 1);
 
+    // Create a browser page for each team
+    for (let i = 0; i < teams.length; i++) {
+      page = await browser.newPage();
+      pages.push(page);
+    }
+
     // Start the first run without the timer
-    fill(page, teams);
+    await fill(pages, teams);
 
     // Start data collection and return the timer handler 
-    timer = startDataCollection();
+    timer = startDataCollection(pages);
     
   } catch (e) {
     console.log(e);
   }
 }
 
-async function fill(page, teams) {
+async function fill(pages, teams) {
   console.log("Starting data collection");    
   
   // Cycle through all team pages and collect the data
   for (let i = 0; i < teams.length; i++) {
-    await fillTeamsData(page, teams[i]);
+    await fillTeamsData(pages[i], teams[i]);
   }
 
   console.log("Finished data collection");
 }
 
-function startDataCollection() {
+function startDataCollection(pages) {
 
   if (timer) {
     console.log("Timer already set.")
   } else {
     console.log("Setting up new timer")
     return Meteor.setInterval(() => {
-      fill(page, teams);
+      fill(pages, teams);
     }, CONFIG.dataCollectionInterval);
   }
 }
