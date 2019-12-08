@@ -1,3 +1,9 @@
+Meteor.methods({
+    getServerTime: function () {
+        return (new Date).toTimeString();
+    }
+});
+
 /* import { Fixtures } from "../collections";
 
 const CONFIG = require('../config/config');

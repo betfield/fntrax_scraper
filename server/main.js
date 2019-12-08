@@ -3,6 +3,7 @@ import puppeteer from 'puppeteer';
 import loginPage from './actions/login';
 import fillTeamsData from './actions/fill_teams';
 import { getAllTeams } from './db/teams';
+import '../imports/publish/methods';
 
 const CONFIG = require('./config/config');
 
