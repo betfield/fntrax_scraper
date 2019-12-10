@@ -5,12 +5,12 @@ import Offset from './Offset';
 
 export default class Dashboard extends TrackerReact(React.Component) {
     render () {
-        setInterval(function () {
+      /*setInterval(function () {
           Meteor.call("getServerTime", function (error, result) {
               Session.set("time", result);
           });
       }, 1000);
-
+      */
         return (
           <div>
             <Time time={Session.get("time")} />
