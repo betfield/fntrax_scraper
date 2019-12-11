@@ -4,20 +4,27 @@ import Time from './Time';
 import Offset from './Offset';
 
 export default class Dashboard extends TrackerReact(React.Component) {
-    render () {
-      setInterval(function () {
-          Meteor.call("getServerTime", function (error, result) {
-              Session.set("time", result);
-          });
-      }, 1000);
+  
+  constructor(props) {
+    super(props);
 
-        return (
-          <div>
-            <Time time={Session.get("time")} />
-            <Offset offset={Meteor.settings.public.timeDiff} />
-          </div>
-        )
-    }
+    setInterval(function () {
+      Meteor.call("getServerTime", function (error, result) {
+        Session.set("time", result);
+      });
+    }, 1000);
+  }
+
+  render () {
+    const time = Session.get("time");
+
+    return (
+      <div>
+        <Time time={time} />
+        <Offset offset={Meteor.settings.public.timeDiff} />
+      </div>
+    )
+  }
 }
 
 /*
