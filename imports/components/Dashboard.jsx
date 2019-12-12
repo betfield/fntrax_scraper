@@ -7,6 +7,7 @@ export default class Dashboard extends TrackerReact(React.Component) {
   
   constructor(props) {
     super(props);
+    Session.set("time", null);
 
     setInterval(function () {
       Meteor.call("getServerTime", function (error, result) {
@@ -18,12 +19,18 @@ export default class Dashboard extends TrackerReact(React.Component) {
   render () {
     const time = Session.get("time");
 
-    return (
-      <div>
-        <Time time={time} />
-        <Offset />
-      </div>
-    )
+    if(time !== null) {
+      return (
+        <div>
+          <Time time={time} />
+          <Offset />
+        </div>
+      )
+    } else {
+      return (
+        <p>Loading...</p>
+      )
+    }
   }
 }
 
