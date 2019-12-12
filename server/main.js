@@ -76,6 +76,7 @@ function startDataCollection(pages) {
     console.log("Setting up new timer")
     return Meteor.setInterval(() => {
       fill(pages, teams);
+      console.log(timer);
     }, CONFIG.dataCollectionInterval);
   }
 }

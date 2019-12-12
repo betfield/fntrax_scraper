@@ -12,7 +12,7 @@ export default class Time extends React.Component {
   render() {
       const time = this.props.time.split(" ")[0];
       const local = new Date().toTimeString().split(" ")[0];
-
+      
       return (
         <Row>
           <Col lg="4">
