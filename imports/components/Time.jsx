@@ -10,8 +10,8 @@ import {
 export default class Time extends React.Component {
   
   render() {
-      const time = this.props.time;
-      const local = new Date();
+      const time = this.props.time.split(" ")[0];
+      const local = new Date().toTimeString().split(" ")[0];
 
       return (
         <Row>
@@ -21,7 +21,7 @@ export default class Time extends React.Component {
                 <h5 className="card-category">Server time:</h5>
                 <CardTitle tag="h3">
                   <i className="tim-icons icon-world text-info" />{" "}
-                  {time.split(" ")[0]}
+                  {time}
                 </CardTitle>
               </CardHeader>
             </Card>
@@ -32,7 +32,7 @@ export default class Time extends React.Component {
                 <h5 className="card-category">Local time:</h5>
                 <CardTitle tag="h3">
                   <i className="tim-icons icon-watch-time text-info" />{" "}
-                  {local.toTimeString().split(" ")[0]}
+                  {local}
                 </CardTitle>
               </CardHeader>
             </Card>

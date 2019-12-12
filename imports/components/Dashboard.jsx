@@ -21,7 +21,7 @@ export default class Dashboard extends TrackerReact(React.Component) {
     return (
       <div>
         <Time time={time} />
-        <Offset offset={Meteor.settings.public.timeDiff} />
+        <Offset />
       </div>
     )
   }
