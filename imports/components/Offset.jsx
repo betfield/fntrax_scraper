@@ -4,15 +4,22 @@ import {
   Card,
   CardHeader,
   CardTitle,
-  FormGroup,
+  Form,
   Input,
-  Label,
   Row,
   Col,
 } from "reactstrap";
 
 export default class Offset extends React.Component {
   
+  constructor(props) {
+    super(props);
+    this.state = {
+      offset: this.props.offset
+    }
+    this.submitForm = this.submitForm.bind(this);
+  }
+
   stopCollection() {
     Meteor.call("stopDataCollection", function (error, result) {
     });
@@ -23,9 +30,17 @@ export default class Offset extends React.Component {
     });
   }
 
-  render() {
-      const offset = Meteor.settings.public.timeDiff;
+  submitForm(e) {
+    e.preventDefault();
+    this.setState({
+      offset: this.offsetRef.value * 1000
+    }, () => {
+      Meteor.call("setOffsetValue", this.state.offset, function (error, result) {
+      });
+    });
+  }
 
+  render() {
       return (
         <Row>
           <Col lg="4">
@@ -33,16 +48,16 @@ export default class Offset extends React.Component {
               <CardHeader>
                 <h5 className="card-category">Update offset:</h5>
                 <CardTitle tag="h3">
-                  <FormGroup>
+                  <Form onSubmit={ this.submitForm }>
                     <i className="tim-icons icon-refresh-02 text-info" />{"  "}
-                    <Input placeholder={offset} type="text" />
-                    <Button color="info" size="sm" onClick={() => console.log("Save pressed")} >
+                    <Input placeholder={this.state.offset} type="text" innerRef={(node) => this.offsetRef = node} />
+                    <Button color="info" size="sm" >
                       <input className="d-none" type="submit" />
                       <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
                         Save
                       </span>
                     </Button>
-                  </FormGroup>
+                  </Form>
                   <Button color="info" size="sm" onClick={() => this.startCollection()} >
                     <input className="d-none" type="submit" />
                     <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">

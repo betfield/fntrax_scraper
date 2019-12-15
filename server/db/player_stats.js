@@ -2,8 +2,9 @@ import { PlayerStats } from '../../imports/collections';
 
 function updatePlayerStats(data) {
 
-    let diff = Meteor.settings.public.timeDiff;
-    console.log(diff);
+    const diff = timeOffset;
+    const team = data[0].team;
+    console.log("Scheduling player stats update for team nr " + team.id + " (" + team.name + "), time offset: " + diff);
 
     Meteor.setTimeout(() => {
         data.forEach(player => {

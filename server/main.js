@@ -14,6 +14,10 @@ const teams = getAllTeams();
 console.log("Teams loaded from database:");
 console.log(teams);
 
+// Create a global variable for update time offset, default based on config
+timeOffset = Meteor.settings.public.timeDiff;
+console.log("Session variable offset added: " + timeOffset);
+
 Meteor.startup(() => {
 
   run();
@@ -81,5 +85,12 @@ Meteor.methods({
   stopDataCollection: function() {
     console.log("Stopping data collection from Method");
     stopDataCollection();
+  },
+  getOffsetValue: function(value) {
+    return timeOffset;
+  },
+  setOffsetValue: function(value) {
+    timeOffset = value;
+    console.log("Time offset changed to: " + timeOffset);
   }
 });

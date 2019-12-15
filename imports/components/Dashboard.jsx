@@ -8,6 +8,7 @@ export default class Dashboard extends TrackerReact(React.Component) {
   constructor(props) {
     super(props);
     Session.set("time", null);
+    this.offset = null;
 
     setInterval(function () {
       Meteor.call("getServerTime", function (error, result) {
@@ -18,12 +19,15 @@ export default class Dashboard extends TrackerReact(React.Component) {
 
   render () {
     const time = Session.get("time");
+    Meteor.call("getOffsetValue", (error, result) => {
+      this.offset = result/1000;
+    });
 
-    if(time !== null) {
+    if(time !== null && this.offset !== null) {
       return (
         <div>
           <Time time={time} />
-          <Offset />
+          <Offset offset={this.offset} />
         </div>
       )
     } else {
@@ -33,35 +37,3 @@ export default class Dashboard extends TrackerReact(React.Component) {
     }
   }
 }
-
-/*
-
-Template.scraper.events({
-  'click button'(event, instance) {
-    // Start/Stop the scraper when button is clicked
-    console.log(instance.scraper.get() + " button was pressed");
-
-    // TODO: Add handler for not allowing multiple presses
-
-    if (instance.scraper.get() === "Stop") {
-      Meteor.call('stopDataCollection', function(err, res) {
-        if(err) {
-          console.error(err);
-        } else {
-          // Change button label to Start
-          instance.scraper.set("Start");
-        }
-      });
-    } else {
-      Meteor.call('startDataCollection', function(err, res) {
-        if(err) {
-          console.error(err);
-        } else {
-          // Change button label to Stop
-          instance.scraper.set("Stop");
-        }
-      });
-    }
-  },
-});
-*/
