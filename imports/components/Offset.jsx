@@ -18,6 +18,11 @@ export default class Offset extends React.Component {
     });
   }
 
+  startCollection() {
+    Meteor.call("startDataCollection", function (error, result) {
+    });
+  }
+
   render() {
       const offset = Meteor.settings.public.timeDiff;
 
@@ -31,13 +36,25 @@ export default class Offset extends React.Component {
                   <FormGroup>
                     <i className="tim-icons icon-refresh-02 text-info" />{"  "}
                     <Input placeholder={offset} type="text" />
-                    <Button color="info" size="sm" onClick={() => this.stopCollection()} >
+                    <Button color="info" size="sm" onClick={() => console.log("Save pressed")} >
                       <input className="d-none" type="submit" />
                       <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                        Start
+                        Save
                       </span>
                     </Button>
                   </FormGroup>
+                  <Button color="info" size="sm" onClick={() => this.startCollection()} >
+                    <input className="d-none" type="submit" />
+                    <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                      Start
+                    </span>
+                  </Button>
+                  <Button color="info" size="sm" onClick={() => this.stopCollection()} >
+                    <input className="d-none" type="submit" />
+                    <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                      Stop
+                    </span>
+                  </Button>
                 </CardTitle>
               </CardHeader>
             </Card>
