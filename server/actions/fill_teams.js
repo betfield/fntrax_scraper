@@ -11,7 +11,6 @@ let URL_PARAMS = {
     scoringCategoryType: 5,
     statsType: 1,
     view: 'STATS',
-    teamId: '3tuj2hnpjyyvq496',
     adminMode: false,
     startDate: '2019-08-09',
     endDate: '2020-05-18',
