@@ -9,6 +9,7 @@ export default function parseTeamsData(data) {
             
     players.forEach((player, idx) => {
         players[idx].team = team;
+        players[idx].gw = Meteor.settings.public.gameWeek;
     })
 
     // Upsert data to database

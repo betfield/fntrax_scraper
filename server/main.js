@@ -8,6 +8,7 @@ import '../imports/publish/methods';
 const CONFIG = require('./config/config');
 
 let page, timer;
+let pages = [];
 
 // Get all teams from database
 const teams = getAllTeams();
@@ -32,7 +33,10 @@ async function run() {
         width: 1920,
         height: 1080
     },
-    args: [`--window-size=1920,1080`] // set browser size
+    args: [
+      `--window-size=1920,1080`,  // set browser size
+      '--disable-gl-drawing-for-tests' // improve performance
+    ] 
   });
 
   page = await browser.newPage();
@@ -42,45 +46,57 @@ async function run() {
 
     // Start login function with tries counter set to 1
     page = await loginPage(page, 1);
+    pages.push(page);
+
+    // Create a browser page for each team
+    for (let i = 0; i < 9; i++) {
+      pages.push(await browser.newPage());
+    }
 
   } catch (e) {
     console.log(e);
   }
 }
 
-async function fill(page, teams) {
+async function fill(pages, teams) {
   console.log("Starting data collection");    
-  
+  const promises = [];
+
   // Cycle through all team pages and collect the data
-  for (let i = 0; i < teams.length; i++) {
-    await fillTeamsData(page, teams[i]);
+  for (let i = 0; i < pages.length; i++) {
+    promises.push(await fillTeamsData(pages[i], teams[i]));
   }
+
+  await Promise.all(promises);
 
   console.log("Finished data collection");
-}
-
-function startDataCollection(page) {
 
   if (timer) {
-    console.log("Timer already set.")
-  } else {
-    console.log("Setting up new timer")
-    return Meteor.setInterval(() => {
-      fill(page, teams);
-    }, CONFIG.dataCollectionInterval);
+    fill(pages, teams);
   }
+}
+
+function startDataCollection(pages) {
+
+    fill(pages, teams);
+
+/*    return Meteor.setInterval(() => {
+      fill(pages, teams);
+    }, CONFIG.dataCollectionInterval);
+*/ 
 }
 
 function stopDataCollection() {
   console.log("Stopping timer")
-  Meteor.clearInterval(timer);
-  timer = null;
+  //Meteor.clearInterval(timer);
+  timer = false;
 }
 
 Meteor.methods({
   startDataCollection: function () {
     console.log("Starting data collection from Method");
-    timer = startDataCollection(page);
+    timer = true;
+    startDataCollection(pages);
   },
   stopDataCollection: function() {
     console.log("Stopping data collection from Method");

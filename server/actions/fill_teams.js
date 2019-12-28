@@ -19,23 +19,27 @@ let URL_PARAMS = {
     origDaily: false
 }
 
-export default async function fillTeamsData(page, team) {
-    return await page.goto(constructTeamURL(team)).then(async () => {
-        const teamData = await getTeamData(page, team);
-        parseTeamsData(teamData);
-        console.log("Data for team nr " + team.id + " (" + team.name + ") loaded");
-    });    
-}
+export default function fillTeamsData(page, team) {
+    return page.goto(constructTeamURL(team))
+        .then(() => {
 
-async function getTeamData(page, team) {
-    return page.waitForResponse(response => response.url() === URL_TEAM_RESP 
+            page.waitForResponse(response => response.url() === URL_TEAM_RESP 
                             && response.status() === 200 
                             && response._request._postData.includes("getTeamRosterInfo"))
-        .then(response => response.json()
-            .then(res => { 
-                return { "stats": res.responses[0].data.tables, "team": team }
-            })
-        );
+                .then(response => response.json()
+                    .then(res => { 
+                        parseTeamsData({ "stats": res.responses[0].data.tables, "team": team });
+                    })
+                    .catch(reason => {
+                        console.error('Error! Promise rejected! Reason: ' + reason);
+                    })
+                ).catch(reason => {
+                    console.error('Error! Promise rejected! Reason: ' + reason);
+                });
+
+        }).catch(reason => {
+            console.error('Error! Promise rejected! Reason: ' + reason);
+    });    
 }
 
 function constructTeamURL(team) {

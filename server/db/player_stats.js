@@ -4,16 +4,24 @@ function updatePlayerStats(data) {
 
     const diff = timeOffset;
     const team = data[0].team;
-    console.log("Scheduling player stats update for team nr " + team.id + " (" + team.name + "), time offset: " + diff);
+    const rand = Math.floor(Math.random() * 100) + 1;
+
+    console.log("Scheduling player stats update for team nr " + team.id + " (" + team.name + "), time offset: " + diff + ". Rand: " + rand);
 
     Meteor.setTimeout(() => {
-        data.forEach(player => {
+        
+        for (let i = 0; i < data.length; i++) {
+            const player = data[i];
+
             PlayerStats.upsert({
                 "id": player.id
             },{
                 $set: player
             });
-        });
+        }
+
+        console.log("Data for team nr " + team.id + " (" + team.name + ") loaded. Rand: " + rand);
+
     }, diff);
 }
 
