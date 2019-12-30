@@ -1,7 +1,7 @@
 import React from 'react';
 import TrackerReact from 'meteor/ultimatejs:tracker-react';
-import Time from './Time';
-import Offset from './Offset';
+import Time from '../../components/Time';
+import Offset from '../../components/Offset';
 
 export default class Dashboard extends TrackerReact(React.Component) {
   

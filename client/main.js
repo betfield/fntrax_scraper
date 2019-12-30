@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import React from 'react';
 import { render } from 'react-dom';
-import Dashboard from '../imports/components/Dashboard';
+import { renderRoutes } from '../imports/config/routes';
 
 Meteor.startup(() => {
-    render(<Dashboard />, document.getElementById('app'));
+    render(renderRoutes(), document.getElementById('app'));
 });

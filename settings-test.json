@@ -2,7 +2,7 @@
 	"public" : {
 		"timeDiff": 60000,
 		"gameWeek": 20,
-		"hoursOffset": 6
+		"hoursOffset": -2
 	},
 	"private": {
     }

@@ -1,9 +1,9 @@
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-const HEADERS = ["Teams", "Time (EDT)", "Game Info", "TV"];
+const HEADERS = ["Teams", "Time (EDT)", "Game Info", "TV", 'Results','Time (EST)','Game Info'];
 const CLUBS = {
     'LEI': 'Leicester City',
     'SOU': 'Southampton',
-    'AST': 'Aston Villa',
+    'AVL': 'Aston Villa',
     'MCI': 'Manchester City',
     'EVE': 'Everton',
     'BHA': 'Brighton and Hove Albion',
@@ -127,25 +127,45 @@ function createFixtureObjects(arr) {
     let iter = 1;    
     // Assumption is that the first item in the array is always the date
     const date = arr[0];
-        
+
     for (let i = 1; i < arr.length; i++) {
+
         switch (iter) {
             // Set the home team value
             case 1:
-                fixture.home = arr[i];
+                let team = parseTeamName(arr[i]);
+                
+                fixture.away = team.name;
+                fixture.awayScore = team.score;
                 break;
             
-            // Skip the 2nd iteration to leave out the "@" sign
-            
-            // Set the away team value
-            case 3:
-                fixture.away = arr[i];
+            // Check if element contains '@' sign - means the fixture has not been started yet
+            case 2:
+                if (arr[i] === '@') {
+                    let team = parseTeamName(arr[i+1]);
+
+                    fixture.status = "NS";
+                    fixture.home = team.name;
+                    fixture.homeScore = team.score;
+                    fixture.ts = convertToTimestamp(date, arr[i+2]);
+                } else {
+
+                    // If fixture already started then assign current element to away team value
+                    // Next element will be fixture time in this case
+                    let team = parseTeamName(arr[i]);
+
+                    fixture.status = "STARTED";
+                    fixture.home = team.name;
+                    fixture.homeScore = team.score;
+                    fixture.ts = convertToTimestamp(date, arr[i+1]);    
+                }
                 break;
+
+            // Skip 3rd element
 
             // Set the date/time value and push the resulting object into the return array
             // Initiate the iterator and fixture object
             case 4:
-                fixture.ts = convertToTimestamp(date, arr[i]);
                 result.push(addClubData(fixture));
                 fixture = {};
                 iter = 0;
@@ -155,12 +175,15 @@ function createFixtureObjects(arr) {
         iter++;
     }
 
+    console.log(result);
+
     return result;
 }
 
 // Need to consider summer time?
 function convertToTimestamp(date, time) {
     let ts = new Date(date + " " + time);
+
     ts.setUTCHours(ts.getUTCHours() + 7)
     return ts;
 }
@@ -174,4 +197,20 @@ function addClubData(fixture) {
 
 function getClubShortName(club) {
     return Object.keys(CLUBS).find(key => CLUBS[key] === club);
+}
+
+function parseTeamName(team) {
+    let str = team.split(" ");
+    let score = parseInt(str[str.length-1].replace("@", ""));
+    let result = {}
+
+    if (Number.isInteger(score)) {
+        result.name = team.split(" " + score)[0];
+        result.score = score;
+    } else {
+        result.name = team;
+        result.score = "NaN";
+    }
+
+    return result;
 }

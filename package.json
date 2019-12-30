@@ -9,10 +9,13 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.3.4",
+    "history": "^4.10.1",
     "meteor-node-stubs": "^0.4.1",
     "puppeteer": "^1.20.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
+    "react-notification-alert": "0.0.12",
+    "react-router": "^5.1.2",
     "react-strap": "0.0.1",
     "reactstrap": "^8.1.1"
   },
