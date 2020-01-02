@@ -162,10 +162,15 @@ function getPlayerStatsUpdates(players) {
     let result = [];
 
     for (let i = 0; i < players.length; i++) {
-        let res = comparePlayerStats(players[i].curr.name, players[i].curr.stats, players[i].prev.stats);
-        
-        for (let j = 0; j < res.length; j++) {
-            result.push(res[j]);
+        const currPlayer = players[i].curr;
+        const prevPlayer = players[i].prev;
+
+        if (prevPlayer !== undefined && currPlayer !== undefined) {
+            let res = comparePlayerStats(currPlayer.name, currPlayer.stats, prevPlayer.stats);
+            
+            for (let j = 0; j < res.length; j++) {
+                result.push(res[j]);
+            }
         }
     };
 

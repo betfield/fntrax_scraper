@@ -10,17 +10,20 @@ export default class Event extends React.Component {
             let prev = prevProps.home;
             let curr = this.props.home;
 
-            let updates = getUpdates(curr, prev);
+            if (prev !== undefined && curr !== undefined) {
 
-            updates.forEach( e => {
-                let options = getEventMessage(e.update);
-                options.place = "bl";
-                options.player = e.player;
+                let updates = getUpdates(curr, prev);
 
-                if (options.type !== undefined) {
-                    this.notify(options);
-                }
-            });
+                updates.forEach( e => {
+                    let options = getEventMessage(e.update);
+                    options.place = "bl";
+                    options.player = e.player;
+
+                    if (options.type !== undefined) {
+                        this.notify(options);
+                    }
+                });
+            }
                         
         }
 
@@ -28,17 +31,20 @@ export default class Event extends React.Component {
             let prev = prevProps.away;
             let curr = this.props.away;
 
-            let updates = getUpdates(curr, prev);
+            if (prev !== undefined && curr !== undefined) {
 
-            updates.forEach( e => {
-                let options = getEventMessage(e.update);
-                options.place = "br";
-                options.player = e.player;
+                let updates = getUpdates(curr, prev);
 
-                if (options.type !== undefined) {
-                    this.notify(options);
-                }
-            });
+                updates.forEach( e => {
+                    let options = getEventMessage(e.update);
+                    options.place = "br";
+                    options.player = e.player;
+
+                    if (options.type !== undefined) {
+                        this.notify(options);
+                    }
+                });
+            }
         }
     }
 
