@@ -11,7 +11,9 @@ import '../imports/publish/playerstats';
 
 const CONFIG = require('./config/config');
 
-let page, timer, teams;
+TIMER = false;
+
+let page, teams;
 let pages = [];
 
 // Create a global variable for update time offset, default based on config
@@ -69,42 +71,28 @@ async function run() {
 
 async function fill(pages, teams) {
   console.log("Starting data collection");    
-  const promises = [];
 
   // Cycle through all team pages and collect the data
   for (let i = 0; i < pages.length; i++) {
-    promises.push(await fillTeamsData(pages[i], teams[i]));
+    fillTeamsData(pages[i], teams[i]);
   }
 
-  await Promise.all(promises);
-
-  console.log("Finished data collection");
-
-  if (timer) {
-    fill(pages, teams);
-  }
 }
 
 function startDataCollection(pages) {
-
     fill(pages, teams);
-
-/*    return Meteor.setInterval(() => {
-      fill(pages, teams);
-    }, CONFIG.dataCollectionInterval);
-*/ 
 }
 
 function stopDataCollection() {
   console.log("Stopping timer")
   //Meteor.clearInterval(timer);
-  timer = false;
+  TIMER = false;
 }
 
 Meteor.methods({
   startDataCollection: function () {
     console.log("Starting data collection from Method");
-    timer = true;
+    TIMER = true;
     startDataCollection(pages);
   },
   stopDataCollection: function() {

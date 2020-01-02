@@ -19,27 +19,26 @@ let URL_PARAMS = {
     origDaily: false
 }
 
-export default function fillTeamsData(page, team) {
+export default fillTeamsData = (page, team) => {
     return page.goto(constructTeamURL(team))
         .then(() => {
-
             page.waitForResponse(response => response.url() === URL_TEAM_RESP 
                             && response.status() === 200 
                             && response._request._postData.includes("getTeamRosterInfo"))
-                .then(response => response.json()
-                    .then(res => { 
-                        parseTeamsData({ "stats": res.responses[0].data.tables, "team": team });
-                    })
-                    .catch(reason => {
-                        console.error('Error! Promise rejected! Reason: ' + reason);
-                    })
-                ).catch(reason => {
-                    console.error('Error! Promise rejected! Reason: ' + reason);
+                .then( response => {
+                    parseResponse(response, team);
+                    restartFillTeamsData(page, team);
                 });
-
         }).catch(reason => {
             console.error('Error! Promise rejected! Reason: ' + reason);
-    });    
+            restartFillTeamsData(page, team);
+        });    
+}
+
+function restartFillTeamsData(page, team) {
+    if (TIMER) {
+        fillTeamsData(page, team);
+    }
 }
 
 function constructTeamURL(team) {
@@ -59,3 +58,12 @@ function constructTeamURL(team) {
     return result;
 }
 
+function parseResponse(response, team) {
+    return response.json()
+        .then(res => { 
+            parseTeamsData({ "stats": res.responses[0].data.tables, "team": team });
+        })
+        .catch(reason => {
+            console.error('Error! Promise rejected! Reason: ' + reason);
+        })
+}
