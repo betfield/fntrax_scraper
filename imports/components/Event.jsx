@@ -18,6 +18,7 @@ export default class Event extends React.Component {
                     let options = getEventMessage(e.update);
                     options.place = "bl";
                     options.player = e.player;
+                    options.correction = e.correction;
 
                     if (options.type !== undefined) {
                         this.notify(options);
@@ -39,6 +40,7 @@ export default class Event extends React.Component {
                     let options = getEventMessage(e.update);
                     options.place = "br";
                     options.player = e.player;
+                    options.correction = e.correction;
 
                     if (options.type !== undefined) {
                         this.notify(options);
@@ -50,11 +52,20 @@ export default class Event extends React.Component {
 
     notify = params => {
 
+        let correctionText = "";
+        
+        // If result is corrected, append prefix and set color to primary
+        if (params.correction) {
+            correctionText = "[Correction]";
+            params.type = "warning";
+            params.icon = "tim-icons icon-pencil";
+        }
+
         let options = {
             message: (
                 <div>
                     <div>
-                        <h3>{params.message} {params.player}</h3>
+                        <h3>{correctionText} {params.message} {params.player}</h3>
                     </div>
                 </div>
             ),

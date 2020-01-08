@@ -3,13 +3,11 @@ import puppeteer from 'puppeteer';
 import loginPage from './actions/login';
 import populateGameWeekData from './actions/populate_gameweek';
 import populateTeamsData from './actions/populate_teams';
-import fillTeamsData from './actions/fill_teams';
+import startFillTeamsData from './actions/fill_teams';
 import { getAllTeams } from './db/teams';
 import '../imports/publish/methods';
 import '../imports/publish/fixtures';
 import '../imports/publish/playerstats';
-
-const CONFIG = require('./config/config');
 
 TIMER = false;
 
@@ -30,12 +28,7 @@ async function run() {
 
   const browser = await puppeteer.launch({
     headless: true,
-    defaultViewport: {
-        width: 1920,
-        height: 1080
-    },
     args: [
-      `--window-size=1920,1080`,  // set browser size
       '--disable-gl-drawing-for-tests' // improve performance
     ] 
   });
@@ -60,7 +53,7 @@ async function run() {
     console.log(teams);
 
     // Create a browser page for each team
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 4; i++) {
       pages.push(await browser.newPage());
     }
 
@@ -69,14 +62,9 @@ async function run() {
   }
 }
 
-async function fill(pages, teams) {
+function fill(pages, teams) {
   console.log("Starting data collection");    
-
-  // Cycle through all team pages and collect the data
-  for (let i = 0; i < pages.length; i++) {
-    fillTeamsData(pages[i], teams[i]);
-  }
-
+  startFillTeamsData(pages, teams);
 }
 
 function startDataCollection(pages) {

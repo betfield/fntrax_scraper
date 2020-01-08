@@ -19,7 +19,41 @@ let URL_PARAMS = {
     origDaily: false
 }
 
-export default fillTeamsData = (page, team) => {
+export default function startFillTeamsData(pages, teams) {
+    const nrTeams = teams.length;
+    const nrPages = pages.length;
+
+    console.log("Number of teams: " + nrTeams);
+    console.log("Number of pages: " + nrPages);
+
+    let teamsForPage = [];
+    
+    // Iterate over all open pages
+    for (let i = 0; i < nrPages; i++) {
+        console.log("Iterating Page nr: " + i);
+        // Iterate over all teams to select team numbers for specific page    
+        for(let j = 0; j < nrTeams; j++) {
+            console.log("Iterating Team nr: " + j);
+            console.log(j % nrPages);
+            // If the modal of the team nr and page nr is 0 then add this team to the respective page
+            if (j % nrPages === i) {
+                teamsForPage.push(teams[j]);
+            }
+        }
+        
+        console.log("Teams for page nr " + i);
+        console.log(teamsForPage);
+        restartFillTeamsData(pages[i], teamsForPage, 0);
+
+        teamsForPage = [];
+    }
+}
+
+function fillTeamsData(page, teams, iter) {
+    console.log("Fill teams data started, iterator:" + iter);
+    console.log(teams);
+    const team = teams[iter];
+
     return page.goto(constructTeamURL(team))
         .then(() => {
             page.waitForResponse(response => response.url() === URL_TEAM_RESP 
@@ -27,17 +61,23 @@ export default fillTeamsData = (page, team) => {
                             && response._request._postData.includes("getTeamRosterInfo"))
                 .then( response => {
                     parseResponse(response, team);
-                    restartFillTeamsData(page, team);
+                    restartFillTeamsData(page, teams, ++iter);
                 });
         }).catch(reason => {
             console.error('Error! Promise rejected! Reason: ' + reason);
-            restartFillTeamsData(page, team);
+            restartFillTeamsData(page, teams, ++iter);
         });    
 }
 
-function restartFillTeamsData(page, team) {
+function restartFillTeamsData(page, teams, iter) {
+    console.log("Restart fill teams, iterator:" + iter);
+    // Restart teams iterator from 0 if max length achieved
+    if (iter >= teams.length) {
+        iter = 0;
+    }
+
     if (TIMER) {
-        fillTeamsData(page, team);
+        fillTeamsData(page, teams, iter);
     }
 }
 

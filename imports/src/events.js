@@ -190,7 +190,7 @@ function comparePlayerStats(player, curr, prev) {
                 diff: curr[header] - prev[header],
                 correction: false
             }
-
+            
             if (res.diff < 0) {
                 res.correction = true;
                 result.push(res);
