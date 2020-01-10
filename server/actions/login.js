@@ -50,9 +50,9 @@ async function enterLoginDetails(page) {
     await page.goto(URL_MAIN);
     console.log("Fantrax login page opened");
     // Enter login details
-    await page.waitForXPath(SEL_USERNAME).then((result) => result.click());
+    await page.waitForXPath(SEL_USERNAME).then((result) => result.focus());
     await page.keyboard.type(CREDS.username);
-    await page.waitForXPath(SEL_PASSWORD).then((result) => result.click());
+    await page.waitForXPath(SEL_PASSWORD).then((result) => result.focus());
     await page.keyboard.type(CREDS.password);
     await page.keyboard.press('Enter')
     console.log("Username/Password entered");
