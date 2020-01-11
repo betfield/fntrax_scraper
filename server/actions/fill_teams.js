@@ -41,8 +41,6 @@ export default function startFillTeamsData(pages, teams) {
             }
         }
         
-        console.log("Teams for page nr " + i);
-        console.log(teamsForPage);
         restartFillTeamsData(pages[i], teamsForPage, 0);
 
         teamsForPage = [];
@@ -60,12 +58,19 @@ function fillTeamsData(page, teams, iter) {
                             && response.status() === 200 
                             && response._request._postData.includes("getTeamRosterInfo"))
                 .then( response => {
+                    console.log("Parsing response for team: " + team.id);
                     parseResponse(response, team);
+                })
+                .catch( reason => {
+                    console.error("Error! WaitForResponse for " + team.id + " failed! " + reason);
+                })
+                .finally( () => {
+                    console.log("Finally block, restarting fill teams");
                     restartFillTeamsData(page, teams, ++iter);
                 });
         }).catch(reason => {
             console.error('Error! Promise rejected! Reason: ' + reason);
-            restartFillTeamsData(page, teams, ++iter);
+            //restartFillTeamsData(page, teams, ++iter);
         });    
 }
 
@@ -104,6 +109,6 @@ function parseResponse(response, team) {
             parseTeamsData({ "stats": res.responses[0].data.tables, "team": team });
         })
         .catch(reason => {
-            console.error('Error! Promise rejected! Reason: ' + reason);
-        })
+            console.error('Error! ParseResponse failed! Reason: ' + reason);
+        });
 }

@@ -12,6 +12,10 @@ function updatePlayerStats(data) {
         
         for (let i = 0; i < data.length; i++) {
             const player = data[i];
+            player.update = {
+                TS: new Date(),
+                rand: rand
+            }
 
             PlayerStats.upsert({
                 "id": player.id
