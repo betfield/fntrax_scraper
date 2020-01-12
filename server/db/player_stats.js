@@ -29,4 +29,10 @@ function updatePlayerStats(data) {
     }, diff);
 }
 
-export { updatePlayerStats }
+function clearPlayerStats() {
+
+    PlayerStats.remove({});
+    console.log("Player stats table cleared!");
+}
+
+export { updatePlayerStats, clearPlayerStats }

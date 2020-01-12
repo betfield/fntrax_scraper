@@ -5,6 +5,7 @@ import populateGameWeekData from './actions/populate_gameweek';
 import populateTeamsData from './actions/populate_teams';
 import startFillTeamsData from './actions/fill_teams';
 import { getAllTeams } from './db/teams';
+import { clearPlayerStats } from './db/player_stats';
 import '../imports/publish/methods';
 import '../imports/publish/fixtures';
 import '../imports/publish/playerstats';
@@ -93,5 +94,9 @@ Meteor.methods({
   setOffsetValue: function(value) {
     timeOffset = value;
     console.log("Time offset changed to: " + timeOffset);
-  }
+  },
+  clearPlayers: function () {
+    console.log("Clear player stats requested");
+    clearPlayerStats();
+  },
 });

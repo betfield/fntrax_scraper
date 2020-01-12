@@ -2,6 +2,7 @@ import React from 'react';
 import TrackerReact from 'meteor/ultimatejs:tracker-react';
 import Time from '../../components/Time';
 import Offset from '../../components/Offset';
+import PlayerStats from '../../components/PlayerStats';
 
 export default class Dashboard extends TrackerReact(React.Component) {
   
@@ -28,6 +29,7 @@ export default class Dashboard extends TrackerReact(React.Component) {
         <div>
           <Time time={time} />
           <Offset offset={this.offset} />
+          <PlayerStats />
         </div>
       )
     } else {
