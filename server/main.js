@@ -15,9 +15,13 @@ TIMER = false;
 let page, teams;
 let pages = [];
 
-// Create a global variable for update time offset, default based on config
+// Create a global variable for update time offset and gameweek, default based on config
 timeOffset = Meteor.settings.public.timeDiff;
 console.log("Session variable offset added: " + timeOffset);
+
+gw = Meteor.settings.public.gameWeek;
+console.log("Session variable gameweek added: " + gw);
+
 
 Meteor.startup(() => {
 
@@ -78,6 +82,10 @@ function stopDataCollection() {
   TIMER = false;
 }
 
+function getCurrentGameWeek() {
+  return gw;
+}
+
 Meteor.methods({
   startDataCollection: function () {
     console.log("Starting data collection from Method");
@@ -99,4 +107,13 @@ Meteor.methods({
     console.log("Clear player stats requested");
     clearPlayerStats();
   },
+  getGameWeek: function(value) {
+    return gw;
+  },
+  setGameWeek: function(value) {
+    gw = value;
+    console.log("Gameweek changed to: " + gw);
+  }
 });
+
+export { getCurrentGameWeek }
