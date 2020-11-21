@@ -1,22 +1,24 @@
 import parseTeamsData from '../parser/parse_teams_data';
 import { getCurrentGameWeek } from '../main';
 
-const URL_TEAM = 'https://www.fantrax.com/fantasy/league/fme67lofjyyvq48x/team/roster;';
-const URL_TEAM_RESP = 'https://www.fantrax.com/fxpa/req?leagueId=fme67lofjyyvq48x';
+const URL_TEAM = 'https://www.fantrax.com/fantasy/league/xr11guqnkebqvmam/team/roster;';
+const URL_TEAM_RESP = 'https://www.fantrax.com/fxpa/req?leagueId=xr11guqnkebqvmam';
 
 let URL_PARAMS = {
-    pageNumber: 1,
-    seasonOrProjection: 'SEASON_919_BY_PERIOD',
-    timeframeTypeCode: 'BY_PERIOD',
-    scoringCategoryType: 5,
-    statsType: 1,
+    reload: 1,
     view: 'STATS',
+    seasonOrProjection: 'SEASON_920_BY_PERIOD',
+    timeframeTypeCode: 'BY_PERIOD',
+    /*scoringCategoryType: 5,
+    statsType: 1,
+    
     adminMode: false,
     startDate: '2019-08-09',
     endDate: '2020-05-18',
     lineupChangeSystem: 'EASY_CLICK',
     daily: false,
     origDaily: false
+    */
 }
 
 export default function startFillTeamsData(pages, teams) {

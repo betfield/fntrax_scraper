@@ -1,7 +1,7 @@
 import { updateActiveGameweek } from '../db/gameweek';
 import parseGameweekData from '../parser/parse_gameweek';
 
-const URL_SCHEDULE = 'https://www.fantrax.com/newui/EPL/schedules.go?season=919';
+const URL_SCHEDULE = 'https://www.fantrax.com/newui/EPL/schedules.go?season=920';
 // https://www.fantrax.com/newui/EPL/schedules.go?season=919#18
 // view-source:https://www.fantrax.com/newui/EPL/scores.go?date=20191215
 const SEL_CURRENT_GW = '/html/body/section/div[4]/div[4]/div[4]/div[1]/div[1]/div/div[2]/div[2]/div[2]';

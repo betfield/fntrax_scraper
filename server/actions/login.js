@@ -2,7 +2,7 @@ const CREDS = require('../config/creds');
 const CONFIG = require('../config/config');
 
 // DOM element selectors
-const URL_MAIN = 'https://www.fantrax.com/fantasy/league/fme67lofjyyvq48x/team/roster';
+const URL_MAIN = 'https://www.fantrax.com/fantasy/league/xr11guqnkebqvmam/team/roster';
 const LOGIN_TITLE = 'Fantrax - The Home of Fantasy Sports';
 const SEL_COOKIE= '/html/body/app-root/div/layout-overlay/overlay-toasts/toast/section/div[1]/button[3]';
 const SEL_USERNAME = '//*[@id="mat-input-0"]';

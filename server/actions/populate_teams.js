@@ -1,11 +1,19 @@
 import { updateTeams } from '../db/teams';
 
-const URL_TEAM = 'https://www.fantrax.com/fantasy/league/fme67lofjyyvq48x/team/roster;';
-const URL_TEAM_RESP = 'https://www.fantrax.com/fxpa/req?leagueId=fme67lofjyyvq48x';
+const URL_TEAM = 'https://www.fantrax.com/fantasy/league/xr11guqnkebqvmam/team/roster';
+const URL_TEAM_RESP = 'https://www.fantrax.com/fxpa/req?leagueId=xr11guqnkebqvmam';
+const SEL_PRIVACY = '/html/body/div[3]/div[1]/div[2]/div/div/div/div[4]/div[2]/a/span';
 
 export default async function populateTeamsData(page) {
     console.log("Starting to populate teams data");
     
+    // Locate the league page
+    await page.goto(URL_TEAM);
+
+    // Close privacy notice
+    await page.waitForXPath(SEL_PRIVACY).then((result) => result.click());
+    console.log("Privacy notice closed");
+
     // Locate the league page
     await page.goto(URL_TEAM);
 
