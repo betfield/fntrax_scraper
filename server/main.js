@@ -4,6 +4,7 @@ import loginPage from './actions/login';
 import populateGameWeekData from './actions/populate_gameweek';
 import populateTeamsData from './actions/populate_teams';
 import startFillTeamsData from './actions/fill_teams';
+import startFillTeamsDataAlternative from './actions/fill_teams_alternative';
 import { getAllTeams } from './db/teams';
 import { clearPlayerStats } from './db/player_stats';
 import '../imports/publish/methods';
@@ -22,19 +23,22 @@ console.log("Session variable offset added: " + timeOffset);
 gw = Meteor.settings.public.gameWeek;
 console.log("Session variable gameweek added: " + gw);
 
+apiMap = Meteor.settings.public.apiMap;
+console.log("Session variable apiMap added: " + apiMap);
+
 
 Meteor.startup(() => {
 
-  run();
+  //run();
   
 });
 
 async function run() {
 
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: Meteor.settings.public.headless,
     args: [
-      '--disable-gl-drawing-for-tests' // improve performance
+      Meteor.settings.public.args
     ] 
   });
 
@@ -69,7 +73,7 @@ async function run() {
 
 function fill(pages, teams) {
   console.log("Starting data collection");    
-  startFillTeamsData(pages, teams);
+  startFillTeamsDataAlternative(pages, teams);
 }
 
 function startDataCollection(pages) {
@@ -113,6 +117,13 @@ Meteor.methods({
   setGameWeek: function(value) {
     gw = value;
     console.log("Gameweek changed to: " + gw);
+  },
+  getApiMap: function(value) {
+    return apiMap;
+  },
+  setApiMap: function(value) {
+    apiMap = value;
+    console.log("ApiMap changed to: " + apiMap);
   }
 });
 

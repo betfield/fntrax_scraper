@@ -1,25 +1,7 @@
 import parseTeamsData from '../parser/parse_teams_data';
 import { getCurrentGameWeek } from '../main';
 
-const URL_TEAM = 'https://www.fantrax.com/fantasy/league/xr11guqnkebqvmam/team/roster;';
-const URL_TEAM_RESP = 'https://www.fantrax.com/fxpa/req?leagueId=xr11guqnkebqvmam';
-
-let URL_PARAMS = {
-    reload: 1,
-    view: 'STATS',
-    seasonOrProjection: 'SEASON_920_BY_PERIOD',
-    timeframeTypeCode: 'BY_PERIOD',
-    /*scoringCategoryType: 5,
-    statsType: 1,
-    
-    adminMode: false,
-    startDate: '2019-08-09',
-    endDate: '2020-05-18',
-    lineupChangeSystem: 'EASY_CLICK',
-    daily: false,
-    origDaily: false
-    */
-}
+const CONFIG = require('../config/config');
 
 export default function startFillTeamsData(pages, teams) {
     const nrTeams = teams.length;
@@ -56,7 +38,7 @@ function fillTeamsData(page, teams, iter) {
 
     return page.goto(constructTeamURL(team))
         .then(() => {
-            page.waitForResponse(response => response.url() === URL_TEAM_RESP 
+            page.waitForResponse(response => response.url() === CONFIG.URL_TEAM_RESP 
                             && response.status() === 200 
                             && response._request._postData.includes("getTeamRosterInfo"))
                 .then( response => {
@@ -89,8 +71,8 @@ function restartFillTeamsData(page, teams, iter) {
 }
 
 function constructTeamURL(team) {
-    let result = URL_TEAM;
-    let params = URL_PARAMS;
+    let result = CONFIG.URL_TEAM;
+    let params = CONFIG.URL_PARAMS;
 
     params.teamId = team.fId;
     params.period = getCurrentGameWeek();

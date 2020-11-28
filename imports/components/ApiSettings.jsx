@@ -10,22 +10,28 @@ import {
   Input
 } from "reactstrap";
 
-export default class GameWeek extends React.Component {
+export default class ApiSettings extends React.Component {
   
   constructor(props) {
     super(props);
     this.state = {
-      gw: this.props.gw
+      apiMap: this.props.apiMap
     }
     this.submitForm = this.submitForm.bind(this);
   }
 
   submitForm(e) {
     e.preventDefault();
+    const map = {
+        "comp_id": this.compRef.value,
+        "season_id": this.seasonRef.value,
+        "round_id": this.roundRef.value
+    }
+
     this.setState({
-      gw: this.gwRef.value
+      apiMap: map
     }, () => {
-      Meteor.call("setGameWeek", this.state.gw, function (error, result) {
+      Meteor.call("setApiMap", this.state.apiMap, function (error, result) {
       });
     });
     
@@ -37,15 +43,16 @@ export default class GameWeek extends React.Component {
         <Col lg="4">
           <Card className="card-chart">
             <CardHeader>
-              <h5 className="card-category">Gameweek:</h5>
+              <h5 className="card-category">API Settings:</h5>
               <CardTitle tag="h3">
               <Form onSubmit={ this.submitForm }>
-                  <i className="tim-icons icon-refresh-02 text-info" />{"  "}
-                  <Input placeholder={this.state.gw} type="text" innerRef={(node) => this.gwRef = node} />
+                  <Input placeholder={this.state.apiMap.comp_id} type="text" innerRef={(node) => this.compRef = node} />
+                  <Input placeholder={this.state.apiMap.season_id} type="text" innerRef={(node) => this.seasonRef = node} />
+                  <Input placeholder={this.state.apiMap.round_id} type="text" innerRef={(node) => this.roundRef = node} />
                   <Button color="info" size="sm" >
                     <input className="d-none" type="submit" />
                     <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                      Set GW
+                      Set Round
                     </span>
                   </Button>
                 </Form>

@@ -2,7 +2,9 @@
 	"public" : {
 		"timeDiff": 60000,
 		"gameWeek": 9,
-		"hoursOffset": 6
+		"hoursOffset": 6,
+		"headless": true,
+		"args": "--disable-gl-drawing-for-tests"
 	},
 	"private": {
     }

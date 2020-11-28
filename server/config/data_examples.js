@@ -4868,6 +4868,25 @@ lastModified: 1351921046000
 
 
 
+/*
+
+SofaScore API endpoints:
+
+Premier League: {comp_id=17}
+Seasons: https://api.sofascore.com/api/v1/unique-tournament/{comp_id}/seasons
+League participating teams: https://api.sofascore.com/api/v1/unique-tournament/{comp_id}/season/{season_id}/teams {team_id=category.id}
+Team info: https://api.sofascore.com/api/v1/team/{team_id}
+Team players: https://api.sofascore.com/api/v1/team/{team_id}/players
+Gameweeks: https://api.sofascore.com/api/v1/unique-tournament/{comp_id}/season/{season_id}/rounds {round_id}
+Fixtures: https://api.sofascore.com/api/v1/unique-tournament/{comp_id}/season/{season_id}/events/round/{round_id}
+Fixture info: https://api.sofascore.com/api/v1/event/{fixture_id}
+Fixture lineups: https://api.sofascore.com/api/v1/event/{fixture_id}/lineups
+Fixture player stats: https://api.sofascore.com/api/v1/event/{fixture_id}/player/{player_id}/statistics
+
+*/
+
+
+
 
 
 

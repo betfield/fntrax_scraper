@@ -1,13 +1,6 @@
 const CREDS = require('../config/creds');
 const CONFIG = require('../config/config');
 
-// DOM element selectors
-const URL_MAIN = 'https://www.fantrax.com/fantasy/league/xr11guqnkebqvmam/team/roster';
-const LOGIN_TITLE = 'Fantrax - The Home of Fantasy Sports';
-const SEL_COOKIE= '/html/body/app-root/div/layout-overlay/overlay-toasts/toast/section/div[1]/button[3]';
-const SEL_USERNAME = '//*[@id="mat-input-0"]';
-const SEL_PASSWORD = '//*[@id="mat-input-1"]';
-
 export default async function loginPage(page, counter) {
 
     try {
@@ -16,11 +9,11 @@ export default async function loginPage(page, counter) {
         console.log("Navigation timeout set to " + CONFIG.navTimeOut/1000 + " seconds");
 
         // Open Fantrax login page
-        await page.goto(URL_MAIN);
+        await page.goto(CONFIG.URL_TEAM);
         console.log("Fantrax login page opened");
 
         // Close the cookie popup
-        await page.waitForXPath(SEL_COOKIE).then((result) => result.click());
+        await page.waitForXPath(CONFIG.SEL_COOKIE).then((result) => result.click());
         console.log("Cookie popup closed");
 
         await enterLoginDetails(page);
@@ -47,12 +40,12 @@ export default async function loginPage(page, counter) {
 
 async function enterLoginDetails(page) {
     // Open Fantrax login page
-    await page.goto(URL_MAIN);
+    await page.goto(CONFIG.URL_TEAM);
     console.log("Fantrax login page opened");
     // Enter login details
-    await page.waitForXPath(SEL_USERNAME).then((result) => result.focus());
+    await page.waitForXPath(CONFIG.SEL_USERNAME).then((result) => result.focus());
     await page.keyboard.type(CREDS.username);
-    await page.waitForXPath(SEL_PASSWORD).then((result) => result.focus());
+    await page.waitForXPath(CONFIG.SEL_PASSWORD).then((result) => result.focus());
     await page.keyboard.type(CREDS.password);
     await page.keyboard.press('Enter')
     console.log("Username/Password entered");
@@ -69,7 +62,7 @@ async function enterLoginDetails(page) {
         await page.title().then(async result => {
             console.log("Page finished loading. Title: " + result);
             // Check if logged in page is opened
-            if (result === LOGIN_TITLE) {
+            if (result === CONFIG.LOGIN_TITLE) {
                 // End login flow and return the resulting page object
                 console.log("Fantrax user logged in");
             } else {

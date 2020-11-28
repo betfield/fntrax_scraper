@@ -26,26 +26,24 @@ export default class PlayerStats extends React.Component {
   render() {
       
       return (
-        <Row>
-          <Col lg="4">
-            <Card className="card-chart">
-              <CardHeader>
-                <h5 className="card-category">Player Stats:</h5>
-                <CardTitle tag="h3">
-                <Form onSubmit={ this.submitForm }>
-                    <i className="tim-icons icon-refresh-02 text-info" />{"  "}
-                    <Button color="info" size="sm" >
-                      <input className="d-none" type="submit" />
-                      <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                        Clear Stats
-                      </span>
-                    </Button>
-                  </Form>
-                </CardTitle>
-              </CardHeader>
-            </Card>
-          </Col>
-        </Row>
+        <Col lg="4">
+          <Card className="card-chart">
+            <CardHeader>
+              <h5 className="card-category">Player Stats:</h5>
+              <CardTitle tag="h3">
+              <Form onSubmit={ this.submitForm }>
+                  <i className="tim-icons icon-refresh-02 text-info" />{"  "}
+                  <Button color="info" size="sm" >
+                    <input className="d-none" type="submit" />
+                    <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                      Clear Stats
+                    </span>
+                  </Button>
+                </Form>
+              </CardTitle>
+            </CardHeader>
+          </Card>
+        </Col>
       );
     }
   }

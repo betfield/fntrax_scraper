@@ -1,21 +1,19 @@
 import { updateTeams } from '../db/teams';
 
-const URL_TEAM = 'https://www.fantrax.com/fantasy/league/xr11guqnkebqvmam/team/roster';
-const URL_TEAM_RESP = 'https://www.fantrax.com/fxpa/req?leagueId=xr11guqnkebqvmam';
-const SEL_PRIVACY = '/html/body/div[3]/div[1]/div[2]/div/div/div/div[4]/div[2]/a/span';
+const CONFIG = require('../config/config');
 
 export default async function populateTeamsData(page) {
     console.log("Starting to populate teams data");
     
     // Locate the league page
-    await page.goto(URL_TEAM);
+    await page.goto(CONFIG.URL_TEAM);
 
     // Close privacy notice
-    await page.waitForXPath(SEL_PRIVACY).then((result) => result.click());
+    await page.waitForXPath(CONFIG.SEL_PRIVACY).then((result) => result.click());
     console.log("Privacy notice closed");
 
     // Locate the league page
-    await page.goto(URL_TEAM);
+    await page.goto(CONFIG.URL_TEAM);
 
     // Get fantasyTeams object from league page
     const fantasyTeams = await getFantasyTeams(page);
@@ -44,7 +42,7 @@ export default async function populateTeamsData(page) {
 
 // Function to return response data from the league URL containing an array with all fantasyTeams
 async function getFantasyTeams(page) {
-    return page.waitForResponse(response => response.url() === URL_TEAM_RESP 
+    return page.waitForResponse(response => response.url() === CONFIG.URL_TEAM_RESP 
                             && response.status() === 200 
                             && response._request._postData.includes("getTeamRosterInfo"))
         .then(response => response.json()

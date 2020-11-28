@@ -42,39 +42,37 @@ export default class Offset extends React.Component {
 
   render() {
       return (
-        <Row>
-          <Col lg="4">
-            <Card className="card-chart">
-              <CardHeader>
-                <h5 className="card-category">Update offset:</h5>
-                <CardTitle tag="h3">
-                  <Form onSubmit={ this.submitForm }>
-                    <i className="tim-icons icon-refresh-02 text-info" />{"  "}
-                    <Input placeholder={this.state.offset} type="text" innerRef={(node) => this.offsetRef = node} />
-                    <Button color="info" size="sm" >
-                      <input className="d-none" type="submit" />
-                      <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                        Save
-                      </span>
-                    </Button>
-                  </Form>
-                  <Button color="info" size="sm" onClick={() => this.startCollection()} >
+        <Col lg="4">
+          <Card className="card-chart">
+            <CardHeader>
+              <h5 className="card-category">Update offset:</h5>
+              <CardTitle tag="h3">
+                <Form onSubmit={ this.submitForm }>
+                  <i className="tim-icons icon-refresh-02 text-info" />{"  "}
+                  <Input placeholder={this.state.offset} type="text" innerRef={(node) => this.offsetRef = node} />
+                  <Button color="info" size="sm" >
                     <input className="d-none" type="submit" />
                     <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                      Start
+                      Save
                     </span>
                   </Button>
-                  <Button color="info" size="sm" onClick={() => this.stopCollection()} >
-                    <input className="d-none" type="submit" />
-                    <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                      Stop
-                    </span>
-                  </Button>
-                </CardTitle>
-              </CardHeader>
-            </Card>
-          </Col>
-        </Row>
+                </Form>
+                <Button color="info" size="sm" onClick={() => this.startCollection()} >
+                  <input className="d-none" type="submit" />
+                  <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                    Start
+                  </span>
+                </Button>
+                <Button color="info" size="sm" onClick={() => this.stopCollection()} >
+                  <input className="d-none" type="submit" />
+                  <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                    Stop
+                  </span>
+                </Button>
+              </CardTitle>
+            </CardHeader>
+          </Card>
+        </Col>
       );
     }
   }
