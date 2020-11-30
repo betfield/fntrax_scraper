@@ -14,7 +14,7 @@ export default class AppSettingsDropdown extends React.Component {
     console.log(fixture);
 
     this.setState({
-      selectFixture: fixture.name
+      selectFixture: fixture.homeTeam.name + " vs " + fixture.awayTeam.name
     });
   }
 
@@ -26,10 +26,11 @@ export default class AppSettingsDropdown extends React.Component {
 
   fixtureList = (fixtures) => {
     const result = [];
+    console.log(fixtures);
 
     fixtures.forEach(fixture => {
       result.push(
-        <DropdownItem key={fixture.id} onClick={() => this.submitForm(fixture)} >{fixture.name}</DropdownItem>
+        <DropdownItem key={fixture.id} onClick={() => this.submitForm(fixture)} >{fixture.homeTeam.name + " vs " + fixture.awayTeam.name}</DropdownItem>
       );
     })
     return result;

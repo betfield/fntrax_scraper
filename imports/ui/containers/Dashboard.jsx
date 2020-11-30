@@ -13,9 +13,20 @@ export default class Dashboard extends TrackerReact(React.Component) {
   constructor(props) {
     super(props);
     Session.set("time", null);
-    this.offset = null;
-    this.gw = null;
-    this.apiMap = null;
+    this.offset = Meteor.call("getOffsetValue", (error, result) => {
+      this.offset = result/1000;
+    });
+    this.gw = Meteor.call("getGameWeek", (error, result) => {
+      this.gw = result;
+    });
+    this.apiMap = Meteor.call("getApiMap", (error, result) => {
+      this.apiMap = result;
+    });
+    this.fixtures = Meteor.call("getRoundFixturesAPI", (error, result) => { 
+      console.log(result);
+      this.fixtures = result;
+    });
+  
 
     setInterval(function () {
       Meteor.call("getServerTime", function (error, result) {
@@ -27,19 +38,7 @@ export default class Dashboard extends TrackerReact(React.Component) {
   render () {
     const time = Session.get("time");
 
-    Meteor.call("getGameWeek", (error, result) => {
-      this.gw = result;
-    });
-
-    Meteor.call("getApiMap", (error, result) => {
-      this.apiMap = result;
-    });
-
-    Meteor.call("getOffsetValue", (error, result) => {
-      this.offset = result/1000;
-    });
-
-    if(time !== null && this.offset !== null && this.gw !== null && this.apiMap !== null) {
+    if(time !== null && this.offset !== null && this.gw !== null && this.apiMap !== null && this.fixtures !== null) {
       return (
         <div>
           <Time time={time} />
@@ -49,7 +48,7 @@ export default class Dashboard extends TrackerReact(React.Component) {
           </Row>
           <Row>
             <ApiSettings apiMap={this.apiMap}/>
-            <RoundFixtures />
+            <RoundFixtures fixtures={this.fixtures} />
           </Row>
           <Row>
             <PlayerStats />

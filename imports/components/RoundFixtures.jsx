@@ -10,12 +10,6 @@ import AppSettingsDropdown from './api/ApiSettingsDropdown';
 
 export default class RoundFixtures extends React.Component {
 
-    fixtures = [
-        {id: 1, name: "Üks"},
-        {id: 2, name: "Kaks"},
-        {id: 3, name: "Kolm"}
-    ];
-
     render() {
 
         return (
@@ -28,7 +22,7 @@ export default class RoundFixtures extends React.Component {
                         </CardTitle>
                     </CardHeader>
                 </Card>
-                <AppSettingsDropdown fixtures={this.fixtures}/>
+                <AppSettingsDropdown fixtures={this.props.fixtures}/>
             </Col>
         );
     }

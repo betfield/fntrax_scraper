@@ -4,12 +4,14 @@ import loginPage from './actions/login';
 import populateGameWeekData from './actions/populate_gameweek';
 import populateTeamsData from './actions/populate_teams';
 import startFillTeamsData from './actions/fill_teams';
-import startFillTeamsDataAlternative from './actions/fill_teams_alternative';
+import fetchAPIData from './actions/fill_teams_alternative';
 import { getAllTeams } from './db/teams';
 import { clearPlayerStats } from './db/player_stats';
 import '../imports/publish/methods';
 import '../imports/publish/fixtures';
 import '../imports/publish/playerstats';
+
+const CONFIG = require('./config/config');
 
 TIMER = false;
 
@@ -124,7 +126,12 @@ Meteor.methods({
   setApiMap: function(value) {
     apiMap = value;
     console.log("ApiMap changed to: " + apiMap);
-  }
+  },
+  getRoundFixturesAPI: async function(mapObj) {
+    const result = await fetchAPIData(CONFIG.URL_SOFASCORE_FIXTURES, Meteor.settings.public.apiMap);
+    console.log(result);
+    return result;
+  },
 });
 
 export { getCurrentGameWeek }
