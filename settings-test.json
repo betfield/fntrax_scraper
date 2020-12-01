@@ -1,17 +1,16 @@
 {
 	"public" : {
 		"timeDiff": 0,
-		"gameWeek": 9,
 		"hoursOffset": -2,
 		"headless": false,
 		"args": "",
-		"apiMap": {
+		"apiParams": {
 			"comp_id":"17",
 			"season_id":"29415",
-			"round_id":"10",
-			"fixture_id":"8896995",
-			"player_id":"799041",
-			"team_id":"37"
+			"round_id":"11",
+			"fixture_id":"",
+			"player_id":"",
+			"team_id":""
 		}
 	},
 	"private": {

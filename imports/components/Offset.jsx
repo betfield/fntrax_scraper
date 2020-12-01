@@ -6,7 +6,6 @@ import {
   CardTitle,
   Form,
   Input,
-  Row,
   Col,
 } from "reactstrap";
 
@@ -18,16 +17,6 @@ export default class Offset extends React.Component {
       offset: this.props.offset
     }
     this.submitForm = this.submitForm.bind(this);
-  }
-
-  stopCollection() {
-    Meteor.call("stopDataCollection", function (error, result) {
-    });
-  }
-
-  startCollection() {
-    Meteor.call("startDataCollection", function (error, result) {
-    });
   }
 
   submitForm(e) {
@@ -57,18 +46,6 @@ export default class Offset extends React.Component {
                     </span>
                   </Button>
                 </Form>
-                <Button color="info" size="sm" onClick={() => this.startCollection()} >
-                  <input className="d-none" type="submit" />
-                  <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                    Start
-                  </span>
-                </Button>
-                <Button color="info" size="sm" onClick={() => this.stopCollection()} >
-                  <input className="d-none" type="submit" />
-                  <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                    Stop
-                  </span>
-                </Button>
               </CardTitle>
             </CardHeader>
           </Card>

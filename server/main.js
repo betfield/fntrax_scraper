@@ -4,7 +4,6 @@ import loginPage from './actions/login';
 import populateGameWeekData from './actions/populate_gameweek';
 import populateTeamsData from './actions/populate_teams';
 import startFillTeamsData from './actions/fill_teams';
-import fetchAPIData from './actions/fill_teams_alternative';
 import { getAllTeams } from './db/teams';
 import { clearPlayerStats } from './db/player_stats';
 import '../imports/publish/methods';
@@ -21,13 +20,6 @@ let pages = [];
 // Create a global variable for update time offset and gameweek, default based on config
 timeOffset = Meteor.settings.public.timeDiff;
 console.log("Session variable offset added: " + timeOffset);
-
-gw = Meteor.settings.public.gameWeek;
-console.log("Session variable gameweek added: " + gw);
-
-apiMap = Meteor.settings.public.apiMap;
-console.log("Session variable apiMap added: " + apiMap);
-
 
 Meteor.startup(() => {
 
@@ -112,25 +104,6 @@ Meteor.methods({
   clearPlayers: function () {
     console.log("Clear player stats requested");
     clearPlayerStats();
-  },
-  getGameWeek: function(value) {
-    return gw;
-  },
-  setGameWeek: function(value) {
-    gw = value;
-    console.log("Gameweek changed to: " + gw);
-  },
-  getApiMap: function(value) {
-    return apiMap;
-  },
-  setApiMap: function(value) {
-    apiMap = value;
-    console.log("ApiMap changed to: " + apiMap);
-  },
-  getRoundFixtures: async function(mapObj) {
-    const result = await fetchAPIData(CONFIG.URL_SOFASCORE_FIXTURES, Meteor.settings.public.apiMap);
-    console.log(result);
-    return result;
   }
 });
 

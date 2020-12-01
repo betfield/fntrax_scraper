@@ -14,14 +14,6 @@ export default class RoundFixtures extends React.Component {
 
         return (
             <Col lg="4">
-                <Card className="card-chart">
-                    <CardHeader>
-                        <h5 className="card-category">Round fixtures:</h5>
-                        <CardTitle tag="h3">
-                        <i className="tim-icons icon-world text-info" />{" "}
-                        </CardTitle>
-                    </CardHeader>
-                </Card>
                 <AppSettingsDropdown fixtures={this.props.fixtures}/>
             </Col>
         );

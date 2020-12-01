@@ -3,10 +3,9 @@ import TrackerReact from 'meteor/ultimatejs:tracker-react';
 import Time from '../../components/Time';
 import Offset from '../../components/Offset';
 import PlayerStats from '../../components/PlayerStats';
-import Gameweek from '../../components/GameWeek';
-import ApiSettings from '../../components/ApiSettings';
 import RoundFixtures from '../../components/RoundFixtures';
 import { Row } from "reactstrap";
+import DataCollection from '../../components/DataCollection';
 
 export default class Dashboard extends TrackerReact(React.Component) {
   
@@ -14,48 +13,37 @@ export default class Dashboard extends TrackerReact(React.Component) {
     super(props);
     this.state = {
       offset: null,
-      gw: null,
-      apiMap: null,
-      fixtures: null
+      fixtures: null,
+      gameweeks: null
     };
 
     Meteor.call("getOffsetValue", (error, result) => {
-      console.log(result);
       this.setState({ offset: result/1000 });
     });
 
-    Meteor.call("getGameWeek", (error, result) => {
-      console.log(result);
-      this.setState({ gw: result });
-    });
-      
-    Meteor.call("getApiMap", (error, result) => {
-      console.log(result);
-      this.setState({ apiMap: result });
-    });
-    
     Meteor.call("getRoundFixtures", (error, result) => { 
-      console.log(result);
       this.setState({ fixtures: result });
+    });
+
+    Meteor.call("getCompRounds", (error, result) => {
+      console.log(result);
+      this.setState({ gameweeks: result });
     });
   }
 
   render () {
-    if(this.state.offset !== null && this.state.gw !== null && this.state.apiMap !== null && this.state.fixtures !== null) {
+    if(this.state.offset !== null && this.state.fixtures !== null && this.state.gameweeks !== null) {
 
       return (
         <div>
           <Time />
           <Row>
             <Offset offset={this.state.offset} />
-            <Gameweek gw={this.state.gw} />
-          </Row>
-          <Row>
-            <ApiSettings apiMap={this.state.apiMap}/>
-            <RoundFixtures fixtures={this.state.fixtures} />
-          </Row>
-          <Row>
             <PlayerStats />
+          </Row>
+          <Row>
+            <DataCollection />
+            <RoundFixtures fixtures={this.state.fixtures} />
           </Row>
         </div>
       )
