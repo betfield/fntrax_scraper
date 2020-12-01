@@ -127,11 +127,11 @@ Meteor.methods({
     apiMap = value;
     console.log("ApiMap changed to: " + apiMap);
   },
-  getRoundFixturesAPI: async function(mapObj) {
+  getRoundFixtures: async function(mapObj) {
     const result = await fetchAPIData(CONFIG.URL_SOFASCORE_FIXTURES, Meteor.settings.public.apiMap);
     console.log(result);
     return result;
-  },
+  }
 });
 
 export { getCurrentGameWeek }

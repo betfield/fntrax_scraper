@@ -38,7 +38,7 @@ export default class ApiSettings extends React.Component {
   }
 
   render() {
-      
+      console.log(this.state.apiMap);
       return (
         <Col lg="4">
           <Card className="card-chart">

@@ -12,43 +12,47 @@ export default class Dashboard extends TrackerReact(React.Component) {
   
   constructor(props) {
     super(props);
-    Session.set("time", null);
-    this.offset = Meteor.call("getOffsetValue", (error, result) => {
-      this.offset = result/1000;
-    });
-    this.gw = Meteor.call("getGameWeek", (error, result) => {
-      this.gw = result;
-    });
-    this.apiMap = Meteor.call("getApiMap", (error, result) => {
-      this.apiMap = result;
-    });
-    this.fixtures = Meteor.call("getRoundFixturesAPI", (error, result) => { 
-      console.log(result);
-      this.fixtures = result;
-    });
-  
+    this.state = {
+      offset: null,
+      gw: null,
+      apiMap: null,
+      fixtures: null
+    };
 
-    setInterval(function () {
-      Meteor.call("getServerTime", function (error, result) {
-        Session.set("time", result);
-      });
-    }, 1000);
+    Meteor.call("getOffsetValue", (error, result) => {
+      console.log(result);
+      this.setState({ offset: result/1000 });
+    });
+
+    Meteor.call("getGameWeek", (error, result) => {
+      console.log(result);
+      this.setState({ gw: result });
+    });
+      
+    Meteor.call("getApiMap", (error, result) => {
+      console.log(result);
+      this.setState({ apiMap: result });
+    });
+    
+    Meteor.call("getRoundFixtures", (error, result) => { 
+      console.log(result);
+      this.setState({ fixtures: result });
+    });
   }
 
   render () {
-    const time = Session.get("time");
+    if(this.state.offset !== null && this.state.gw !== null && this.state.apiMap !== null && this.state.fixtures !== null) {
 
-    if(time !== null && this.offset !== null && this.gw !== null && this.apiMap !== null && this.fixtures !== null) {
       return (
         <div>
-          <Time time={time} />
+          <Time />
           <Row>
-            <Offset offset={this.offset} />
-            <Gameweek gw={this.gw} />
+            <Offset offset={this.state.offset} />
+            <Gameweek gw={this.state.gw} />
           </Row>
           <Row>
-            <ApiSettings apiMap={this.apiMap}/>
-            <RoundFixtures fixtures={this.fixtures} />
+            <ApiSettings apiMap={this.state.apiMap}/>
+            <RoundFixtures fixtures={this.state.fixtures} />
           </Row>
           <Row>
             <PlayerStats />

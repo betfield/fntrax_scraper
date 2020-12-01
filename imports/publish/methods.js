@@ -4,9 +4,6 @@ const CONFIG = require('../config/config');
 Meteor.methods({
     getServerTime: function () {
         return (new Date).toTimeString();
-    },
-    getRoundFixtures: function () {
-        return fetchAPIData(CONFIG.URL_SOFASCORE_FIXTURES, Meteor.settings.public.apiMap);
     }
 });
 
