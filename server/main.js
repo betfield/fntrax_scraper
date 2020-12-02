@@ -3,12 +3,13 @@ import puppeteer from 'puppeteer';
 import loginPage from './actions/login';
 import populateGameWeekData from './actions/populate_gameweek';
 import populateTeamsData from './actions/populate_teams';
-import startFillTeamsData from './actions/fill_teams';
+import fillTeamsData from './actions/fill_teams_alternative';
 import { getAllTeams } from './db/teams';
 import { clearPlayerStats } from './db/player_stats';
 import '../imports/publish/methods';
 import '../imports/publish/fixtures';
 import '../imports/publish/playerstats';
+import { Fixtures } from '../imports/collections';
 
 const CONFIG = require('./config/config');
 
@@ -20,6 +21,11 @@ let pages = [];
 // Create a global variable for update time offset and gameweek, default based on config
 timeOffset = Meteor.settings.public.timeDiff;
 console.log("Session variable offset added: " + timeOffset);
+
+// Define Selected Fixture as null. User needs to select the appropriate fixture from the Dashboard to assign a value
+selectedFixture = null;
+console.log("User needs to select the appropriate fixture from the Dashboard to start Data Collection");
+
 
 Meteor.startup(() => {
 
@@ -65,13 +71,15 @@ async function run() {
   }
 }
 
-function fill(pages, teams) {
+function fill(fixture) {
   console.log("Starting data collection");    
-  startFillTeamsDataAlternative(pages, teams);
+  fillTeamsData(fixture);
 }
 
-function startDataCollection(pages) {
-    fill(pages, teams);
+function startDataCollection(fixture) {
+    setInterval(()=> {
+      if (TIMER) fill(fixture);
+    }, CONFIG.dataCollectionInterval)
 }
 
 function stopDataCollection() {
@@ -88,7 +96,7 @@ Meteor.methods({
   startDataCollection: function () {
     console.log("Starting data collection from Method");
     TIMER = true;
-    startDataCollection(pages);
+    startDataCollection(selectedFixture);
   },
   stopDataCollection: function() {
     console.log("Stopping data collection from Method");
@@ -100,6 +108,10 @@ Meteor.methods({
   setOffsetValue: function(value) {
     timeOffset = value;
     console.log("Time offset changed to: " + timeOffset);
+  },
+  setSelectedFixture: function(value) {
+    selectedFixture = value;
+    console.log("Selected Fixture changed to: " + selectedFixture);
   },
   clearPlayers: function () {
     console.log("Clear player stats requested");

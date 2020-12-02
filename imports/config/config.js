@@ -1,3 +1,3 @@
-exports.testFixture = "gp8hZYYPtM7P6jAco";
-exports.testMode = false;
-exports.textChangeTimeout = 10000;
+export const testFixture = "gp8hZYYPtM7P6jAco";
+export const testMode = false;
+export const textChangeTimeout = 10000;

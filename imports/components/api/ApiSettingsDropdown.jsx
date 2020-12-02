@@ -11,7 +11,8 @@ export default class AppSettingsDropdown extends React.Component {
   }
 
   submitForm = (fixture) => {
-    console.log(fixture);
+    Meteor.call("setSelectedFixture", fixture, function (error, result) {
+    });
 
     this.setState({
       selectFixture: fixture.homeTeam.name + " vs " + fixture.awayTeam.name

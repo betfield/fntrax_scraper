@@ -7,8 +7,13 @@ Meteor.methods({
         return (new Date).toTimeString();
     },
     getRoundFixtures: async function(mapObj) {
-        const result = await fetchAPIData(CONFIG.URL_SOFASCORE_FIXTURES, Meteor.settings.public.apiParams);
+        const result = await fetchAPIData(CONFIG.URL_SOFASCORE_FIXTURES, mapObj);
         console.log(result);
         return result.events;
+    },
+    getFixtureLineup: async function(mapObj) {
+        const result = await fetchAPIData(CONFIG.URL_SOFASCORE_FIXTURE_LINEUPS, mapObj);
+        console.log(result);
+        return result;
     }
 });

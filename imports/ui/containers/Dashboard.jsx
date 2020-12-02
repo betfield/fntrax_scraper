@@ -21,7 +21,7 @@ export default class Dashboard extends TrackerReact(React.Component) {
       this.setState({ offset: result/1000 });
     });
 
-    Meteor.call("getRoundFixtures", (error, result) => { 
+    Meteor.call("getRoundFixtures", Meteor.settings.public.apiParams, (error, result) => { 
       this.setState({ fixtures: result });
     });
 
