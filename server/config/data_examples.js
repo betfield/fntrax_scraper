@@ -4883,7 +4883,84 @@ Fixture info: https://api.sofascore.com/api/v1/event/{fixture_id}
 Fixture lineups: https://api.sofascore.com/api/v1/event/{fixture_id}/lineups
 Fixture player stats: https://api.sofascore.com/api/v1/event/{fixture_id}/player/{player_id}/statistics
 
+SofaSocre Lineups
+
+{
+	confirmed: true,
+	home: {
+		players: [
+			{
+				player: {
+					name: "Mathew Ryan",
+					slug: "mathew-ryan",
+					shortName: "M. Ryan",
+					position: "G",
+					userCount: 983,
+					id: 134029,
+					country: {
+						alpha2: "AU",
+						name: "Australia"
+					},
+					marketValueCurrency: "€",
+					dateOfBirthTimestamp: 702691200
+				},
+				shirtNumber: 1,
+				position: "G",
+				substitute: false,
+				statistics: {
+					totalPass: 30,
+					accuratePass: 17,
+					totalLongBalls: 19,
+					accurateLongBalls: 6,
+					totalClearance: 1,
+					saves: 1,
+					totalKeeperSweeper: 1,
+					accurateKeeperSweeper: 1,
+					minutesPlayed: 90,
+					touches: 37,
+					rating: 6.4,
+					possessionLostCtrl: 13
+				}
+			}
+		],
+		formation: "3-4-1-2",
+		playerColor: {
+			number: "fafafa",
+			outline: "ffff00"
+		},
+		goalkeeperColor: {
+			number: "000000",
+			outline: "ffff00"
+		},
+		missingPlayers: [
+			{
+				player: {
+					name: "Tariq Lamptey",
+					firstName: "",
+					lastName: "",
+					slug: "lamptey-tariq",
+					shortName: "T. Lamptey",
+					position: "D",
+					userCount: 2877,
+					id: 914691,
+					country: {
+						alpha2: "EN",
+						name: "England"
+					},
+					marketValueCurrency: "€",
+					dateOfBirthTimestamp: 970272000
+				},
+				type: "missing",
+				reason: 13
+			}
+		]
+    },
+    away: {...}	
+
+
 */
+
+
 
 
 

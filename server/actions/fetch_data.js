@@ -16,7 +16,7 @@ function replaceAPIparams(str, mapObj) {
 export default async function fetchAPIData(str, mapObj) {
     let result;
     const url = replaceAPIparams(str, mapObj);
-
+    
     console.log("Fetching data from: " + url);
 
     await fetch(url, {

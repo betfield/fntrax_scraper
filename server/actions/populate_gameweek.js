@@ -1,25 +1,18 @@
 import { updateActiveGameweek } from '../db/gameweek';
-import parseGameweekData from '../parser/parse_gameweek';
+import fetchAPIData from './fetch_data';
 
 const CONFIG = require('../config/config');
 
-export default async function populateGameWeekData(page) {
+export default async function populateGameWeekData() {
 
+    // Fetch gameweek data
     console.log("Starting to populate gameweek data");
-    // Locate the Schedule page
-    await page.goto(CONFIG.URL_SCHEDULE);
-
-    // Select current gameweek element
-    const element = await page.waitForXPath(CONFIG.SEL_CURRENT_GW);
-
-    // Select current gameweek text data
-    const text = await page.evaluate(element => element.textContent, element);
-
-    const gameweek = parseGameweekData(text);
-
+    const gameweek = await fetchAPIData(CONFIG.URL_SOFASCORE_FIXTURES, Meteor.settings.public.apiParams);
+    
     // Save current gameweek into database
     console.log("Saving gameweek data to database");
-    updateActiveGameweek(gameweek);
+    console.log(gameweek.events);
+    updateActiveGameweek(gameweek.events);
 
     console.log("Finished populating gameweek data");
 }

@@ -9,7 +9,6 @@ import { clearPlayerStats } from './db/player_stats';
 import '../imports/publish/methods';
 import '../imports/publish/fixtures';
 import '../imports/publish/playerstats';
-import { Fixtures } from '../imports/collections';
 
 const CONFIG = require('./config/config');
 
@@ -26,8 +25,10 @@ console.log("Session variable offset added: " + timeOffset);
 selectedFixture = null;
 console.log("User needs to select the appropriate fixture from the Dashboard to start Data Collection");
 
-
 Meteor.startup(() => {
+
+  // Populate game week fixtures data
+  populateGameWeekData();
 
   //run();
   
@@ -46,9 +47,6 @@ async function run() {
 
   // Login to Fantrax
   try {
-    // Populate current Gameweek data
-    await populateGameWeekData(page);
-
     // Start login function with tries counter set to 1
     page = await loginPage(page, 1);
     pages.push(page);
@@ -60,11 +58,6 @@ async function run() {
     teams = getAllTeams();
     console.log("Teams loaded from database:");
     console.log(teams);
-
-    // Create a browser page for each team
-    for (let i = 0; i < 4; i++) {
-      pages.push(await browser.newPage());
-    }
 
   } catch (e) {
     console.log(e);
@@ -88,10 +81,6 @@ function stopDataCollection() {
   TIMER = false;
 }
 
-function getCurrentGameWeek() {
-  return gw;
-}
-
 Meteor.methods({
   startDataCollection: function () {
     console.log("Starting data collection from Method");
@@ -111,12 +100,10 @@ Meteor.methods({
   },
   setSelectedFixture: function(value) {
     selectedFixture = value;
-    console.log("Selected Fixture changed to: " + selectedFixture);
+    console.log("Selected Fixture changed to: " + selectedFixture.id);
   },
   clearPlayers: function () {
     console.log("Clear player stats requested");
     clearPlayerStats();
   }
 });
-
-export { getCurrentGameWeek }

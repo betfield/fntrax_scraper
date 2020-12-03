@@ -1,16 +1,19 @@
 import fetchAPIData from './fetch_data';
+import parseLineups from '../parser/parse_lineups';
+
 const CONFIG = require('../config/config');
 
 
 export default async function fillTeamsData(fixture) {
-    let result;
+    let data;
 
     console.log(fixture);
     const mapObj = {
         fixture_id: fixture.id
     };
 
-    result = await fetchAPIData(CONFIG.URL_SOFASCORE_FIXTURE_LINEUPS, mapObj);
+    data = await fetchAPIData(CONFIG.URL_SOFASCORE_FIXTURE_LINEUPS, mapObj);
+    console.log(data);
 
-    console.log(result);
+    parseLineups(data);
 }
