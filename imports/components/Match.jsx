@@ -43,15 +43,15 @@ export default class Match extends React.Component {
 
     render() {
         const fixture = this.props.fixture;
-        const homeScore = parseInt(fixture.homeScore) || "-";
-        const awayScore = parseInt(fixture.awayScore) || "-";
+        const homeScore = parseInt(fixture.homeScore.current);
+        const awayScore = parseInt(fixture.awayScore.current);
 
         return (
             <Card>
                 <CardBody>
                     <Container>
                         <Row>
-                            <Col sm="4" className="title text-center"><h3>{fixture.home}</h3></Col>
+                            <Col sm="4" className="title text-center"><h3>{fixture.homeTeam.name}</h3></Col>
                             <Col sm="4" className="title text-center">
                                 <h3>
                                     <span className={this.state.homeColor}>{homeScore}</span>
@@ -59,7 +59,7 @@ export default class Match extends React.Component {
                                     <span className={this.state.awayColor}>{awayScore}</span>
                                 </h3>
                             </Col>
-                            <Col sm="4" className="title text-center"><h3>{fixture.away}</h3></Col>
+                            <Col sm="4" className="title text-center"><h3>{fixture.awayTeam.name}</h3></Col>
                         </Row>
                     </Container>        
                 </CardBody>

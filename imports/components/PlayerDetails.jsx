@@ -14,7 +14,7 @@ export default class PlayerDetails extends React.Component {
                         <h4>{player.name}</h4>
                     </div>
                     <div>
-                        <h6 className="text-muted"><small>{player.team.name}</small></h6>
+                        <h6 className="text-muted"><small>{player.name}</small></h6>
                     </div>
                 </td>
             </React.Fragment>

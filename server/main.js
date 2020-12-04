@@ -65,7 +65,7 @@ async function run() {
 }
 
 function fill(fixture) {
-  console.log("Starting data collection");    
+  console.log("Starting data collection for fixture: " + fixture.id);    
   fillTeamsData(fixture);
 }
 
@@ -83,7 +83,7 @@ function stopDataCollection() {
 
 Meteor.methods({
   startDataCollection: function () {
-    console.log("Starting data collection from Method");
+    console.log("Starting data collection from Method for fixture: " + selectedFixture.id);
     TIMER = true;
     startDataCollection(selectedFixture);
   },
@@ -91,7 +91,7 @@ Meteor.methods({
     console.log("Stopping data collection from Method");
     stopDataCollection();
   },
-  getOffsetValue: function(value) {
+  getOffsetValue: function() {
     return timeOffset;
   },
   setOffsetValue: function(value) {
@@ -101,6 +101,9 @@ Meteor.methods({
   setSelectedFixture: function(value) {
     selectedFixture = value;
     console.log("Selected Fixture changed to: " + selectedFixture.id);
+  },
+  getSelectedFixture: function() {
+    return selectedFixture;
   },
   clearPlayers: function () {
     console.log("Clear player stats requested");

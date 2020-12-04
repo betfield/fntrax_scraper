@@ -4885,7 +4885,7 @@ Fixture player stats: https://api.sofascore.com/api/v1/event/{fixture_id}/player
 
 SofaSocre Lineups
 
-{
+{ home.players.player
 	confirmed: true,
 	home: {
 		players: [
@@ -4956,6 +4956,110 @@ SofaSocre Lineups
 		]
     },
     away: {...}	
+
+    SofaScore Fixture 
+
+    { 
+        _id: 'zNbNL7MerczSB8ANL',
+        id: 8896975,
+        awayScore: { current: 0, display: 0, period1: 0, normaltime: 0 },
+        awayTeam:
+        { 
+            name: 'Burnley',
+            slug: 'burnley',
+            shortName: 'Burnley',
+            gender: 'M',
+            userCount: 37003,
+            nameCode: 'BUR',
+            national: false,
+            type: 0,
+            id: 6,
+            subTeams: [],
+            teamColors: { primary: '#81204c', secondary: '#8fd2f4', text: '#8fd2f4' 
+        } 
+    },
+    changes:
+        { 
+            changes: [ 
+                'cardsCode',
+                'status.code',
+                'status.description',
+                'status.type',
+                'homeScore.normaltime',
+                'awayScore.normaltime' 
+            ],
+            changeTimestamp: 1606582242 
+        },
+        coverage: 1,
+        customId: 'gsr',
+        finalResultOnly: false,
+        hasEventPlayerHeatMap: true,
+        hasEventPlayerStatistics: true,
+        hasGlobalHighlights: true,
+        homeScore: { 
+            current: 5, 
+            display: 5, 
+            period1: 3, 
+            normaltime: 5 
+        },
+        homeTeam:
+        { 
+            name: 'Manchester City',
+            slug: 'manchester-city',
+            shortName: 'Man City',
+            gender: 'M',
+            userCount: 544327,
+            nameCode: 'MNC',
+            national: false,
+            type: 0,
+            id: 17,
+            subTeams: [],
+            teamColors: { 
+                primary: '#66ccff', 
+                secondary: '#ffffff', 
+                text: '#ffffff' 
+            } 
+        },
+        roundInfo: { 
+            round: 10 
+        },
+        slug: 'burnley-manchester-city',
+        startTimestamp: 1606575600,
+        status: { 
+            code: 100, 
+            description: 'Ended', 
+            type: 'finished' 
+        },
+        time: { 
+            injuryTime1: 2, 
+            injuryTime2: 3 
+        },
+        tournament:
+        { 
+            name: 'Premier League',
+            slug: 'premier-league',
+            category:
+            { 
+                name: 'England',
+                slug: 'england',
+                sport: [Object],
+                id: 1,
+                flag: 'england',
+                alpha2: 'EN' 
+            },
+            uniqueTournament:
+            { 
+                name: 'Premier League',
+                slug: 'premier-league',
+                category: [Object],
+                userCount: 687552,
+                id: 17,
+                hasEventPlayerStatistics: true 
+            },
+            id: 1 
+        },
+        winnerCode: 1 
+    }
 
 
 */

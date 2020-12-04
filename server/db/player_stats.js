@@ -2,31 +2,15 @@ import { PlayerStats } from '../../imports/collections';
 
 function updatePlayerStats(data) {
 
-    const diff = timeOffset;
-    const team = data[0].team;
-    const rand = Math.floor(Math.random() * 100) + 1;
+    console.log("Updating player stats for fixture: " + data.fixtureId);
 
-    console.log("Scheduling player stats update for team nr " + team.id + " (" + team.name + "), time offset: " + diff + ". Rand: " + rand);
+    PlayerStats.upsert({
+        "id": data.fixtureId
+    },{
+        $set: data
+    });
 
-    Meteor.setTimeout(() => {
-        
-        for (let i = 0; i < data.length; i++) {
-            const player = data[i];
-            player.update = {
-                TS: new Date(),
-                rand: rand
-            }
-
-            PlayerStats.upsert({
-                "id": player.id
-            },{
-                $set: player
-            });
-        }
-
-        console.log("Data for team nr " + team.id + " (" + team.name + ") loaded. Rand: " + rand);
-
-    }, diff);
+    console.log("Finished player stats update for fixture: " + data.fixtureId);
 }
 
 function clearPlayerStats() {

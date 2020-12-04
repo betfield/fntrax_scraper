@@ -16,7 +16,7 @@ export default class PlayerStatsTable extends React.Component {
       const playerStats = [];
 
       players.sort((a, b) => {
-        return b.stats.FPts - a.stats.FPts
+        return b.statistics.rating - a.statistics.rating
       });
 
       players.forEach((player) => {
@@ -24,7 +24,7 @@ export default class PlayerStatsTable extends React.Component {
           <PlayerStatsRow
             type={this.props.type}
             player={player}
-            key={player.id} />
+            key={player.player.id} />
         );
       });
       
