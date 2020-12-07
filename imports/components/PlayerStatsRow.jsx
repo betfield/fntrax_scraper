@@ -35,12 +35,12 @@ export default class PlayerStatsRow extends React.Component {
       let headers = [];
       const player = this.props.player;
       const playerDetails = {
-        name: player.player.name,
-        //club: player.club,
-        pos: player.position,
-        //team: player.team
+        name: player.name,
+        club: player.club,
+        pos: player.pos,
+        team: player.team
       };
-      const stats = player.statistics;
+      const stats = player.stats;
       const headerType = this.props.type;
 
       // Set table headers based on the player type submitted to the component

@@ -44,4 +44,5 @@ export const URL_SOFASCORE_GAMEWEEKS = 'https://api.sofascore.com/api/v1/unique-
 export const URL_SOFASCORE_FIXTURES = 'https://api.sofascore.com/api/v1/unique-tournament/{comp_id}/season/{season_id}/events/round/{round_id}';
 export const URL_SOFASCORE_FIXTURE_INFO = 'https://api.sofascore.com/api/v1/event/{fixture_id}';
 export const URL_SOFASCORE_FIXTURE_LINEUPS = 'https://api.sofascore.com/api/v1/event/{fixture_id}/lineups';
+export const URL_SOFASCORE_FIXTURE_INCIDENTS = 'https://api.sofascore.com/api/v1/event/{fixture_id}/incidents';
 export const URL_SOFASCORE_FIXTURE_PLAYER_STATS = 'https://api.sofascore.com/api/v1/event/{fixture_id}/player/{player_id}/statistics';

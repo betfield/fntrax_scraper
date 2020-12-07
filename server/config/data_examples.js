@@ -4881,6 +4881,7 @@ Gameweeks: https://api.sofascore.com/api/v1/unique-tournament/{comp_id}/season/{
 Fixtures: https://api.sofascore.com/api/v1/unique-tournament/{comp_id}/season/{season_id}/events/round/{round_id}
 Fixture info: https://api.sofascore.com/api/v1/event/{fixture_id}
 Fixture lineups: https://api.sofascore.com/api/v1/event/{fixture_id}/lineups
+Fixture incidents: https://api.sofascore.com/api/v1/event/{fixture_id}/incidents
 Fixture player stats: https://api.sofascore.com/api/v1/event/{fixture_id}/player/{player_id}/statistics
 
 SofaSocre Lineups
