@@ -20,10 +20,12 @@ export default async function fillTeamsData(fixture) {
     const awayTeam = parseTeamsData(data.away, fixture.awayTeam, fixture.id);
 
     console.log(homeTeam);
+    console.log(awayTeam);
 
     // Upsert data to database
-    console.log("Updating players for team " + team.id + " (" + team.name + ")");
+    console.log("Updating players for team " + homeTeam.id + " (" + homeTeam.name + ")");
     //console.log(players);
 
-    updatePlayerStats(data);
+    updatePlayerStats(homeTeam);
+    updatePlayerStats(awayTeam);
 }
