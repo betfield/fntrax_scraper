@@ -5,7 +5,7 @@ import parseTeamsData from '../parser/parse_teams_data_alternative';
 const CONFIG = require('../config/config');
 
 
-export default async function fillTeamsData(fixture) {
+export default async function fillFixturePlayerStats(fixture) {
     let data;
 
     // Update fixture id in the api params mapObj

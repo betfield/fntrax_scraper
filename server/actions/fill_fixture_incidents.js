@@ -3,7 +3,7 @@ import fetchAPIData from './fetch_data';
 const CONFIG = require('../config/config');
 
 
-export default async function fillPlayerIncidentsData(fixture) {
+export default async function fillFixtureIncidentsData(fixture) {
     let data;
 
     // Update fixture id in the api params mapObj

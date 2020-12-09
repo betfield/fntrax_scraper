@@ -3,9 +3,9 @@ import puppeteer from 'puppeteer';
 import loginPage from './actions/login';
 import populateGameWeekData from './actions/populate_gameweek';
 import populateTeamsData from './actions/populate_teams';
-import fillTeamsData from './actions/fill_teams_alternative';
+import fillFixturePlayerStats from './actions/fill_fixture_player_stats';
 import fillTeamsPlayerData from './actions/fill_teams';
-import fillPlayerIncidentsData from './actions/fill_player_incidents';
+import fillFixtureIncidentsData from './actions/fill_fixture_incidents';
 import { clearPlayerStats } from './db/player_stats';
 import '../imports/publish/methods';
 import '../imports/publish/fixtures';
@@ -76,10 +76,10 @@ async function populateFantraxLeagueData() {
 
 function fill(fixture) {
   console.log("Starting data collection for fixture: " + fixture.id);    
-  fillTeamsData(fixture);
+  fillFixturePlayerStats(fixture);
 
   console.log("Starting data collection for player incindents: " + fixture.id);
-  fillPlayerIncidentsData(fixture);    
+  fillFixtureIncidentsData(fixture);    
 }
 
 function startDataCollection(fixture) {
