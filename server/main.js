@@ -4,6 +4,7 @@ import loginPage from './actions/login';
 import populateGameWeekData from './actions/populate_gameweek';
 import populateTeamsData from './actions/populate_teams';
 import fillTeamsData from './actions/fill_teams_alternative';
+import fillPlayerIncidentsData from './actions/fill_player_incidents';
 import { getAllTeams } from './db/teams';
 import { clearPlayerStats } from './db/player_stats';
 import '../imports/publish/methods';
@@ -67,6 +68,9 @@ async function run() {
 function fill(fixture) {
   console.log("Starting data collection for fixture: " + fixture.id);    
   fillTeamsData(fixture);
+  
+  console.log("Starting data collection for player incindents: " + fixture.id);
+  fillPlayerIncidentsData(fixture);    
 }
 
 function startDataCollection(fixture) {

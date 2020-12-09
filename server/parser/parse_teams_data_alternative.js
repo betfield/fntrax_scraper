@@ -5,7 +5,7 @@ export default function parseTeamsData(data, team, fixtureId) {
     const players = data.players;
     const result = [];
 
-    players.forEach((playerItem, idx) => {
+    players.forEach((playerItem) => {
         const player = {};
 
         // Add fixture id
