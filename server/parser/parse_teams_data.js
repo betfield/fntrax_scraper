@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { updatePlayerStats } from '../db/player_stats';
 
 export default function parseTeamsData(data) {
@@ -9,13 +10,15 @@ export default function parseTeamsData(data) {
             
     players.forEach((player, idx) => {
         players[idx].team = team;
-        players[idx].gw = Meteor.settings.public.gameWeek;
+        players[idx].gw = Meteor.settings.public.apiParams.round_id;
     })
 
     // Upsert data to database
     console.log("Updating players for team " + team.id + " (" + team.name + ")");
     //console.log(players);
     updatePlayerStats(players);
+
+    return players;
 }
 
 function parseGoalkeeperData(data) {

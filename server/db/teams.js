@@ -1,6 +1,6 @@
 import { Teams } from '../../imports/collections';
 
-function getAllTeams(gameweek) {
+function getAllTeams() {
     return Teams.find().fetch();
 }
 

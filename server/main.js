@@ -4,18 +4,19 @@ import loginPage from './actions/login';
 import populateGameWeekData from './actions/populate_gameweek';
 import populateTeamsData from './actions/populate_teams';
 import fillTeamsData from './actions/fill_teams_alternative';
+import fillTeamsPlayerData from './actions/fill_teams';
 import fillPlayerIncidentsData from './actions/fill_player_incidents';
-import { getAllTeams } from './db/teams';
 import { clearPlayerStats } from './db/player_stats';
 import '../imports/publish/methods';
 import '../imports/publish/fixtures';
 import '../imports/publish/playerstats';
+import { getAllTeams } from './db/teams';
 
 const CONFIG = require('./config/config');
 
 TIMER = false;
 
-let page, teams;
+let page;
 let pages = [];
 
 // Create a global variable for update time offset and gameweek, default based on config
@@ -31,11 +32,12 @@ Meteor.startup(() => {
   // Populate game week fixtures data
   populateGameWeekData();
 
-  //run();
+  // Populate Fantrax league teams data
+  populateFantraxLeagueData();
   
 });
 
-async function run() {
+async function populateFantraxLeagueData() {
 
   const browser = await puppeteer.launch({
     headless: Meteor.settings.public.headless,
@@ -54,11 +56,18 @@ async function run() {
 
     // Populate League Teams' data
     await populateTeamsData(page);
+    console.log("Teams populated");
 
-    // Get all teams from database
-    teams = getAllTeams();
-    console.log("Teams loaded from database:");
-    console.log(teams);
+    // Populate Teams Players
+    const teams = getAllTeams();
+    await fillTeamsPlayerData(page, teams);
+    console.log("Teams' players populated");
+
+    //await page.close();
+    console.log('Page closed');
+        
+    //await browser.close();
+		console.log('Browser closed');
 
   } catch (e) {
     console.log(e);
@@ -68,7 +77,7 @@ async function run() {
 function fill(fixture) {
   console.log("Starting data collection for fixture: " + fixture.id);    
   fillTeamsData(fixture);
-  
+
   console.log("Starting data collection for player incindents: " + fixture.id);
   fillPlayerIncidentsData(fixture);    
 }

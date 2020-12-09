@@ -2,15 +2,22 @@ import { PlayerStats } from '../../imports/collections';
 
 function updatePlayerStats(data) {
 
-    console.log("Updating player stats for fixture: " + data.fixtureId);
+    const team = data[0].team;
 
-    PlayerStats.upsert({
-        "id": data.fixtureId
-    },{
-        $set: data
-    });
+    for (let i = 0; i < data.length; i++) {
+        const player = data[i];
+        player.update = {
+            TS: new Date()
+        }
 
-    console.log("Finished player stats update for fixture: " + data.fixtureId);
+        PlayerStats.upsert({
+            "id": player.id
+        },{
+            $set: player
+        });
+    }
+
+    console.log("Player data for team nr " + team.id + " (" + team.name + ") loaded.");
 }
 
 function clearPlayerStats() {

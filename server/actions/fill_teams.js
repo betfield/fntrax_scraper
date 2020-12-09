@@ -1,73 +1,43 @@
+import { Meteor } from 'meteor/meteor';
 import parseTeamsData from '../parser/parse_teams_data';
-import { getCurrentGameWeek } from '../main';
 
 const CONFIG = require('../config/config');
 
-export default function startFillTeamsData(pages, teams) {
+export default async function fillLeagueTeamsData(page, teams) {
     const nrTeams = teams.length;
-    const nrPages = pages.length;
-
     console.log("Number of teams: " + nrTeams);
-    console.log("Number of pages: " + nrPages);
 
-    let teamsForPage = [];
+    const result = [];
     
-    // Iterate over all open pages
-    for (let i = 0; i < nrPages; i++) {
-        console.log("Iterating Page nr: " + i);
-        // Iterate over all teams to select team numbers for specific page    
-        for(let j = 0; j < nrTeams; j++) {
-            console.log("Iterating Team nr: " + j);
-            console.log(j % nrPages);
-            // If the modal of the team nr and page nr is 0 then add this team to the respective page
-            if (j % nrPages === i) {
-                teamsForPage.push(teams[j]);
-            }
-        }
-        
-        restartFillTeamsData(pages[i], teamsForPage, 0);
-
-        teamsForPage = [];
+    for(let i = 0; i < nrTeams; i++) {
+        await fillTeamsData(page, teams[i]).then((data)=>{
+            console.log(data);
+            result.push(data);
+        });
     }
+    
+    return result;
 }
 
-function fillTeamsData(page, teams, iter) {
-    console.log("Fill teams data started, iterator:" + iter);
-    console.log(teams);
-    const team = teams[iter];
+async function fillTeamsData(page, team) {
+    console.log("Fill teams data started:");
+    console.log(team);
 
     return page.goto(constructTeamURL(team))
         .then(() => {
-            page.waitForResponse(response => response.url() === CONFIG.URL_TEAM_RESP 
+            return page.waitForResponse(response => response.url() === CONFIG.URL_TEAM_RESP 
                             && response.status() === 200 
                             && response._request._postData.includes("getTeamRosterInfo"))
                 .then( response => {
                     console.log("Parsing response for team: " + team.id);
-                    parseResponse(response, team);
+                    return parseResponse(response, team);
                 })
                 .catch( reason => {
                     console.error("Error! WaitForResponse for " + team.id + " failed! " + reason);
-                })
-                .finally( () => {
-                    console.log("Finally block, restarting fill teams");
-                    restartFillTeamsData(page, teams, ++iter);
                 });
         }).catch(reason => {
             console.error('Error! Promise rejected! Reason: ' + reason);
-            //restartFillTeamsData(page, teams, ++iter);
         });    
-}
-
-function restartFillTeamsData(page, teams, iter) {
-    console.log("Restart fill teams, iterator:" + iter);
-    // Restart teams iterator from 0 if max length achieved
-    if (iter >= teams.length) {
-        iter = 0;
-    }
-
-    if (TIMER) {
-        fillTeamsData(page, teams, iter);
-    }
 }
 
 function constructTeamURL(team) {
@@ -75,7 +45,7 @@ function constructTeamURL(team) {
     let params = CONFIG.URL_PARAMS;
 
     params.teamId = team.fId;
-    params.period = getCurrentGameWeek();
+    params.period = Meteor.settings.public.apiParams.round_id;
 
     const keys = Object.keys(params);
     
@@ -88,10 +58,10 @@ function constructTeamURL(team) {
     return result;
 }
 
-function parseResponse(response, team) {
+async function parseResponse(response, team) {
     return response.json()
         .then(res => { 
-            parseTeamsData({ "stats": res.responses[0].data.tables, "team": team });
+             return parseTeamsData({ "stats": res.responses[0].data.tables, "team": team });
         })
         .catch(reason => {
             console.error('Error! ParseResponse failed! Reason: ' + reason);

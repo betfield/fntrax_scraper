@@ -2,8 +2,8 @@
 	"public" : {
 		"timeDiff": 0,
 		"hoursOffset": -2,
-		"headless": false,
-		"args": "",
+		"headless": true,
+		"args": "--disable-gl-drawing-for-tests",
 		"apiParams": {
 			"comp_id":"17",
 			"season_id":"29415",
