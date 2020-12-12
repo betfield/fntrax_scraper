@@ -3,7 +3,8 @@ import { updatePlayerStats } from '../db/player_stats';
 const SCORING = require('../config/fantrax_scring');
 
 export default function parseTeamsData(data, team, fixtureId) {
-    console.log("Parse teams data for: ");
+    console.log("Parse player stats for team: " + team.nameCode);
+    
     const players = data.players;
     const result = [];
 
@@ -86,14 +87,23 @@ function getPlayerGoalsAllowed(playerId) {
 };
 
 function calculatePlayerFantasyPoints(pos, stats) {
-    SCORING.FANTRAX_SCORING[pos].forEach(elem => { 
-        console.log(elem);
+    let result = {};
+
+    // Iterate over map based on player position and generate fantasy scores
+    SCORING.FANTRAX_SCORING[pos].forEach((value, key, map) => { 
+        result[key] = parseFloat(stats[key] * value);
     });
 
-    return stats;
+    return result;
 }
 
 function playerTotalPoints(stats) {
-    // TODO: add logic to calclulate total points
-    return 55;
+    let result = 0;
+    const m = new Map(Object.entries(stats));
+
+    m.forEach((value, key, map) => {
+        result += value;
+    });
+
+    return result;
 }

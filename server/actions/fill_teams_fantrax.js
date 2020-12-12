@@ -5,7 +5,7 @@ import parseTeamsData from '../parser/parse_teams_data_fantrax';
 const CONFIG = require('../config/config');
 
 
-export default async function fillFixturePlayerStats(fixture) {
+export default async function fillTeamsData(fixture) {
     let data;
 
     // Update fixture id in the api params mapObj
@@ -17,15 +17,15 @@ export default async function fillFixturePlayerStats(fixture) {
     data = await fetchAPIData(CONFIG.URL_SOFASCORE_FIXTURE_LINEUPS, mapObj);
     
     const homeTeam = parseTeamsData(data.home, fixture.homeTeam, fixture.id);
-    //const awayTeam = parseTeamsData(data.away, fixture.awayTeam, fixture.id);
+    const awayTeam = parseTeamsData(data.away, fixture.awayTeam, fixture.id);
 
     console.log(homeTeam);
-    //console.log(awayTeam);
+    console.log(awayTeam);
 
     // Upsert data to database
     console.log("Updating players for team " + homeTeam.id + " (" + homeTeam.name + ")");
     //console.log(players);
 
-    //updatePlayerStats(homeTeam);
-    //updatePlayerStats(awayTeam);
+    updatePlayerStats(homeTeam);
+    updatePlayerStats(awayTeam);
 }

@@ -3,7 +3,7 @@ export const FANTRAX_SCORING = {
         ["AER", 1],
         ["CLR", 0.25],
         ["CS", 8],
-        ["GA", -2],
+        ["GAO", -2],
         ["Int", 1],
         ["KP", 2],
         ["PKS", 8],
