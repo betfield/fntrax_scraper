@@ -1,5 +1,7 @@
 import { updatePlayerStats } from '../db/player_stats';
 
+const SCORING = require('../config/fantrax_scring');
+
 export default function parseTeamsData(data, team, fixtureId) {
     console.log("Parse teams data for: ");
     const players = data.players;
@@ -84,7 +86,10 @@ function getPlayerGoalsAllowed(playerId) {
 };
 
 function calculatePlayerFantasyPoints(pos, stats) {
-    // TODO: add logic to calclulate points for GK and OF
+    SCORING.FANTRAX_SCORING[pos].forEach(elem => { 
+        console.log(elem);
+    });
+
     return stats;
 }
 
