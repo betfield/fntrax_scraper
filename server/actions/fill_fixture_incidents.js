@@ -10,15 +10,15 @@ export default async function fillFixtureIncidentsData(fixture) {
         fixture_id: fixture.id
     };
 
+    // Fetch fixture data
+    const fixtureUpdate = await fetchAPIData(CONFIG.URL_SOFASCORE_FIXTURE_INFO, mapObj);
+    console.log(fixtureUpdate.event);
+
     // Fetch fixture incidents data
     const incidents = await fetchAPIData(CONFIG.URL_SOFASCORE_FIXTURE_INCIDENTS, mapObj);
     console.log(incidents.incidents);
-    updateFixtureStatus(fixture, incidents.incidents);
 
-    // Upsert data to database
-    //console.log("Updating players for team " + homeTeam.id + " (" + homeTeam.name + ")");
-    //console.log(players);
+    updateFixtureStatus(fixtureUpdate.event, incidents.incidents);
 
-    //updatePlayerStats(homeTeam);
-    //updatePlayerStats(awayTeam);
+    console.log("Fixture status updated: " + fixture.id);
 }

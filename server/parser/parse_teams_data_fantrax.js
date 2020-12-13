@@ -8,7 +8,7 @@ export default function parseTeamsData(data, team, fixtureId) {
     const players = data.players;
     const result = [];
 
-    const incidents = getFixture(fixtureId).incidents;
+    const incidents = getFixture(fixtureId)[0].incidents;
 
     players.forEach((playerItem) => {
         const player = {};
@@ -75,10 +75,8 @@ function getPlayerCards(player, incidents) {
     let YC = 0;
     let SYC = 0;
     let RC = 0;
-    
-    incidents.forEach(incident => {
-        
 
+    incidents.forEach((incident, idx, arr) => {
         if (incident.player !== undefined && incident.player.id === player.id) {
              if (incident.incidentType === "card") {
                  if (incident.incidentClass === "yellow") YC++;
@@ -87,14 +85,6 @@ function getPlayerCards(player, incidents) {
              }
         }
     })
-    let result = {
-        YC:     YC,
-        SYC:    SYC,
-        RC:     RC
-    }
-    console.log("Yellow cards for player: ");
-    console.log(player);
-    console.log(result);
 
     return {
         YC:     YC,

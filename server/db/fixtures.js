@@ -32,12 +32,18 @@ function updateFixtureStatus(fixture, incidents) {
     Fixtures.upsert({
         "id": fixture.id
     },{
-        $set: fixture
+        $set: {
+            homeScore:  fixture.homeScore,
+            awayScore:  fixture.awayScore,
+            winnerCode: fixture.winnerCode,
+            status:     fixture.status,
+            incidents:  fixture.incidents
+        } 
     });
 }
 
 function getFixture(fixtureId) {
-    return Fixtures.findOne({"id": fixtureId});
+    return Fixtures.find({"id": fixtureId}).fetch();
 }
 
 export { updateActiveGameweek, updateFixtureStatus, getFixture }

@@ -29,10 +29,10 @@ console.log("User needs to select the appropriate fixture from the Dashboard to 
 Meteor.startup(() => {
 
   // Populate game week fixtures data
-  //populateGameWeekData();
+  populateGameWeekData();
 
   // Populate Fantrax league teams data
-  //populateFantraxLeagueData();
+  populateFantraxLeagueData();
   
 });
 
