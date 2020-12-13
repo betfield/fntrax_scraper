@@ -104,7 +104,6 @@ export default class PlayerStatsContainer extends TrackerReact(React.Component) 
             if (subPlayerStats.ready()) {
         
                 const playerStats = PlayerStats.find({}).fetch();
-                const currentFixture = Fixtures.findOne({});
                 
                 const home = {
                     OF: getClubPlayers(this.state.currentFixture.homeTeam.nameCode, playerStats, false),

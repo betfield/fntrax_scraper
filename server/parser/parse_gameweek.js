@@ -20,7 +20,9 @@ const CLUBS = {
     'TOT': 'Tottenham Hotspur',
     'LIV': 'Liverpool',
     'MUN': 'Manchester United',
-    'NOR': 'Norwich City'
+    'NOR': 'Norwich City',
+    'LUN': 'Leeds United',
+    'WBA': 'West Bromwich Albion'
     };
 
 export default function parseGameweekData(text) {

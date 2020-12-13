@@ -2,7 +2,7 @@ import { Fixtures } from "../collections";
 
 const CONFIG = require('../config/config');
 
-// Publish all players from the local DB
+// Publish all fixtures from the local DB
 Meteor.publish("getFixture", function (fixtureId) {
     let self = this;
 

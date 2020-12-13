@@ -4,6 +4,6 @@ import { Mongo } from 'meteor/mongo';
 PlayerStats = new Mongo.Collection("playerstats");
 Fixtures = new Mongo.Collection("fixtures");
 Teams = new Mongo.Collection("teams");
-Params = new Mongo.Collection("params");
+Clubs = new Mongo.Collection("clubs");
 
-export { PlayerStats, Fixtures, Teams, Params };
+export { PlayerStats, Fixtures, Teams, Clubs };

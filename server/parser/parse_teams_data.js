@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { updatePlayerStats } from '../db/player_stats';
+import { getAllClubs } from '../db/clubs';
 
 export default function parseTeamsData(data) {
     const stats = data.stats;
@@ -40,7 +41,7 @@ function parseGoalkeeperData(data) {
             player.name = data[i].scorer.name;
 
             // Add player club
-            player.club = data[i].scorer.teamShortName;
+            player.club = validateClub(data[i].scorer);
 
             // Add player stats
             player.stats = {
@@ -85,9 +86,9 @@ function parseOutfielderData(data) {
 
             // Add player name
             player.name = data[i].scorer.name;
-
+            
             // Add player club
-            player.club = data[i].scorer.teamShortName;
+            player.club = validateClub(data[i].scorer);
 
             // Add player stats
             // If result is NaN then use 0 instead
@@ -121,4 +122,14 @@ function parseOutfielderData(data) {
     }
 
     return players;
+}
+
+function validateClub(player) {
+    const clubs = getAllClubs();
+
+    for (let i = 0; i < clubs.length; i++) {
+        if (clubs[i].nameCode === player.teamShortName || clubs[i].name === player.teamName) {
+            return clubs[i].nameCode
+        }
+    }
 }

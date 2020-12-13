@@ -17,7 +17,6 @@ const CONFIG = require('./config/config');
 TIMER = false;
 
 let page;
-let pages = [];
 
 // Create a global variable for update time offset and gameweek, default based on config
 timeOffset = Meteor.settings.public.timeDiff;
@@ -30,10 +29,10 @@ console.log("User needs to select the appropriate fixture from the Dashboard to 
 Meteor.startup(() => {
 
   // Populate game week fixtures data
-  //populateGameWeekData();
+  populateGameWeekData();
 
   // Populate Fantrax league teams data
-  //populateFantraxLeagueData();
+  populateFantraxLeagueData();
   
 });
 
@@ -52,7 +51,6 @@ async function populateFantraxLeagueData() {
   try {
     // Start login function with tries counter set to 1
     page = await loginPage(page, 1);
-    pages.push(page);
 
     // Populate League Teams' data
     await populateTeamsData(page);
