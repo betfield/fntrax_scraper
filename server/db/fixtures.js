@@ -26,4 +26,18 @@ function updateActiveGameweek(events) {
     })
 }
 
-export { updateActiveGameweek }
+function updateFixtureStatus(fixture, incidents) {
+    fixture.incidents = incidents;
+
+    Fixtures.upsert({
+        "id": fixture.id
+    },{
+        $set: fixture
+    });
+}
+
+function getFixture(fixtureId) {
+    return Fixtures.findOne({"id": fixtureId});
+}
+
+export { updateActiveGameweek, updateFixtureStatus, getFixture }

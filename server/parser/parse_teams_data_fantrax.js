@@ -1,4 +1,4 @@
-import { updatePlayerStats } from '../db/player_stats';
+import { getFixture } from '../db/fixtures';
 
 const SCORING = require('../config/fantrax_scring');
 
@@ -7,6 +7,8 @@ export default function parseTeamsData(data, team, fixtureId) {
     
     const players = data.players;
     const result = [];
+
+    const incidents = getFixture(fixtureId).incidents;
 
     players.forEach((playerItem) => {
         const player = {};
@@ -28,8 +30,8 @@ export default function parseTeamsData(data, team, fixtureId) {
 
         // Gather player stats
         let stats = parsePlayerStats(playerItem.statistics);
-        Object.assign(stats, getPlayerCards(playerItem.player.id));
-        Object.assign(stats, getPlayerGoalsAllowed(playerItem.player.id));
+        Object.assign(stats, getPlayerCards(playerItem.player, incidents));
+        Object.assign(stats, getPlayerGoalsAllowed(playerItem.player, incidents));
         
         // Calculate points based on player stats
         player.stats = calculatePlayerFantasyPoints(player.pos, stats);
@@ -69,17 +71,41 @@ function parsePlayerStats(stats) {
     };
 }
 
-function getPlayerCards(playerId) {
-    // TODO: add logic to calclulate cards
+function getPlayerCards(player, incidents) {
+    let YC = 0;
+    let SYC = 0;
+    let RC = 0;
+    
+    incidents.forEach(incident => {
+        
+
+        if (incident.player !== undefined && incident.player.id === player.id) {
+             if (incident.incidentType === "card") {
+                 if (incident.incidentClass === "yellow") YC++;
+                 if (incident.incidentClass === "yellowRed") SYC++;
+                 if (incident.incidentClass === "red") RC++;
+             }
+        }
+    })
+    let result = {
+        YC:     YC,
+        SYC:    SYC,
+        RC:     RC
+    }
+    console.log("Yellow cards for player: ");
+    console.log(player);
+    console.log(result);
+
     return {
-        YC:     0,
-        SYC:    0,
-        RC:     0
+        YC:     YC,
+        SYC:    SYC,
+        RC:     RC
     }
 };
 
-function getPlayerGoalsAllowed(playerId) {
+function getPlayerGoalsAllowed(player, incidents) {
     // TODO: add logic to calclulate allowed goals
+
     return {
         GAO:    0,
         CS:     0

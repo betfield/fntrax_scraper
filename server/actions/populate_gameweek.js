@@ -1,4 +1,4 @@
-import { updateActiveGameweek } from '../db/gameweek';
+import { updateActiveGameweek } from '../db/fixtures';
 import fetchAPIData from './fetch_data';
 
 const CONFIG = require('../config/config');
