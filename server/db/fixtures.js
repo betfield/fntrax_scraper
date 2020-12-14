@@ -42,8 +42,18 @@ function updateFixtureStatus(fixture, incidents) {
     });
 }
 
+function updateFixtureLineupData(fixtureId, lineups) {
+    Fixtures.upsert({
+        "id": fixtureId
+    },{
+        $set: {
+            lineups:  lineups
+        } 
+    });
+}
+
 function getFixture(fixtureId) {
     return Fixtures.find({"id": fixtureId}).fetch();
 }
 
-export { updateActiveGameweek, updateFixtureStatus, getFixture }
+export { updateActiveGameweek, updateFixtureStatus, updateFixtureLineupData, getFixture }

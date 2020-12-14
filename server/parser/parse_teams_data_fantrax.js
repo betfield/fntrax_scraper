@@ -9,6 +9,7 @@ export default function parseTeamsData(data, team, fixtureId) {
     const result = [];
 
     const incidents = getFixture(fixtureId)[0].incidents;
+    const goals = getFixtureGoals(incidents);
 
     players.forEach((playerItem) => {
         const player = {};
@@ -31,7 +32,7 @@ export default function parseTeamsData(data, team, fixtureId) {
         // Gather player stats
         let stats = parsePlayerStats(playerItem.statistics);
         Object.assign(stats, getPlayerCards(playerItem.player, incidents));
-        Object.assign(stats, getPlayerGoalsAllowed(playerItem.player, incidents));
+        Object.assign(stats, getPlayerGoalsAllowed(playerItem.player, goals));
         
         // Calculate points based on player stats
         player.stats = calculatePlayerFantasyPoints(player.pos, stats);
@@ -76,13 +77,13 @@ function getPlayerCards(player, incidents) {
     let SYC = 0;
     let RC = 0;
 
-    incidents.forEach((incident, idx, arr) => {
+    incidents.forEach(incident => {
         if (incident.player !== undefined && incident.player.id === player.id) {
-             if (incident.incidentType === "card") {
-                 if (incident.incidentClass === "yellow") YC++;
-                 if (incident.incidentClass === "yellowRed") SYC++;
-                 if (incident.incidentClass === "red") RC++;
-             }
+            if (incident.incidentType === "card") {
+                if (incident.incidentClass === "yellow") YC++;
+                if (incident.incidentClass === "yellowRed") SYC++;
+                if (incident.incidentClass === "red") RC++;
+            }
         }
     })
 
@@ -93,8 +94,32 @@ function getPlayerCards(player, incidents) {
     }
 };
 
-function getPlayerGoalsAllowed(player, incidents) {
-    // TODO: add logic to calclulate allowed goals
+function getFixtureGoals(incidents) {
+    const result = [];
+
+    incidents.forEach(incident => {
+        if (incident.incidentType === "goal") {
+            result.push(incident);
+
+            console.log("Goal:");
+            console.log(incident);
+        }
+    })
+
+    return result;
+};
+
+function getPlayerGoalsAllowed(player, goals) {
+    let GAO = 0;
+    let CS = 0;
+
+    // Check when player entered game
+    // Check when player exited game
+    // Calculate how many goals were scored during this period
+
+    goals.forEach(goal => {
+        
+    })
 
     return {
         GAO:    0,
