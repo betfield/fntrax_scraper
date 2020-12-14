@@ -19,8 +19,8 @@ export default async function fillFixturePlayerStats(fixture) {
     updateFixtureLineupData(fixture.id, lineups);
 
     // Parse lineup data for home and away teams
-    const homeTeamPlayers = parseTeamsData(lineups.home, fixture.homeTeam, fixture.id);
-    const awayTeamPlayers = parseTeamsData(lineups.away, fixture.awayTeam, fixture.id);
+    const homeTeamPlayers = parseTeamsData(lineups.home, fixture.homeTeam, fixture.id, true);
+    const awayTeamPlayers = parseTeamsData(lineups.away, fixture.awayTeam, fixture.id, false);
 
     // Upsert data to database
     console.log("Updating players for team " + fixture.homeTeam.name + " (" + fixture.homeTeam.nameCode + ")");

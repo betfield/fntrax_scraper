@@ -2,14 +2,19 @@ import { getFixture } from '../db/fixtures';
 
 const SCORING = require('../config/fantrax_scring');
 
-export default function parseTeamsData(data, team, fixtureId) {
-    console.log("Parse player stats for team: " + team.nameCode);
-    
-    const players = data.players;
+export default function parseTeamsData(lineups, team, fixtureId, isHome) {
+    const players = lineups.players;
+    const fixture = getFixture(fixtureId)[0];
     const result = [];
 
-    const incidents = getFixture(fixtureId)[0].incidents;
-    const goals = getFixtureGoals(incidents);
+    console.log("Parse player stats for team: " + team.nameCode);
+
+    const incidents = fixture.incidents;
+
+    const goals = getFixtureGoals(incidents, isHome);
+    const substitutions = getFixtureSubstitutions(incidents, isHome);
+
+    const playerStartEndTime = getPlayerStartEndTime(players, substitutions);
 
     players.forEach((playerItem) => {
         const player = {};
@@ -32,7 +37,7 @@ export default function parseTeamsData(data, team, fixtureId) {
         // Gather player stats
         let stats = parsePlayerStats(playerItem.statistics);
         Object.assign(stats, getPlayerCards(playerItem.player, incidents));
-        Object.assign(stats, getPlayerGoalsAllowed(playerItem.player, goals));
+        Object.assign(stats, getPlayerGoalsAllowed(playerItem.player, playerStartEndTime, goals));
         
         // Calculate points based on player stats
         player.stats = calculatePlayerFantasyPoints(player.pos, stats);
@@ -94,36 +99,59 @@ function getPlayerCards(player, incidents) {
     }
 };
 
-function getFixtureGoals(incidents) {
+function getFixtureGoals(incidents, isHome) {
     const result = [];
 
     incidents.forEach(incident => {
-        if (incident.incidentType === "goal") {
+        if (incident.incidentType === "goal" && incident.isHome === !isHome) {
             result.push(incident);
-
-            console.log("Goal:");
-            console.log(incident);
         }
     })
 
     return result;
 };
 
-function getPlayerGoalsAllowed(player, goals) {
-    let GAO = 0;
-    let CS = 0;
+function getFixtureSubstitutions(incidents, isHome) {
+    const result = [];
 
-    // Check when player entered game
-    // Check when player exited game
-    // Calculate how many goals were scored during this period
-
-    goals.forEach(goal => {
-        
+    incidents.forEach(incident => {
+        if (incident.incidentType === "substitution" && incident.isHome === isHome) {
+            result.push(incident);
+        }
     })
 
+    return result;
+};
+
+function getPlayerGoalsAllowed(player, startEndTimes, goals) {
+    let goalsAllowed = 0;
+    let cleanSheet = 0;
+
+    const playerStartEndTime = startEndTimes.find(o => o.id === player.id);
+    
+    if (playerStartEndTime !== undefined) {
+        goals.forEach(goal => {
+            let addedTime = 0;
+
+            if (goal.addedTime !== undefined) {
+                addedTime = goal.addedTime;
+            }
+
+            let time = goal.time + addedTime;
+
+            if (time > playerStartEndTime.startMin && time <= playerStartEndTime.endMin) {
+                goalsAllowed++;
+            }
+        })
+    }
+
+    if (goalsAllowed = 0 && (playerStartEndTime.endMin - playerStartEndTime.startMin) >= 60) {
+        cleanSheet = 1;
+    }
+
     return {
-        GAO:    0,
-        CS:     0
+        GAO:    goalsAllowed,
+        CS:     cleanSheet
     }
 };
 
@@ -144,6 +172,45 @@ function playerTotalPoints(stats) {
 
     m.forEach((value, key, map) => {
         result += value;
+    });
+
+    return result;
+}
+
+// TODO: Add additional time on top of 90 for end time
+function getPlayerStartEndTime(players, substitutions) {
+    const result = [];
+
+    players.forEach(player => {
+        let startMin = 0;
+        let endMin = 0;
+
+        if (player.substitute) {
+            substitutions.forEach(sub => {
+                if (player.player.id === sub.playerIn.id) {
+                    let addedTime = 0;
+
+                    if (sub.addedTime !== undefined) {
+                        addedTime = sub.addedTime;
+                    }
+
+                    startMin = sub.time + addedTime;
+                    endMin = startMin + player.statistics.minutesPlayed;
+                }
+            });
+        } else {
+            startMin = 0;
+            endMin = player.statistics.minutesPlayed;
+        }
+
+        // Only add player to the result in case played more than 0 minutes
+        if (endMin > 0) {
+            result.push({
+                id: player.player.id,
+                startMin: startMin,
+                endMin: endMin
+            });
+        }
     });
 
     return result;
