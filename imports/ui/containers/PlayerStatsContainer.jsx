@@ -99,11 +99,13 @@ export default class PlayerStatsContainer extends TrackerReact(React.Component) 
 
     render () {
         if (this.state.currentFixture !== null) {
+            const subFixture = Meteor.subscribe("getActiveFixture");
             const subPlayerStats = Meteor.subscribe("playerstats");
 
-            if (subPlayerStats.ready()) {
+            if (subPlayerStats.ready() && subFixture.ready()) {
         
                 const playerStats = PlayerStats.find({}).fetch();
+                const activeFixture = Fixtures.find({}).fetch()[0];
                 
                 const home = {
                     OF: getClubPlayers(this.state.currentFixture.homeTeam.nameCode, playerStats, false),
@@ -121,7 +123,7 @@ export default class PlayerStatsContainer extends TrackerReact(React.Component) 
                             <Event home={home} away={away} />
                             <Row>
                                 <Col>
-                                    <Match fixture={this.state.currentFixture}/>
+                                    <Match fixture={activeFixture}/>
                                     <Row>
                                         <Col xl="6">
                                             <PlayerStatsTable players={home.OF} type={"OF"} />

@@ -2,8 +2,8 @@ import { Fixtures } from "../collections";
 
 const CONFIG = require('../config/config');
 
-// Publish all fixtures from the local DB
-Meteor.publish("getFixture", function (fixtureId) {
+// Publish active fixtures from the local DB
+Meteor.publish("getActiveFixture", function (fixtureId) {
     let self = this;
 
     let subHandle = Fixtures.find({"fixture.id": fixtureId}).observeChanges({

@@ -9,10 +9,15 @@ export default function parseTeamsData(lineups, team, fixtureId, isHome) {
 
     console.log("Parse player stats for team: " + team.nameCode);
 
-    const incidents = fixture.incidents;
+    let incidents = [];
+    let goals = [];
+    let substitutions = [];
 
-    const goals = getFixtureGoals(incidents, isHome);
-    const substitutions = getFixtureSubstitutions(incidents, isHome);
+    if (fixture.incidents !== undefined) {
+        incidents = fixture.incidents;
+        goals = getFixtureGoals(incidents, isHome);
+        substitutions = getFixtureSubstitutions(incidents, isHome);
+    } 
 
     const playerStartEndTime = getPlayerStartEndTime(players, substitutions);
 
@@ -39,6 +44,9 @@ export default function parseTeamsData(lineups, team, fixtureId, isHome) {
         Object.assign(stats, getPlayerCards(playerItem.player, incidents));
         Object.assign(stats, getPlayerGoalsAllowed(playerItem.player, playerStartEndTime, goals));
         
+        // Add player stats (raw)
+        player.statsRaw = stats;
+
         // Calculate points based on player stats
         player.stats = calculatePlayerFantasyPoints(player.pos, stats);
 

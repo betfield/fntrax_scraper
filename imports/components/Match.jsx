@@ -32,11 +32,11 @@ export default class Match extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.fixture.homeScore !== this.props.fixture.homeScore) {
+        if (prevProps.fixture.homeScore.current !== this.props.fixture.homeScore.current) {
             this.updateAndNotify("home");
         }
 
-        if (prevProps.fixture.awayScore !== this.props.fixture.awayScore) {
+        if (prevProps.fixture.awayScore.current !== this.props.fixture.awayScore.current) {
             this.updateAndNotify("away");
         }
     }
