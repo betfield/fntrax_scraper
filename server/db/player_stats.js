@@ -22,35 +22,31 @@ function updatePlayerStats(data) {
 
 function updateFixturePlayerStats(club, clubPlayers) {
     const teamPlayerStats = getTeamPlayerStatsPerClub(club);
-    const diff = timeOffset;
     
-    Meteor.setTimeout(() => {
+    for (let i = 0; i < teamPlayerStats.length; i++) {
+        const player = teamPlayerStats[i];
+        const playerDataForUpdate = findTeamPlayerFromClubStats(teamPlayerStats[i], clubPlayers);
+        
+        if (playerDataForUpdate !== undefined) {
+            const stats = new Map(Object.entries(playerDataForUpdate.stats));
 
-        for (let i = 0; i < teamPlayerStats.length; i++) {
-            const player = teamPlayerStats[i];
-            const playerDataForUpdate = findTeamPlayerFromClubStats(teamPlayerStats[i], clubPlayers);
-            
-            if (playerDataForUpdate !== undefined) {
-                const stats = new Map(Object.entries(playerDataForUpdate.stats));
-
-                player.update = {
-                    TS: new Date()
-                }
-                
-                stats.forEach((value, key, map) => {
-                    player.stats[key] = value;
-                })
-
-                PlayerStats.upsert({
-                    "id": player.id
-                },{
-                    $set: player
-                });
-                console.log("Player data updated for player: " + player.name + "(" + player.id + ")");
-                console.log(stats);
+            player.update = {
+                TS: new Date()
             }
+            
+            stats.forEach((value, key, map) => {
+                player.stats[key] = value;
+            })
+
+            PlayerStats.upsert({
+                "id": player.id
+            },{
+                $set: player
+            });
+            console.log("Player data updated for player: " + player.name + "(" + player.id + ")");
+            console.log(stats);
         }
-    }, diff);
+    }
 
     console.log("Player data for club " + club + " updated from fixture.");
 }
