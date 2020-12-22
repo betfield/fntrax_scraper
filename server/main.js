@@ -166,7 +166,10 @@ const updateFixturePlayerStatsWithDelay = (fixture, homeTeamPlayers, awayTeamPla
   console.log(`Waiting: ${delay / 1000} seconds.`);
   return new Promise((resolve) => {
       setTimeout(() => {
-        updateFixturePlayerStatsNow(fixture, homeTeamPlayers, awayTeamPlayers);
+        console.log("Hereee...");
+        
+        Meteor.wrapAsync(updateFixturePlayerStatsNow(fixture, homeTeamPlayers, awayTeamPlayers));
+        
         resolve(delay);
       }, delay);
   });
@@ -184,8 +187,8 @@ const updateFixturePlayerStatsNow = (fixture, homeTeamPlayers, awayTeamPlayers) 
 }
 
 const waitForNextFixturePlayerStats = () => {
-  // Set waiting delay as interval for the data collection + 15 sec
-  const delay = CONFIG.dataCollectionInterval + 15000;
+  // Set waiting delay as interval for the data collection + 5 sec
+  const delay = CONFIG.dataCollectionInterval + 5000;
 
   return new Promise((resolve) => {
     console.log(`...waiting for ${delay / 1000} sec`);
