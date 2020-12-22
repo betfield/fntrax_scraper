@@ -44,7 +44,7 @@ function updateFixturePlayerStats(club, clubPlayers) {
                 $set: player
             });
             console.log("Player data updated for player: " + player.name + "(" + player.id + ")");
-            console.log(stats);
+            //console.log(stats);
         }
     }
 

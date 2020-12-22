@@ -73,28 +73,45 @@ async function populateFantraxLeagueData() {
   }
 }
 
-function fill(fixture) {
+async function fill(fixture) {
   console.log("Starting data collection for fixture: " + fixture.id);    
-  fixturePlayerStats.push(getFixturePlayerStats(fixture));
+  fixturePlayerStats.push(await getFixturePlayerStats(fixture));
 
-  console.log("Starting data collection for player incindents: " + fixture.id);
-  fillFixtureIncidentsData(fixture);    
+  console.log("Starting data collection for player incidents: " + fixture.id);
+  await fillFixtureIncidentsData(fixture);
+  return fixture;
 }
 
 function startDataCollectionForFixture(fixture) {
+  // Initiate parameters
   const iter = 0;
+  fixturePlayerStats = [];
   
   // Start data collection for selected fixture
-  setInterval(()=> {
-    if (TIMER) fill(fixture);
+  const dataCollectionInterval = setInterval(()=> {
+    if (TIMER) {
+      fill(fixture)
+        .then(() => {
+          // Only do this part in case there is no delay expected for updating player stats
+          if (timeOffset === 0) {
+            const stats = fixturePlayerStats[fixturePlayerStats.length - 1];
+
+            if (stats !== undefined) {
+              console.log("Fixture player stats for iter: " + (fixturePlayerStats.length - 1));
+              updateFixturePlayerStatsNow(fixture, stats.homeTeamPlayers, stats.awayTeamPlayers);
+            }
+          }
+        });
+    } else {
+      console.log("No timer detected. Stopping update fixture stats process");
+      clearInterval(dataCollectionInterval);
+    }
   }, CONFIG.dataCollectionInterval)
 
-  // Check if delay is defined and start respective process for updating players
-  console.log("Starting player stats update with delay. Delay: " + timeOffset + ". Iterator: " + iter);
+  // If delay is defined then start process for updating players with delay
   if (timeOffset > 0) {
+    console.log("Starting player stats update with delay. Delay: " + timeOffset/1000 + " sec. Iterator: " + iter);
     updateStatsWithDelay(iter, timeOffset, fixture);
-  } else {
-    updateStats(iter, fixture);
   }
 }
 
@@ -104,35 +121,13 @@ function stopDataCollection() {
   TIMER = false;
 }
 
-const updateStats = (iter, fixture) => {
-  const stats = fixturePlayerStats[iter];
-
-  if (TIMER) {
-    if (stats !== undefined) {
-      updateFixturePlayerStatsNow(fixture, stats.homeTeamPlayers, stats.awayTeamPlayers);
-
-      iter++;
-      console.log("Player stats updated. New iterator: " + iter);
-      
-      if (iter < fixturePlayerStats.length) {
-        // Start update for the next element in the array
-        updateStats(iter, fixture)
-      } else {
-        console.log("Reached the end of fixture player stats array");
-        waitForNextFixturePlayerStats(timeOffset);
-      }
-    }
-  } else {
-    console.log("No timer detected. Stopping update fixture stats process");
-    return;
-  } 
-}
-
 const updateStatsWithDelay = (iter, delay, fixture) => {
   const stats = fixturePlayerStats[iter];
 
   if (TIMER) {
     if (stats !== undefined) {
+      console.log("Fixture player stats for iter: " + iter);
+      console.log(stats);
       updateFixturePlayerStatsWithDelay(fixture, stats.homeTeamPlayers, stats.awayTeamPlayers, delay)
         .then(x => {
           console.log("Resolve from promise: ");
@@ -146,12 +141,20 @@ const updateStatsWithDelay = (iter, delay, fixture) => {
             updateStatsWithDelay(iter, delay, fixture)
           } else {
             console.log("Reached the end of fixture player stats array");
-            waitForNextFixturePlayerStats(delay);
+            waitForNextFixturePlayerStats()
+              .then(x => {
+                console.log(`Waited: ${x / 1000} seconds. Starting new run`);
+                updateStatsWithDelay(iter, delay, fixture);
+              });
           }
         })
       } else {
         console.log("No player stats available");
-        waitForNextFixturePlayerStats(delay);
+        waitForNextFixturePlayerStats()
+          .then(x => {
+            console.log(`Waited: ${x / 1000} seconds. Trying again..`);
+            updateStatsWithDelay(iter, delay, fixture);
+          });
       }
   } else {
     console.log("No timer detected. Stopping update fixture stats process");
@@ -164,9 +167,7 @@ const updateFixturePlayerStatsWithDelay = (fixture, homeTeamPlayers, awayTeamPla
   return new Promise((resolve) => {
       setTimeout(() => {
         updateFixturePlayerStatsNow(fixture, homeTeamPlayers, awayTeamPlayers);
-
-          // TODO: Need to return/resolve something
-          resolve(delay);
+        resolve(delay);
       }, delay);
   });
 }
@@ -174,16 +175,24 @@ const updateFixturePlayerStatsWithDelay = (fixture, homeTeamPlayers, awayTeamPla
 const updateFixturePlayerStatsNow = (fixture, homeTeamPlayers, awayTeamPlayers) => {
   // Upsert data to database
   console.log("Updating players for team " + fixture.homeTeam.name + " (" + fixture.homeTeam.nameCode + ")");
+  console.log(homeTeamPlayers);
   updateFixturePlayerStats(fixture.homeTeam.nameCode, homeTeamPlayers);
 
   console.log("Updating players for team " + fixture.awayTeam.name + " (" + fixture.awayTeam.nameCode + ")");
+  console.log(awayTeamPlayers);
   updateFixturePlayerStats(fixture.awayTeam.nameCode, awayTeamPlayers);
 }
 
-const waitForNextFixturePlayerStats = (delay) => {
-  setTimeout(() => {
+const waitForNextFixturePlayerStats = () => {
+  // Set waiting delay as interval for the data collection + 15 sec
+  const delay = CONFIG.dataCollectionInterval + 15000;
+
+  return new Promise((resolve) => {
     console.log(`...waiting for ${delay / 1000} sec`);
-  }, delay);
+    setTimeout(() => {
+      resolve(delay);
+    }, delay);
+  });
 }
 
 Meteor.methods({
