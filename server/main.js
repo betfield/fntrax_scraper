@@ -17,7 +17,7 @@ const CONFIG = require('./config/config');
 TIMER = false;
 
 let page;
-let fixturePlayerStats = [];
+let iter = 0;
 
 // Create a global variable for update time offset and gameweek, default based on config
 timeOffset = Meteor.settings.public.timeDiff;
@@ -26,16 +26,6 @@ console.log("Session variable offset added: " + timeOffset);
 // Define Selected Fixture as null. User needs to select the appropriate fixture from the Dashboard to assign a value
 selectedFixture = null;
 console.log("User needs to select the appropriate fixture from the Dashboard to start Data Collection");
-
-Meteor.startup(() => {
-
-  // Populate game week fixtures data
-  //populateGameWeekData();
-
-  // Populate Fantrax league teams data
-  //populateFantraxLeagueData();
-  
-});
 
 async function populateFantraxLeagueData() {
 
@@ -75,31 +65,34 @@ async function populateFantraxLeagueData() {
 
 async function fill(fixture) {
   console.log("Starting data collection for fixture: " + fixture.id);    
-  fixturePlayerStats.push(await getFixturePlayerStats(fixture));
+  const stats = await getFixturePlayerStats(fixture);
 
   console.log("Starting data collection for player incidents: " + fixture.id);
   await fillFixtureIncidentsData(fixture);
-  return fixture;
+  return stats;
 }
 
 function startDataCollectionForFixture(fixture) {
-  // Initiate parameters
-  const iter = 0;
-  fixturePlayerStats = [];
-  
-  // Start data collection for selected fixture
   const dataCollectionInterval = setInterval(()=> {
     if (TIMER) {
       fill(fixture)
-        .then(() => {
-          // Only do this part in case there is no delay expected for updating player stats
-          if (timeOffset === 0) {
-            const stats = fixturePlayerStats[fixturePlayerStats.length - 1];
+        .then((stats) => {
+          if (stats !== undefined) {
+            // Increase global iterator and make a local copy of it for future reference
+            iter++;
+            const thisIter = iter;
 
-            if (stats !== undefined) {
-              console.log("Fixture player stats for iter: " + (fixturePlayerStats.length - 1));
+            console.log("Update Fixture player stats for iter: " + thisIter + ". Time: " + stats.ts.getSeconds());
+            
+            if (timeOffset === 0) {
               updateFixturePlayerStatsNow(fixture, stats.homeTeamPlayers, stats.awayTeamPlayers);
-            }
+              console.log("Player stats updated for iter: " + thisIter + ". Update time:" + new Date().getSeconds());
+            } else {
+              updateFixturePlayerStatsWithDelay(fixture, stats.homeTeamPlayers, stats.awayTeamPlayers, timeOffset)
+                .then(res => {
+                  console.log("Player stats updated with delay for iter: " + thisIter + ". Update time:" + res.getSeconds());
+                });
+              }
           }
         });
     } else {
@@ -107,12 +100,6 @@ function startDataCollectionForFixture(fixture) {
       clearInterval(dataCollectionInterval);
     }
   }, CONFIG.dataCollectionInterval)
-
-  // If delay is defined then start process for updating players with delay
-  if (timeOffset > 0) {
-    console.log("Starting player stats update with delay. Delay: " + timeOffset/1000 + " sec. Iterator: " + iter);
-    updateStatsWithDelay(iter, timeOffset, fixture);
-  }
 }
 
 function stopDataCollection() {
@@ -121,81 +108,25 @@ function stopDataCollection() {
   TIMER = false;
 }
 
-const updateStatsWithDelay = (iter, delay, fixture) => {
-  const stats = fixturePlayerStats[iter];
-
-  if (TIMER) {
-    if (stats !== undefined) {
-      console.log("Fixture player stats for iter: " + iter);
-      console.log(stats);
-      updateFixturePlayerStatsWithDelay(fixture, stats.homeTeamPlayers, stats.awayTeamPlayers, delay)
-        .then(x => {
-          console.log("Resolve from promise: ");
-          console.log(x);
-
-          iter++;
-          console.log("Player stats updated with delay. New iterator: " + iter);
-          
-          if (iter < fixturePlayerStats.length) {
-            // Start update for the next element in the array
-            updateStatsWithDelay(iter, delay, fixture)
-          } else {
-            console.log("Reached the end of fixture player stats array");
-            waitForNextFixturePlayerStats()
-              .then(x => {
-                console.log(`Waited: ${x / 1000} seconds. Starting new run`);
-                updateStatsWithDelay(iter, delay, fixture);
-              });
-          }
-        })
-      } else {
-        console.log("No player stats available");
-        waitForNextFixturePlayerStats()
-          .then(x => {
-            console.log(`Waited: ${x / 1000} seconds. Trying again..`);
-            updateStatsWithDelay(iter, delay, fixture);
-          });
-      }
-  } else {
-    console.log("No timer detected. Stopping update fixture stats process");
-    return;
-  } 
-}
-
 const updateFixturePlayerStatsWithDelay = (fixture, homeTeamPlayers, awayTeamPlayers, delay) => {
   console.log(`Waiting: ${delay / 1000} seconds.`);
   return new Promise((resolve) => {
       setTimeout(() => {
-        console.log("Hereee...");
-        
-        Meteor.wrapAsync(updateFixturePlayerStatsNow(fixture, homeTeamPlayers, awayTeamPlayers));
-        
-        resolve(delay);
+        updateFixturePlayerStatsNow(fixture, homeTeamPlayers, awayTeamPlayers);
+        resolve(new Date());
       }, delay);
   });
 }
 
-const updateFixturePlayerStatsNow = (fixture, homeTeamPlayers, awayTeamPlayers) => {
+const updateFixturePlayerStatsNow = async (fixture, homeTeamPlayers, awayTeamPlayers) => {
   // Upsert data to database
   console.log("Updating players for team " + fixture.homeTeam.name + " (" + fixture.homeTeam.nameCode + ")");
-  console.log(homeTeamPlayers);
+  //console.log(homeTeamPlayers);
   updateFixturePlayerStats(fixture.homeTeam.nameCode, homeTeamPlayers);
 
   console.log("Updating players for team " + fixture.awayTeam.name + " (" + fixture.awayTeam.nameCode + ")");
-  console.log(awayTeamPlayers);
+  //console.log(awayTeamPlayers);
   updateFixturePlayerStats(fixture.awayTeam.nameCode, awayTeamPlayers);
-}
-
-const waitForNextFixturePlayerStats = () => {
-  // Set waiting delay as interval for the data collection + 5 sec
-  const delay = CONFIG.dataCollectionInterval + 5000;
-
-  return new Promise((resolve) => {
-    console.log(`...waiting for ${delay / 1000} sec`);
-    setTimeout(() => {
-      resolve(delay);
-    }, delay);
-  });
 }
 
 Meteor.methods({
@@ -225,5 +156,13 @@ Meteor.methods({
   clearPlayers: function () {
     console.log("Clear player stats requested");
     clearPlayerStats();
+  },
+  populateGameWeek: function () {
+    console.log("Populate game week fixtures data");
+    populateGameWeekData();
+  },
+  populateLeagueData: function () {
+    console.log("Populate Fantrax league teams data");
+    populateFantraxLeagueData();
   }
 });

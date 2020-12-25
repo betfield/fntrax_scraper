@@ -12,11 +12,11 @@ export default async function fillFixtureIncidentsData(fixture) {
 
     // Fetch fixture data
     const fixtureUpdate = await fetchAPIData(CONFIG.URL_SOFASCORE_FIXTURE_INFO, mapObj);
-    console.log(fixtureUpdate.event);
+    //console.log(fixtureUpdate.event);
 
     // Fetch fixture incidents data
     const incidents = await fetchAPIData(CONFIG.URL_SOFASCORE_FIXTURE_INCIDENTS, mapObj);
-    console.log(incidents.incidents);
+    //console.log(incidents.incidents);
 
     updateFixtureStatus(fixtureUpdate.event, incidents.incidents);
 

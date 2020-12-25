@@ -13,13 +13,26 @@ export default class PlayerStats extends React.Component {
   
   constructor(props) {
     super(props);
-    this.submitForm = this.submitForm.bind(this);
+    this.submitFormClearPlayers = this.submitFormClearPlayers.bind(this);
+    this.submitFormGameWeek = this.submitFormGameWeek.bind(this);
+    this.submitFormLeagueData = this.submitFormLeagueData.bind(this);
   }
 
-  submitForm(e) {
+  submitFormClearPlayers(e) {
     e.preventDefault();
     Meteor.call("clearPlayers", function (error, result) {
-    
+    });
+  }
+
+  submitFormGameWeek(e) {
+    e.preventDefault();
+    Meteor.call("populateGameWeek", function (error, result) {
+    });
+  }
+
+  submitFormLeagueData(e) {
+    e.preventDefault();
+    Meteor.call("populateLeagueData", function (error, result) {
     });
   }
 
@@ -31,12 +44,30 @@ export default class PlayerStats extends React.Component {
             <CardHeader>
               <h5 className="card-category">Player Stats:</h5>
               <CardTitle tag="h3">
-              <Form onSubmit={ this.submitForm }>
+                <Form onSubmit={ this.submitFormClearPlayers }>
                   <i className="tim-icons icon-refresh-02 text-info" />{"  "}
                   <Button color="info" size="sm" >
                     <input className="d-none" type="submit" />
                     <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
                       Clear Stats
+                    </span>
+                  </Button>
+                </Form>
+                <Form onSubmit={ this.submitFormGameWeek }>
+                  <i className="tim-icons icon-refresh-02 text-info" />{"  "}
+                  <Button color="info" size="sm" >
+                    <input className="d-none" type="submit" />
+                    <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                      Load Gameweek
+                    </span>
+                  </Button>
+                </Form>
+                <Form onSubmit={ this.submitFormLeagueData }>
+                  <i className="tim-icons icon-refresh-02 text-info" />{"  "}
+                  <Button color="info" size="sm" >
+                    <input className="d-none" type="submit" />
+                    <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                      Load League Data
                     </span>
                   </Button>
                 </Form>

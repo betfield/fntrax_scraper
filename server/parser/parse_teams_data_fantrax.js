@@ -56,7 +56,6 @@ export default function parseTeamsData(lineups, team, fixtureId, isHome) {
         result.push(player);
     })
 
-    console.log("Done!");
     return result;
 }
 

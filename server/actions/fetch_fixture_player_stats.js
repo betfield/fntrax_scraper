@@ -23,7 +23,7 @@ export default async function getFixturePlayerStats(fixture) {
 
     return {
         homeTeamPlayers: homeTeamPlayers,
-        awayTeamPlayers: awayTeamPlayers
+        awayTeamPlayers: awayTeamPlayers,
+        ts: new Date()
     }
-
 }
