@@ -7,6 +7,7 @@ import getFixturePlayerStats from './actions/fetch_fixture_player_stats';
 import fillTeamsPlayerData from './actions/fill_teams';
 import fillFixtureIncidentsData from './actions/fill_fixture_incidents';
 import { clearPlayerStats, updateFixturePlayerStats } from './db/player_stats';
+import { updateFixtureStatus } from './db/fixtures';
 import '../imports/publish/methods';
 import '../imports/publish/fixtures';
 import '../imports/publish/playerstats';
@@ -68,15 +69,22 @@ async function fill(fixture) {
   const stats = await getFixturePlayerStats(fixture);
 
   console.log("Starting data collection for player incidents: " + fixture.id);
-  await fillFixtureIncidentsData(fixture);
-  return stats;
+  const incidents = await fillFixtureIncidentsData(fixture);
+  
+  return {
+    stats: stats,
+    incidents: incidents
+  }
 }
 
 function startDataCollectionForFixture(fixture) {
   const dataCollectionInterval = setInterval(()=> {
     if (TIMER) {
       fill(fixture)
-        .then((stats) => {
+        .then((res) => {
+          const stats = res.stats;
+          const incidents = res.incidents;
+
           if (stats !== undefined) {
             // Increase global iterator and make a local copy of it for future reference
             iter++;
@@ -87,8 +95,11 @@ function startDataCollectionForFixture(fixture) {
             if (timeOffset === 0) {
               updateFixturePlayerStatsNow(fixture, stats.homeTeamPlayers, stats.awayTeamPlayers);
               console.log("Player stats updated for iter: " + thisIter + ". Update time:" + new Date().getSeconds());
+
+              updateFixtureStatus(incidents.fixture, incidents.incidents);
+              console.log("Fixture status updated: " + fixture.id);
             } else {
-              updateFixturePlayerStatsWithDelay(fixture, stats.homeTeamPlayers, stats.awayTeamPlayers, timeOffset)
+              updateFixtureStatsWithDelay(fixture, stats.homeTeamPlayers, stats.awayTeamPlayers, incidents, timeOffset)
                 .then(res => {
                   console.log("Player stats updated with delay for iter: " + thisIter + ". Update time:" + res.getSeconds());
                 });
@@ -108,11 +119,12 @@ function stopDataCollection() {
   TIMER = false;
 }
 
-const updateFixturePlayerStatsWithDelay = (fixture, homeTeamPlayers, awayTeamPlayers, delay) => {
+const updateFixtureStatsWithDelay = (fixture, homeTeamPlayers, awayTeamPlayers, incidents, delay) => {
   console.log(`Waiting: ${delay / 1000} seconds.`);
   return new Promise((resolve) => {
-      setTimeout(() => {
+      setTimeout(async () => {
         updateFixturePlayerStatsNow(fixture, homeTeamPlayers, awayTeamPlayers);
+        updateFixtureStatus(incidents.fixture, incidents.incidents);
         resolve(new Date());
       }, delay);
   });

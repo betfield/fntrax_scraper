@@ -1,5 +1,4 @@
 import fetchAPIData from './fetch_data';
-import { updateFixtureStatus } from '../db/fixtures';
 
 const CONFIG = require('../config/config');
 
@@ -16,9 +15,10 @@ export default async function fillFixtureIncidentsData(fixture) {
 
     // Fetch fixture incidents data
     const incidents = await fetchAPIData(CONFIG.URL_SOFASCORE_FIXTURE_INCIDENTS, mapObj);
-    //console.log(incidents.incidents);
+    console.log("Change timestamp: " + fixtureUpdate.event.changes.changeTimestamp);
 
-    updateFixtureStatus(fixtureUpdate.event, incidents.incidents);
-
-    console.log("Fixture status updated: " + fixture.id);
+    return {
+        fixture: fixtureUpdate.event, 
+        incidents: incidents.incidents
+    }
 }
