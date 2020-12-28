@@ -6,7 +6,7 @@ import populateTeamsData from './actions/populate_teams';
 import getFixturePlayerStats from './actions/fetch_fixture_player_stats';
 import fillTeamsPlayerData from './actions/fill_teams';
 import fillFixtureIncidentsData from './actions/fill_fixture_incidents';
-import { clearPlayerStats, updateFixturePlayerStats } from './db/player_stats';
+import { clearPlayerStats, updateFixturePlayerStats, updateFixturePlayerStatsAlternative } from './db/player_stats';
 import { updateFixtureStatus } from './db/fixtures';
 import '../imports/publish/methods';
 import '../imports/publish/fixtures';
@@ -134,11 +134,13 @@ const updateFixturePlayerStatsNow = async (fixture, homeTeamPlayers, awayTeamPla
   // Upsert data to database
   console.log("Updating players for team " + fixture.homeTeam.name + " (" + fixture.homeTeam.nameCode + ")");
   //console.log(homeTeamPlayers);
-  updateFixturePlayerStats(fixture.homeTeam.nameCode, homeTeamPlayers);
+  //updateFixturePlayerStats(fixture.homeTeam.nameCode, homeTeamPlayers);
+  updateFixturePlayerStatsAlternative(homeTeamPlayers);
 
   console.log("Updating players for team " + fixture.awayTeam.name + " (" + fixture.awayTeam.nameCode + ")");
   //console.log(awayTeamPlayers);
-  updateFixturePlayerStats(fixture.awayTeam.nameCode, awayTeamPlayers);
+  //updateFixturePlayerStats(fixture.awayTeam.nameCode, awayTeamPlayers);
+  updateFixturePlayerStatsAlternative(awayTeamPlayers);
 }
 
 Meteor.methods({

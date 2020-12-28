@@ -51,6 +51,29 @@ function updateFixturePlayerStats(club, clubPlayers) {
     console.log("Player data for club " + club + " updated from fixture.");
 }
 
+function updateFixturePlayerStatsAlternative(clubPlayers) {
+    
+    for (let i = 0; i < clubPlayers.length; i++) {
+        const player = clubPlayers[i];
+        
+        if (player !== undefined) {
+            player.update = {
+                TS: new Date()
+            }
+            
+            PlayerStats.upsert({
+                "id": player.id
+            },{
+                $set: player
+            });
+            console.log("Player data updated for player: " + player.name + "(" + player.id + ")");
+            //console.log(stats);
+        }
+    }
+
+    //console.log("Player data for club " + club + " updated from fixture.");
+}
+
 function clearPlayerStats() {
 
     PlayerStats.remove({});
@@ -69,4 +92,4 @@ function findTeamPlayerFromClubStats(playerStats, clubPlayers) {
     }
 }
 
-export { updatePlayerStats, updateFixturePlayerStats, clearPlayerStats }
+export { updatePlayerStats, updateFixturePlayerStats, clearPlayerStats, updateFixturePlayerStatsAlternative }
