@@ -1,7 +1,7 @@
 export const nrTeams = 10;
 export const maxLoginTries = 3;
 export const navTimeOut = 10*1000;
-export const dataCollectionInterval = 10*1000;
+export const dataCollectionInterval = 4*1000;
 
 export const LOGIN_TITLE = 'Fantrax - The Home of Fantasy Sports';
 

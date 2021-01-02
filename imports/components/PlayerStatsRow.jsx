@@ -40,7 +40,9 @@ export default class PlayerStatsRow extends React.Component {
         pos: player.pos,
         team: player.team
       };
-      const stats = player.stats;
+      //const stats = player.stats;
+      let stats = player.statsRaw;
+      stats.FPts = player.stats.FPts;
       const headerType = this.props.type;
 
       // Set table headers based on the player type submitted to the component

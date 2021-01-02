@@ -146,15 +146,16 @@ function getPlayerGoalsAllowed(player, startEndTimes, goals) {
             }
 
             let time = goal.time + addedTime;
-
+            
             if (time > playerStartEndTime.startMin && time <= playerStartEndTime.endMin) {
                 goalsAllowed++;
             }
         })
-    }
-
-    if (goalsAllowed = 0 && (playerStartEndTime.endMin - playerStartEndTime.startMin) >= 60) {
-        cleanSheet = 1;
+    /*
+        if (goalsAllowed === 0 && (playerStartEndTime.endMin - playerStartEndTime.startMin) >= 60) {
+            cleanSheet = 1;
+        }
+    */
     }
 
     return {
