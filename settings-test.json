@@ -5,9 +5,9 @@
 		"headless": true,
 		"args": "--disable-gl-drawing-for-tests",
 		"apiParams": {
-			"comp_id":"17",
-			"season_id":"29415",
-			"round_id":"17",
+			"comp_id":"238",
+			"season_id":"32456",
+			"round_id":"12",
 			"fixture_id":"",
 			"player_id":"",
 			"team_id":""

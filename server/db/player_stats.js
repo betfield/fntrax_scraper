@@ -57,21 +57,40 @@ function updateFixturePlayerStatsAlternative(clubPlayers) {
         const player = clubPlayers[i];
         
         if (player !== undefined) {
-            player.update = {
-                TS: new Date()
+            const playerOld = PlayerStats.findOne({"id": player.id});
+
+            if (playerOld !== undefined && comparePlayerStats(playerOld.statsRaw, player.statsRaw)) {
+                console.log("No data to update for player: " + player.name + "(" + player.id + ")");
+            } else {
+                player.update = {
+                    TS: new Date()
+                }
+                
+                PlayerStats.upsert({
+                    "id": player.id
+                },{
+                    $set: player
+                });
+                console.log("Player data updated for player: " + player.name + "(" + player.id + ")");
             }
-            
-            PlayerStats.upsert({
-                "id": player.id
-            },{
-                $set: player
-            });
-            console.log("Player data updated for player: " + player.name + "(" + player.id + ")");
-            //console.log(stats);
         }
     }
+}
 
-    //console.log("Player data for club " + club + " updated from fixture.");
+function comparePlayerStats(playerOld, playerNew) {
+    const keys1 = Object.keys(playerOld);
+    const keys2 = Object.keys(playerNew);
+  
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+  
+    for (let key of keys1) {
+      if (playerOld[key] !== playerNew[key]) {
+        return false;
+      }
+    }
+    return true;
 }
 
 function clearPlayerStats() {
